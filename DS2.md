@@ -66,7 +66,7 @@ root@user-VirtualBox:~# docker ps
 CONTAINER ID   IMAGE         COMMAND                  CREATED             STATUS             PORTS                                       NAMES
 b14db7fb1ac0   postgres:15   "docker-entrypoint.s…"   About an hour ago   Up About an hour   0.0.0.0:5432->5432/tcp, :::5432->5432/tcp   pg-server
 ```
-### Зашел с другого хоста по ip адресу 
+### Подключился с ВМ к докеру с postgresql 
 ```sql
 postgres@user-VirtualBox:~$ psql -h 172.29.2.215
 Password for user postgres:
