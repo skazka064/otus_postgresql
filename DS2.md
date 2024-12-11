@@ -151,7 +151,7 @@ docker stop pg-server
 docker rm pg-server
 ```
 
-### Заново развернул контейнер  смонтировав в дирикториию, которая была с данными(на хосте)
+### Заново развернул контейнер примонтировав директорию, которая была с данными(на хосте)
 ```bash
 docker run --name pg-server --network pg-net -e POSTGRES_PASSWORD=postgres -d -p 5432:5432 -v /var/lib/postgresql:/var/lib/postgresql/data postgres:15
 ```
