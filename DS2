@@ -45,9 +45,18 @@ root@user-VirtualBox:~# docker ps
 CONTAINER ID   IMAGE         COMMAND                  CREATED             STATUS             PORTS                                       NAMES
 b14db7fb1ac0   postgres:15   "docker-entrypoint.s…"   About an hour ago   Up About an hour   0.0.0.0:5432->5432/tcp, :::5432->5432/tcp   pg-server
 #########################################################
-## Подключился к контейнеру с сервером извне
-## Затем я запустил генерацию данных с другого сервера, где установлен генератор, в докер с БД
+## Подключился к контейнеру с postgresql извне c другого сервера
+## Затем я запустил генерацию данных с другого сервера, где установлен генератор данных, в докер с БД
 #########################################################
+// Подключение к PostgreSQL
+const sql = postgres('postgres://username:password@host:5432/database', {
+  host                 : '172.29.2.215',            // 
+  port                 : 5432,                    // Postgres server port[s]
+  database             : 'postgres',             // Name of database to connect to
+  username             : 'postgres',            // Username of database user
+  password             : 'postgres',           // Password of database user
+ 
+})
 await sql `CREATE TABLE IF NOT EXISTS  users (userid text, username text, email text, avatar text, password text, birthdate text, registeredAt text);`;
 await sql `CREATE TABLE IF NOT EXISTS company (department text, productname text, price text, productadjective text, productmaterial text, product text, productdescription text, isbn text)`
 await sql `CREATE TABLE IF NOT EXISTS location (zipcode text, state text, city text, streetaddr text, longitude text)`
@@ -59,7 +68,7 @@ await sql `INSERT INTO location ("zipcode","state","city","streetaddr","longitud
 
 
 ######################################################
-Зашел в postgresql под клиентом, запущенным в докере
+Зашел в postgresql из контейнера с клиентом
 # docker run -it --rm --name pg-client --network pg-net -v /var/lib/postgresql:/var/lib/postgresql/data postgres:15 psql -h pg-server -U postgres
 ############################
 Посмотрим размер таблиц
