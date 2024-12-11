@@ -2,7 +2,7 @@
 8a61c70d05f39850ed14d3406011a01460934bc1229ea3257d012d145798fd1b
 
 ######################################################
-Зашел в postgresql под клиентом, запущенным в докере
+# Зашел в postgresql под клиентом, запущенным в докере
 ######################################################
 # docker run -it --rm --name pg-client --network pg-net -v /var/lib/postgresql:/var/lib/postgresql/data postgres:15 psql -h pg-server -U postgres
 Password for user postgres:
