@@ -1,11 +1,10 @@
 
-# docker run --name pg-server --network pg-net -e POSTGRES_PASSWORD=postgres -d -p 5432:5432 -v /var/lib/postgresql:/var/lib/postgresql/data postgres:15
+ docker run --name pg-server --network pg-net -e POSTGRES_PASSWORD=postgres -d -p 5432:5432 -v /var/lib/postgresql:/var/lib/postgresql/data postgres:15
 8a61c70d05f39850ed14d3406011a01460934bc1229ea3257d012d145798fd1b
 
-######################################################
 # Зашел в postgresql под клиентом, запущенным в докере
-######################################################
-# docker run -it --rm --name pg-client --network pg-net -v /var/lib/postgresql:/var/lib/postgresql/data postgres:15 psql -h pg-server -U postgres
+
+ docker run -it --rm --name pg-client --network pg-net -v /var/lib/postgresql:/var/lib/postgresql/data postgres:15 psql -h pg-server -U postgres
 Password for user postgres:
 psql (15.10 (Debian 15.10-1.pgdg120+1))
 Type "help" for help.
@@ -21,39 +20,38 @@ postgres=# \l
            |          |          |            |            |            |                 | postgres=CTc/postgres
 (3 rows)
 
-#######################
-Убедился что таблиц нет
-########################
+
+# Убедился что таблиц нет
+
 postgres=# \dt
 Did not find any relations.
 postgres=#
 
 
-#############################################
-Создал тестовую таблицу и залил одну строчку
+
+# Создал тестовую таблицу и залил одну строчку
 #############################################
 postgres=#  create table t (s text);
 CREATE TABLE
 postgres=# insert into t values ('Hello World!');
 INSERT 0 1
 
-##########################################################################
-Затем, исправил pg_hba.conf и postgesql.conf, что бы подключиться извне
-##########################################################################
+
+# Затем, исправил pg_hba.conf и postgesql.conf, что бы подключиться извне
+
 
 host    all             all             0.0.0.0/0            trust
 listen_addresses = '*'
 
-###########################
-## Посмотрел работу докера
-##########################
+
+# Посмотрел работу докера
+
 root@user-VirtualBox:~# docker ps
 CONTAINER ID   IMAGE         COMMAND                  CREATED             STATUS             PORTS                                       NAMES
 b14db7fb1ac0   postgres:15   "docker-entrypoint.s…"   About an hour ago   Up About an hour   0.0.0.0:5432->5432/tcp, :::5432->5432/tcp   pg-server
 
-###########################################
-### Зашел с другого хоста по ip адресу 
-###########################################
+# Зашел с другого хоста по ip адресу 
+
 postgres@user-VirtualBox:~$ psql -h 172.29.2.215
 Password for user postgres:
 psql (12.20 (Ubuntu 12.20-0ubuntu0.20.04.1), server 15.10 (Debian 15.10-1.pgdg120+1))
@@ -73,15 +71,15 @@ postgres=# \l
 (3 rows)
 
 
-#########################################
-Убедился, что все работает
-##########################################
+
+# Убедился, что все работает
 
 
-#########################################################
-## Подключился к контейнеру с postgresql извне c другого сервера
-## И запустил генерацию данных с другого сервера, где установлен генератор данных, в докер с БД
-#########################################################
+
+
+# Подключился к контейнеру с postgresql извне c другого сервера
+### И запустил генерацию данных с другого сервера, где установлен генератор данных, в докер с БД
+
 
 // Подключение к PostgreSQL
 const sql = postgres('postgres://username:password@host:5432/database', {
@@ -100,14 +98,14 @@ await sql `INSERT INTO location ("zipcode","state","city","streetaddr","longitud
 await sql `INSERT INTO company ("department","productname","price","productadjective","productmaterial","product","productdescription","isbn") VALUES (${department[0]},${productname[0]},${price[0]},${productadjective[0]},${productmaterial[0]},${product[0]},${productdescription[0]},${isbn[0]}),(${department[1]},${productname[1]},${price[1]},${productadjective[1]},${productmaterial[1]},${product[1]},${productdescription[1]},${isbn[1]}),(${department[2]},${productname[2]},${price[2]},${productadjective[2]},${productmaterial[2]},${product[2]},${productdescription[2]},${isbn[2]}),(${department[3]},${productname[3]},${price[3]},${productadjective[3]},${productmaterial[3]},${product[3]},${productdescription[3]},${isbn[3]}),(${department[4]},${productname[4]},${price[4]},${productadjective[4]},${productmaterial[4]},${product[4]},${productdescription[4]},${isbn[4]}),(${department[5]},${productname[5]},${price[5]},${productadjective[5]},${productmaterial[5]},${product[5]},${productdescription[5]},${isbn[5]}),(${department[6]},${productname[6]},${price[6]},${productadjective[6]},${productmaterial[6]},${product[6]},${productdescription[6]},${isbn[6]}),(${department[7]},${productname[7]},${price[7]},${productadjective[7]},${productmaterial[7]},${product[7]},${productdescription[7]},${isbn[7]}),(${department[8]},${productname[8]},${price[8]},${productadjective[8]},${productmaterial[8]},${product[8]},${productdescription[8]},${isbn[8]}),(${department[9]},${productname[9]},${price[9]},${productadjective[9]},${productmaterial[9]},${product[9]},${productdescription[9]},${isbn[9]})`
 
 
-############################################
-Зашел в postgresql из контейнера с клиентом
-############################################
-# docker run -it --rm --name pg-client --network pg-net -v /var/lib/postgresql:/var/lib/postgresql/data postgres:15 psql -h pg-server -U postgres
 
-######################################################
-##### Посмотрел размер таблиц и БД
-######################################################
+# Зашел в postgresql из контейнера с клиентом
+
+ docker run -it --rm --name pg-client --network pg-net -v /var/lib/postgresql:/var/lib/postgresql/data postgres:15 psql -h pg-server -U postgres
+
+
+# Посмотрел размер таблиц и БД
+
 postgres=# \dt+
                                     List of relations
  Schema |   Name   | Type  |  Owner   | Persistence | Access method | Size  | Description
@@ -127,38 +125,37 @@ postgres=# select * from location limit 5 ;
  69099-4653 | Connecticut  | Bednarworth      | 72389 Destinee Extensions | -140.4979
 (5 rows)
 
-postgres=# select * from t;
+postgres= select * from t;
       s
 --------------
  Hello World!
 (1 row)
 postgres=#
 
-########################################
-### Затем я удалил контейнер с сервером
-########################################
+
+# Затем я удалил контейнер с сервером
 
 docker stop pg-server
 docker rm pg-server
 
-########################################
-### Заново развернул контейнер  смонтировав в него те дирикториии которые были с данными
-#######################################
+
+# Заново развернул контейнер  смонтировав в него те дирикториии которые были с данными
+
 docker run --name pg-server --network pg-net -e POSTGRES_PASSWORD=postgres -d -p 5432:5432 -v /var/lib/postgresql:/var/lib/postgresql/data postgres:15
 
 
-###########################
-По ip докера удалось зайти. В процессе я переставил clienta с 15 на 12 версию в качествве теста. Тест удался.
-###########################
+
+# По ip докера удалось зайти. В процессе я переставил clienta с 15 на 12 версию в качествве теста. Тест удался.
+
 $ psql -h 172.29.2.215
 psql (12.22 (Ubuntu 12.22-0ubuntu0.20.04.1), server 15.10 (Debian 15.10-1.pgdg120+1))
 WARNING: psql major version 12, server major version 15.
          Some psql features might not work.
 Type "help" for help.
 
-##############################
-## Затем проверил все ли месте
-#############################
+
+# Затем проверил все ли месте
+
 postgres=# \l
                                  List of databases
    Name    |  Owner   | Encoding |  Collate   |   Ctype    |   Access privileges
@@ -192,7 +189,7 @@ postgres=# \dt+
 
 postgres=#
 
-postgres=# select * from t;
+postgres= select * from t;
       s
 --------------
  Hello World!
@@ -208,6 +205,6 @@ postgres=# select * from location limit 5;
  69099-4653 | Connecticut  | Bednarworth      | 72389 Destinee Extensions | -140.4979
 (5 rows)
 
-##################################################################################
-############### ДАННЫЕ ОСТАЛИСЬ НА МЕСТЕ
-##################################################################################
+
+# ДАННЫЕ ОСТАЛИСЬ НА МЕСТЕ
+
