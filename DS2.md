@@ -146,7 +146,7 @@ postgres= select * from t;
 postgres=#
 ```
 
-# Затем я удалил контейнер с сервером
+# Затем я удалил контейнер с postgresql
 ```bash
 docker stop pg-server
 docker rm pg-server
