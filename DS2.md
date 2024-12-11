@@ -1,15 +1,15 @@
 
 ```docker run --name pg-server --network pg-net -e POSTGRES_PASSWORD=postgres -d -p 5432:5432 -v /var/lib/postgresql:/var/lib/postgresql/data postgres:15 ```
 8a61c70d05f39850ed14d3406011a01460934bc1229ea3257d012d145798fd1b
-```
+
 # Зашел в postgresql под клиентом, запущенным в докере
 
- docker run -it --rm --name pg-client --network pg-net -v /var/lib/postgresql:/var/lib/postgresql/data postgres:15 psql -h pg-server -U postgres
+``` docker run -it --rm --name pg-client --network pg-net -v /var/lib/postgresql:/var/lib/postgresql/data postgres:15 psql -h pg-server -U postgres
 Password for user postgres:
 psql (15.10 (Debian 15.10-1.pgdg120+1))
 Type "help" for help.
 
-postgres=# \l
+postgres=# \l```
                                                 List of databases
    Name    |  Owner   | Encoding |  Collate   |   Ctype    | ICU Locale | Locale Provider |   Access privileges
 -----------+----------+----------+------------+------------+------------+-----------------+-----------------------
