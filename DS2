@@ -88,22 +88,6 @@ postgres=# select * from t;
 
 postgres=#
 
-
-######################################
-Данные сгенерились
-######################################
-
-
-
-
-
-
-
-
-
-
-
-
 ~# docker exec -it pg-server /bin/bash
 # su - postgres
 ~$ psql
