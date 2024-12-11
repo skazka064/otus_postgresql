@@ -4,7 +4,7 @@
 docker run --name pg-server --network pg-net -e POSTGRES_PASSWORD=postgres -d -p 5432:5432 -v /var/lib/postgresql:/var/lib/postgresql/data postgres:15  
 8a61c70d05f39850ed14d3406011a01460934bc1229ea3257d012d145798fd1b
 ```
-# Зашел в postgresql под клиентом, запущенным в докере
+### Зашел в postgresql под клиентом, запущенным в докере
 
 ```bash
 docker run -it --rm --name pg-client --network pg-net -v /var/lib/postgresql:/var/lib/postgresql/data postgres:15 psql -h pg-server -U postgres
@@ -27,7 +27,7 @@ postgres=# \l
 (3 rows)
 ```
 
-# Убедился что таблиц нет
+### Убедился что таблиц нет
 
 ```sql
 postgres=# \dt
@@ -36,7 +36,7 @@ postgres=#
 ```
 
 
-# Создал тестовую таблицу и залил одну строчку
+### Создал тестовую таблицу и залил одну строчку
 
 ```sql
 postgres=#  create table t (s text);
@@ -45,20 +45,20 @@ postgres=# insert into t values ('Hello World!');
 INSERT 0 1
 ```
 
-# Затем, исправил pg_hba.conf и postgesql.conf, что бы подключиться извне
+### Затем, исправил pg_hba.conf и postgesql.conf, что бы подключиться извне
 
 ```bash
 host    all             all             0.0.0.0/0            trust
 listen_addresses = '*'
 
 ```
-# Посмотрел работу докера
+### Посмотрел работу докера
 ```bash
 root@user-VirtualBox:~# docker ps
 CONTAINER ID   IMAGE         COMMAND                  CREATED             STATUS             PORTS                                       NAMES
 b14db7fb1ac0   postgres:15   "docker-entrypoint.s…"   About an hour ago   Up About an hour   0.0.0.0:5432->5432/tcp, :::5432->5432/tcp   pg-server
 ```
-# Зашел с другого хоста по ip адресу 
+### Зашел с другого хоста по ip адресу 
 ```sql
 postgres@user-VirtualBox:~$ psql -h 172.29.2.215
 Password for user postgres:
@@ -80,12 +80,12 @@ postgres=# \l
 
 ```
 
-# Убедился, что все работает
+### Убедился, что все работает
 
 
 
 
-# Подключился к контейнеру с postgresql извне c другого сервера
+### Подключился к контейнеру с postgresql извне c другого сервера
 ### И запустил генерацию данных с другого сервера, где установлен генератор данных, в докер с БД
 
 ```javascript
@@ -107,12 +107,12 @@ await sql `INSERT INTO company ("department","productname","price","productadjec
 ```
 
 
-# Зашел в postgresql из контейнера с клиентом
+### Зашел в postgresql из контейнера с клиентом
 ```bash
  docker run -it --rm --name pg-client --network pg-net -v /var/lib/postgresql:/var/lib/postgresql/data postgres:15 psql -h pg-server -U postgres
 ```
 
-# Посмотрел размер таблиц и БД
+### Посмотрел размер таблиц и БД
 ```sql
 postgres=# \dt+
                                     List of relations
@@ -141,19 +141,19 @@ postgres= select * from t;
 postgres=#
 ```
 
-# Затем я удалил контейнер с сервером
+### Затем я удалил контейнер с сервером
 ```bash
 docker stop pg-server
 docker rm pg-server
 ```
 
-# Заново развернул контейнер  смонтировав в него те дирикториии которые были с данными
+### Заново развернул контейнер  смонтировав в него те дирикториии которые были с данными
 ```bash
 docker run --name pg-server --network pg-net -e POSTGRES_PASSWORD=postgres -d -p 5432:5432 -v /var/lib/postgresql:/var/lib/postgresql/data postgres:15
 ```
 
 
-# По ip докера удалось зайти. В процессе я переставил clienta с 15 на 12 версию в качествве теста. Тест удался.
+### По ip докера удалось зайти. В процессе я переставил clienta с 15 на 12 версию в качествве теста. Тест удался.
 ```sql
 $ psql -h 172.29.2.215
 psql (12.22 (Ubuntu 12.22-0ubuntu0.20.04.1), server 15.10 (Debian 15.10-1.pgdg120+1))
@@ -162,7 +162,7 @@ WARNING: psql major version 12, server major version 15.
 Type "help" for help.
 ```
 
-# Затем проверил все ли месте
+### Затем проверил все ли месте
 ```sql
 postgres=# \l
                                  List of databases
