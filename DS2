@@ -3,12 +3,11 @@
 
 ######################################################
 Зашел в postgresql под клиентом, запущенным в докере
+######################################################
 # docker run -it --rm --name pg-client --network pg-net -v /var/lib/postgresql:/var/lib/postgresql/data postgres:15 psql -h pg-server -U postgres
 Password for user postgres:
 psql (15.10 (Debian 15.10-1.pgdg120+1))
 Type "help" for help.
-
-postgres=#
 
 postgres=# \l
                                                 List of databases
@@ -20,16 +19,18 @@ postgres=# \l
  template1 | postgres | UTF8     | en_US.utf8 | en_US.utf8 |            | libc            | =c/postgres          +
            |          |          |            |            |            |                 | postgres=CTc/postgres
 (3 rows)
+
 #######################
 Убедился что таблиц нет
 ########################
 postgres=# \dt
 Did not find any relations.
 postgres=#
-#######################
-Создал тестовую таблицу
-и залил одну строчку
-#######################
+
+
+#############################################
+Создал тестовую таблицу и залил одну строчку
+#############################################
 postgres=#  create table t (s text);
 CREATE TABLE
 postgres=# insert into t values ('Hello World!');
