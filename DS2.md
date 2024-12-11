@@ -153,7 +153,7 @@ docker run --name pg-server --network pg-net -e POSTGRES_PASSWORD=postgres -d -p
 ```
 
 
-### По ip докера удалось зайти.
+### По ip удалось зайти в postgresql.
 ```sql
 $ psql -h 172.29.2.215
 psql (12.22 (Ubuntu 12.22-0ubuntu0.20.04.1), server 15.10 (Debian 15.10-1.pgdg120+1))
