@@ -4,11 +4,13 @@
 
 # Зашел в postgresql под клиентом, запущенным в докере
 
-``` docker run -it --rm --name pg-client --network pg-net -v /var/lib/postgresql:/var/lib/postgresql/data postgres:15 psql -h pg-server -U postgres
+```bash
+docker run -it --rm --name pg-client --network pg-net -v /var/lib/postgresql:/var/lib/postgresql/data postgres:15 psql -h pg-server -U postgres
 Password for user postgres:
 psql (15.10 (Debian 15.10-1.pgdg120+1))
 Type "help" for help.
-postgres=# \l ```
+postgres=# \l
+```
                                                 List of databases
    Name    |  Owner   | Encoding |  Collate   |   Ctype    | ICU Locale | Locale Provider |   Access privileges
 -----------+----------+----------+------------+------------+------------+-----------------+-----------------------
