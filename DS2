@@ -71,15 +71,6 @@ postgres=# \l
            |          |          |            |            | postgres=CTc/postgres
 (3 rows)
 
-postgres=# \dt
-          List of relations
- Schema |   Name   | Type  |  Owner
---------+----------+-------+----------
- public | company  | table | postgres
- public | location | table | postgres
- public | t        | table | postgres
- public | users    | table | postgres
-(4 rows)
 
 #########################################
 Убедился, что все работает
@@ -116,7 +107,7 @@ await sql `INSERT INTO location ("zipcode","state","city","streetaddr","longitud
 # docker run -it --rm --name pg-client --network pg-net -v /var/lib/postgresql:/var/lib/postgresql/data postgres:15 psql -h pg-server -U postgres
 
 ######################################################
-##### Посмотрел размер таблиц
+##### Посмотрел размер таблиц и БД
 ######################################################
 postgres=# \dt+
                                     List of relations
