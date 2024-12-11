@@ -35,7 +35,9 @@ CREATE TABLE
 postgres=# insert into t values ('Hello World!');
 INSERT 0 1
 ###########################################
-###Затем, для генерации большого обьема несинтетических данных, исправил pg_hba.conf и postgesql.conf, что бы подключиться извне
+###
+
+Затем, для генерации большого обьема несинтетических данных, исправил pg_hba.conf и postgesql.conf, что бы подключиться извне
 host    all             all             0.0.0.0/0            trust
 listen_addresses = '*'
 ## Посмотрел работу докера
@@ -43,7 +45,8 @@ root@user-VirtualBox:~# docker ps
 CONTAINER ID   IMAGE         COMMAND                  CREATED             STATUS             PORTS                                       NAMES
 b14db7fb1ac0   postgres:15   "docker-entrypoint.s…"   About an hour ago   Up About an hour   0.0.0.0:5432->5432/tcp, :::5432->5432/tcp   pg-server
 #########################################################
-## Затем я запустил генерацию данных с хоста в докер с БД
+## Подключился к контейнеру с сервером извне
+## Затем я запустил генерацию данных с другого сервера, где установлен генератор, в докер с БД
 #########################################################
 await sql `CREATE TABLE IF NOT EXISTS  users (userid text, username text, email text, avatar text, password text, birthdate text, registeredAt text);`;
 await sql `CREATE TABLE IF NOT EXISTS company (department text, productname text, price text, productadjective text, productmaterial text, product text, productdescription text, isbn text)`
@@ -87,6 +90,8 @@ postgres=# select * from t;
 (1 row)
 
 postgres=#
+
+
 
 ~# docker exec -it pg-server /bin/bash
 # su - postgres
