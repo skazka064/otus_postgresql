@@ -146,6 +146,84 @@ postgres=#
 
 
 
+docker stop pg-server
+docker rm pg-server
+docker run --name pg-server --network pg-net -e POSTGRES_PASSWORD=postgres -d -p 5432:5432 -v /var/lib/postgresql:/var/lib/postgresql/data postgres:15
+
+
+# su - postgres
+################
+Попробовал зайти под localhost, не зашел тк на нем нет СУБД
+################
+$ psql
+psql: error: could not connect to server: No such file or directory
+        Is the server running locally and accepting
+        connections on Unix domain socket "/var/run/postgresql/.s.PGSQL.5432"?
+###########################
+По ip докера удалось зайти. В процессе я переставил clienta на 12 версию в качествве теста. Тест удался.
+###########################
+$ psql -h 172.29.2.215
+psql (12.22 (Ubuntu 12.22-0ubuntu0.20.04.1), server 15.10 (Debian 15.10-1.pgdg120+1))
+WARNING: psql major version 12, server major version 15.
+         Some psql features might not work.
+Type "help" for help.
+
+##############################
+## Затем проверил все ли месте
+#############################
+postgres=# \l
+                                 List of databases
+   Name    |  Owner   | Encoding |  Collate   |   Ctype    |   Access privileges
+-----------+----------+----------+------------+------------+-----------------------
+ postgres  | postgres | UTF8     | en_US.utf8 | en_US.utf8 |
+ template0 | postgres | UTF8     | en_US.utf8 | en_US.utf8 | =c/postgres          +
+           |          |          |            |            | postgres=CTc/postgres
+ template1 | postgres | UTF8     | en_US.utf8 | en_US.utf8 | =c/postgres          +
+           |          |          |            |            | postgres=CTc/postgres
+(3 rows)
+
+postgres=# \dt
+          List of relations
+ Schema |   Name   | Type  |  Owner
+--------+----------+-------+----------
+ public | company  | table | postgres
+ public | location | table | postgres
+ public | t        | table | postgres
+ public | users    | table | postgres
+(4 rows)
+
+postgres=# \dt+
+                     List of relations
+ Schema |   Name   | Type  |  Owner   | Size  | Description
+--------+----------+-------+----------+-------+-------------
+ public | company  | table | postgres | 60 MB |
+ public | location | table | postgres | 24 MB |
+ public | t        | table | postgres | 16 kB |
+ public | users    | table | postgres | 67 MB |
+(4 rows)
+
+postgres=#
+
+postgres=# select * from t;
+      s
+--------------
+ Hello World!
+(1 row)
+
+postgres=# select * from location limit 5;
+  zipcode   |    state     |       city       |        streetaddr         | longitude
+------------+--------------+------------------+---------------------------+-----------
+ 48483-1209 | Vermont      | North Faustino   | 6537 Prospect Avenue      | -92.0066
+ 18867-8673 | Louisiana    | South Justice    | 578 S 7th Street          | -98.2856
+ 78701      | Utah         | McClureboro      | 1863 MacGyver Lake        | 3.7909
+ 13625-6808 | North Dakota | East Spencerberg | 99315 The Beeches         | -163.7633
+ 69099-4653 | Connecticut  | Bednarworth      | 72389 Destinee Extensions | -140.4979
+(5 rows)
+
+##################################################################################
+############### ДАННЫЕ НА МЕСТЕ
+##################################################################################
+
 
 
 
