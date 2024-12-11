@@ -1,1 +1,1 @@
-
+docker run --name pg-server --network pg-net -e POSTGRES_PASSWORD=postgres -d -p 5432:5432 -v /var/lib/postgres/15:/var/lib/postgres/15/data postgres:15
