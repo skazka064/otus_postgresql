@@ -1,5 +1,5 @@
 
-```docker run --name pg-server --network pg-net -e POSTGRES_PASSWORD=postgres -d -p 5432:5432 -v /var/lib/postgresql:/var/lib/postgresql/data postgres:15 ```
+`docker run --name pg-server --network pg-net -e POSTGRES_PASSWORD=postgres -d -p 5432:5432 -v /var/lib/postgresql:/var/lib/postgresql/data postgres:15 `
 8a61c70d05f39850ed14d3406011a01460934bc1229ea3257d012d145798fd1b
 
 # Зашел в postgresql под клиентом, запущенным в докере
