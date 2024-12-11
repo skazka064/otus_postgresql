@@ -1,11 +1,72 @@
-# docker run --name pg-server --network pg-net -e POSTGRES_PASSWORD=postgres -d -p 5432:5432 -v /var/lib/postgres:/var/lib/postgres/data postgres:15
+# docker run --name pg-server --network pg-net -e POSTGRES_PASSWORD=postgres -d -p 5432:5432 -v /var/lib/postgresql:/var/lib/postgresql/data postgres:15
 8a61c70d05f39850ed14d3406011a01460934bc1229ea3257d012d145798fd1b
-# docker run -it --rm --name pg-client --network pg-net -v /var/lib/postgres:/var/lib/postgres/data postgres:15 psql -h pg-server -U postgres
+# docker run -it --rm --name pg-client --network pg-net -v /var/lib/postgresql:/var/lib/postgresql/data postgres:15 psql -h pg-server -U postgres
 Password for user postgres:
 psql (15.10 (Debian 15.10-1.pgdg120+1))
 Type "help" for help.
 
 postgres=#
+postgres=# \l
+                                                List of databases
+   Name    |  Owner   | Encoding |  Collate   |   Ctype    | ICU Locale | Locale Provider |   Access privileges
+-----------+----------+----------+------------+------------+------------+-----------------+-----------------------
+ postgres  | postgres | UTF8     | en_US.utf8 | en_US.utf8 |            | libc            |
+ template0 | postgres | UTF8     | en_US.utf8 | en_US.utf8 |            | libc            | =c/postgres          +
+           |          |          |            |            |            |                 | postgres=CTc/postgres
+ template1 | postgres | UTF8     | en_US.utf8 | en_US.utf8 |            | libc            | =c/postgres          +
+           |          |          |            |            |            |                 | postgres=CTc/postgres
+(3 rows)
+
+postgres=# \dt
+Did not find any relations.
+postgres=#
+postgres=#  create table t (s text);
+CREATE TABLE
+postgres=# insert into t values ('Hello World!');
+INSERT 0 1
+postgres=# \dt
+          List of relations
+ Schema |   Name   | Type  |  Owner
+--------+----------+-------+----------
+ public | company  | table | postgres
+ public | location | table | postgres
+ public | t        | table | postgres
+ public | users    | table | postgres
+(4 rows)
+
+postgres=#
+############################
+Посмотрим размер таблиц
+
+postgres=# \dt+
+                                    List of relations
+ Schema |   Name   | Type  |  Owner   | Persistence | Access method | Size  | Description
+--------+----------+-------+----------+-------------+---------------+-------+-------------
+ public | company  | table | postgres | permanent   | heap          | 60 MB |
+ public | location | table | postgres | permanent   | heap          | 24 MB |
+ public | t        | table | postgres | permanent   | heap          | 16 kB |
+ public | users    | table | postgres | permanent   | heap          | 67 MB |
+
+postgres=# select * from location limit 5 ;
+  zipcode   |    state     |       city       |        streetaddr         | longitude
+------------+--------------+------------------+---------------------------+-----------
+ 48483-1209 | Vermont      | North Faustino   | 6537 Prospect Avenue      | -92.0066
+ 18867-8673 | Louisiana    | South Justice    | 578 S 7th Street          | -98.2856
+ 78701      | Utah         | McClureboro      | 1863 MacGyver Lake        | 3.7909
+ 13625-6808 | North Dakota | East Spencerberg | 99315 The Beeches         | -163.7633
+ 69099-4653 | Connecticut  | Bednarworth      | 72389 Destinee Extensions | -140.4979
+(5 rows)
+
+postgres=# select * from t;
+      s
+--------------
+ Hello World!
+(1 row)
+
+postgres=#
+
+
+######################################
 ######################################
 
 ~# docker exec -it pg-server /bin/bash
@@ -45,7 +106,9 @@ await sql `INSERT INTO users  VALUES (${userid[0]},${username[0]},${email[0]},${
   await sql `INSERT INTO location ("zipcode","state","city","streetaddr","longitude") VALUES (${zipcode[0]},${state[0]},${city[0]},${streetaddr[0]},${longitude[0]}),(${zipcode[1]},${state[1]},${city[1]},${streetaddr[1]},${longitude[1]}),(${zipcode[3]},${state[3]},${city[3]},${streetaddr[3]},${longitude[3]}),(${zipcode[4]},${state[4]},${city[4]},${streetaddr[4]},${longitude[4]}),(${zipcode[2]},${state[2]},${city[2]},${streetaddr[2]},${longitude[2]}),(${zipcode[6]},${state[6]},${city[6]},${streetaddr[6]},${longitude[6]}),(${zipcode[7]},${state[7]},${city[7]},${streetaddr[7]},${longitude[7]}),(${zipcode[8]},${state[8]},${city[8]},${streetaddr[8]},${longitude[8]}),(${zipcode[9]},${state[9]},${city[9]},${streetaddr[9]},${longitude[9]}),(${zipcode[5]},${state[5]},${city[5]},${streetaddr[5]},${longitude[5]})`;
 
    await sql `INSERT INTO company ("department","productname","price","productadjective","productmaterial","product","productdescription","isbn") VALUES (${department[0]},${productname[0]},${price[0]},${productadjective[0]},${productmaterial[0]},${product[0]},${productdescription[0]},${isbn[0]}),(${department[1]},${productname[1]},${price[1]},${productadjective[1]},${productmaterial[1]},${product[1]},${productdescription[1]},${isbn[1]}),(${department[2]},${productname[2]},${price[2]},${productadjective[2]},${productmaterial[2]},${product[2]},${productdescription[2]},${isbn[2]}),(${department[3]},${productname[3]},${price[3]},${productadjective[3]},${productmaterial[3]},${product[3]},${productdescription[3]},${isbn[3]}),(${department[4]},${productname[4]},${price[4]},${productadjective[4]},${productmaterial[4]},${product[4]},${productdescription[4]},${isbn[4]}),(${department[5]},${productname[5]},${price[5]},${productadjective[5]},${productmaterial[5]},${product[5]},${productdescription[5]},${isbn[5]}),(${department[6]},${productname[6]},${price[6]},${productadjective[6]},${productmaterial[6]},${product[6]},${productdescription[6]},${isbn[6]}),(${department[7]},${productname[7]},${price[7]},${productadjective[7]},${productmaterial[7]},${product[7]},${productdescription[7]},${isbn[7]}),(${department[8]},${productname[8]},${price[8]},${productadjective[8]},${productmaterial[8]},${product[8]},${productdescription[8]},${isbn[8]}),(${department[9]},${productname[9]},${price[9]},${productadjective[9]},${productmaterial[9]},${product[9]},${productdescription[9]},${isbn[9]})`
+#################################
 ## Затем зашел в докер контейнер
+################################
 postgres@user-VirtualBox:~$ psql -h 172.29.2.215
 Password for user postgres:
 psql (12.20 (Ubuntu 12.20-0ubuntu0.20.04.1), server 15.10 (Debian 15.10-1.pgdg120+1))
@@ -75,6 +138,7 @@ postgres=# \dt
 (4 rows)
 
 postgres=#
+
 
 
 
