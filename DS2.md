@@ -52,13 +52,14 @@ postgres=# insert into t values ('Hello World!');
 INSERT 0 1
 ```
 
-### Затем, исправил pg_hba.conf и postgesql.conf, что бы подключиться извне
+### Затем, исправил pg_hba.conf и postgesql.conf, что бы подключиться извне. Перезапустил postgres.
 
 ```bash
 host    all             all             0.0.0.0/0            trust
 listen_addresses = '*'
 
 ```
+
 ### Посмотрел работу докера
 ```bash
 root@user-VirtualBox:~# docker ps
