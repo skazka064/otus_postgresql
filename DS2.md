@@ -1,3 +1,4 @@
+# Начало
 ```bash
 docker run --name pg-server --network pg-net -e POSTGRES_PASSWORD=postgres -d -p 5432:5432 -v /var/lib/postgresql:/var/lib/postgresql/data postgres:15  
 8a61c70d05f39850ed14d3406011a01460934bc1229ea3257d012d145798fd1b
@@ -9,8 +10,11 @@ docker run -it --rm --name pg-client --network pg-net -v /var/lib/postgresql:/va
 Password for user postgres:
 psql (15.10 (Debian 15.10-1.pgdg120+1))
 Type "help" for help.
-postgres=# \l
 ```
+```sql
+postgres=# \l
+
+
                                                 List of databases
    Name    |  Owner   | Encoding |  Collate   |   Ctype    | ICU Locale | Locale Provider |   Access privileges
 -----------+----------+----------+------------+------------+------------+-----------------+-----------------------
@@ -20,7 +24,7 @@ postgres=# \l
  template1 | postgres | UTF8     | en_US.utf8 | en_US.utf8 |            | libc            | =c/postgres          +
            |          |          |            |            |            |                 | postgres=CTc/postgres
 (3 rows)
-
+```
 
 # Убедился что таблиц нет
 
