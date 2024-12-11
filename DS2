@@ -36,14 +36,20 @@ CREATE TABLE
 postgres=# insert into t values ('Hello World!');
 INSERT 0 1
 
-#############################################################################################################################
+##########################################################################
 Затем, исправил pg_hba.conf и postgesql.conf, что бы подключиться извне
+##########################################################################
+
 host    all             all             0.0.0.0/0            trust
 listen_addresses = '*'
+
+###########################
 ## Посмотрел работу докера
+##########################
 root@user-VirtualBox:~# docker ps
 CONTAINER ID   IMAGE         COMMAND                  CREATED             STATUS             PORTS                                       NAMES
 b14db7fb1ac0   postgres:15   "docker-entrypoint.s…"   About an hour ago   Up About an hour   0.0.0.0:5432->5432/tcp, :::5432->5432/tcp   pg-server
+
 ###########################################
 ### Зашел с другого хоста по ip адресу 
 ###########################################
@@ -104,11 +110,14 @@ await sql `INSERT INTO location ("zipcode","state","city","streetaddr","longitud
   await sql `INSERT INTO company ("department","productname","price","productadjective","productmaterial","product","productdescription","isbn") VALUES (${department[0]},${productname[0]},${price[0]},${productadjective[0]},${productmaterial[0]},${product[0]},${productdescription[0]},${isbn[0]}),(${department[1]},${productname[1]},${price[1]},${productadjective[1]},${productmaterial[1]},${product[1]},${productdescription[1]},${isbn[1]}),(${department[2]},${productname[2]},${price[2]},${productadjective[2]},${productmaterial[2]},${product[2]},${productdescription[2]},${isbn[2]}),(${department[3]},${productname[3]},${price[3]},${productadjective[3]},${productmaterial[3]},${product[3]},${productdescription[3]},${isbn[3]}),(${department[4]},${productname[4]},${price[4]},${productadjective[4]},${productmaterial[4]},${product[4]},${productdescription[4]},${isbn[4]}),(${department[5]},${productname[5]},${price[5]},${productadjective[5]},${productmaterial[5]},${product[5]},${productdescription[5]},${isbn[5]}),(${department[6]},${productname[6]},${price[6]},${productadjective[6]},${productmaterial[6]},${product[6]},${productdescription[6]},${isbn[6]}),(${department[7]},${productname[7]},${price[7]},${productadjective[7]},${productmaterial[7]},${product[7]},${productdescription[7]},${isbn[7]}),(${department[8]},${productname[8]},${price[8]},${productadjective[8]},${productmaterial[8]},${product[8]},${productdescription[8]},${isbn[8]}),(${department[9]},${productname[9]},${price[9]},${productadjective[9]},${productmaterial[9]},${product[9]},${productdescription[9]},${isbn[9]})`
 
 
-######################################################
+############################################
 Зашел в postgresql из контейнера с клиентом
-##### docker run -it --rm --name pg-client --network pg-net -v /var/lib/postgresql:/var/lib/postgresql/data postgres:15 psql -h pg-server -U postgres
+############################################
+# docker run -it --rm --name pg-client --network pg-net -v /var/lib/postgresql:/var/lib/postgresql/data postgres:15 psql -h pg-server -U postgres
+
+######################################################
 ##### Посмотрел размер таблиц
-############################
+######################################################
 postgres=# \dt+
                                     List of relations
  Schema |   Name   | Type  |  Owner   | Persistence | Access method | Size  | Description
@@ -133,7 +142,6 @@ postgres=# select * from t;
 --------------
  Hello World!
 (1 row)
-
 postgres=#
 
 
