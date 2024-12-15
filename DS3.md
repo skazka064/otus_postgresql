@@ -153,8 +153,8 @@ tmpfs           5.0M     0  5.0M   0% /run/lock
 /dev/vdb1       9.8G   24K  9.3G   1% /mnt/data
 tmpfs           197M   12K  197M   1% /run/user/1000
 ```
-# сделайте пользователя postgres владельцем /mnt/data - chown -R postgres:postgres /mnt/data/
-# перенесите содержимое /var/lib/postgres/15 в /mnt/data - mv /var/lib/postgresql/15/mnt/data
+## сделайте пользователя postgres владельцем /mnt/data - chown -R postgres:postgres /mnt/data/
+## перенесите содержимое /var/lib/postgres/15 в /mnt/data - mv /var/lib/postgresql/15/mnt/data
 ```bash
 root@compute-vm-2-2-20-ssd-1734270746062:~# systemctl stop postgresql@16-main.service
 ```
