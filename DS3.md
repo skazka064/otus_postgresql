@@ -1,5 +1,5 @@
-создайте виртуальную машину c Ubuntu 20.04/22.04 LTS в ЯО/Virtual Box/докере
-поставьте на нее PostgreSQL 15 через sudo apt
+## создайте виртуальную машину c Ubuntu 20.04/22.04 LTS в ЯО/Virtual Box/докере
+## поставьте на нее PostgreSQL 15 через sudo apt
 ```bash
 root@compute-vm-2-2-20-ssd-1734270746062:~# ps fp $(pgrep post)
     PID TTY      STAT   TIME COMMAND
