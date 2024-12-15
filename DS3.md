@@ -107,17 +107,21 @@ Last sector, +/-sectors or +/-size{K,M,G,T,P} (2048-20971519, default 20971519):
 Created a new partition 1 of type 'Linux' and of size 10 GiB.
 ```
 ```bash
-root@compute-vm-2-2-20-ssd-1734270746062:~# mkfs.xfs /dev/vdb1
-meta-data=/dev/vdb1              isize=512    agcount=4, agsize=655296 blks
-         =                       sectsz=4096  attr=2, projid32bit=1
-         =                       crc=1        finobt=1, sparse=1, rmapbt=1
-         =                       reflink=1    bigtime=1 inobtcount=1 nrext64=0
-data     =                       bsize=4096   blocks=2621184, imaxpct=25
-         =                       sunit=0      swidth=0 blks
-naming   =version 2              bsize=4096   ascii-ci=0, ftype=1
-log      =internal log           bsize=4096   blocks=16384, version=2
-         =                       sectsz=4096  sunit=1 blks, lazy-count=1
-realtime =none                   extsz=4096   blocks=0, rtextents=0
+
+root@compute-vm-2-2-20-ssd-1734270746062:~# mkfs.ext4 /dev/vdb1
+mke2fs 1.47.0 (5-Feb-2023)
+/dev/vdb1 contains a xfs file system
+Proceed anyway? (y,N) y
+Creating filesystem with 2621184 4k blocks and 655360 inodes
+Filesystem UUID: 7ac83d15-a609-4f4f-8718-bf28e4044dc1
+Superblock backups stored on blocks:
+        32768, 98304, 163840, 229376, 294912, 819200, 884736, 1605632
+
+Allocating group tables: done
+Writing inode tables: done
+Creating journal (16384 blocks): done
+Writing superblocks and filesystem accounting information: done
+
 ```
 ```bash
  vim /mnt/data/test.tst
@@ -136,6 +140,6 @@ root@compute-vm-2-2-20-ssd-1734270746062:~# cat /etc/fstab
 # <file system> <mount point>   <type>  <options>       <dump>  <pass>
 # / was on /dev/vda2 during curtin installation
 /dev/disk/by-uuid/9ca38502-006d-4f2a-89e1-4c5147e69837 / ext4 defaults 0 1
-/dev/vdb1/                                 /mnt/data    xfs     defaults 0 0
+/dev/vdb1/                                 /mnt/data    ext4    defaults 0 0
 
 ```
