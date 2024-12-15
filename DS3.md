@@ -11,3 +11,8 @@ root@compute-vm-2-2-20-ssd-1734270746062:~# ps fp $(pgrep post)
   16097 ?        Ss     0:00  \_ postgres: 16/main: autovacuum launcher
   16098 ?        Ss     0:00  \_ postgres: 16/main: logical replication launcher
 ```
+```bash
+Ver Cluster Port Status Owner    Data directory              Log file
+16  main    5432 online postgres /var/lib/postgresql/16/main /var/log/postgresql/postgresql-16-main.log
+root@compute-vm-2-2-20-ssd-1734270746062:~#
+```
