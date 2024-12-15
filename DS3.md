@@ -2,6 +2,11 @@
 ## создайте виртуальную машину c Ubuntu 20.04/22.04 LTS в ЯО/Virtual Box/докере
 ## поставьте на нее PostgreSQL 15 через sudo apt
 ```bash
+apt-get update
+apt-get install postgresql-16 postgresql-contrib
+```
+# проверьте что кластер запущен через sudo -u postgres pg_lsclusters
+```bash
 root@compute-vm-2-2-20-ssd-1734270746062:~# ps fp $(pgrep post)
     PID TTY      STAT   TIME COMMAND
   16092 ?        Ss     0:00 /usr/lib/postgresql/16/bin/postgres -D /var/lib/postgresql/16/main -c config_file=/etc/postgresql/16/main/postgresql.conf
