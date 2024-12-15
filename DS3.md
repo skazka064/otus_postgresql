@@ -176,6 +176,7 @@ root@compute-vm-2-2-20-ssd-1734270746062:~# ps fp $(pgrep post)
    1867 ?        Ss     0:00  \_ postgres: 16/main: autovacuum launcher
    1868 ?        Ss     0:00  \_ postgres: 16/main: logical replication launcher
 root@compute-vm-2-2-20-ssd-1734270746062:~#
+
 ```sql
 postgres=# \dt+
                                   List of relations
