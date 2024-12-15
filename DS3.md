@@ -121,4 +121,20 @@ realtime =none                   extsz=4096   blocks=0, rtextents=0
 ```
 ```bash
  vim /mnt/data/test.tst
+root@compute-vm-2-2-20-ssd-1734270746062:~# cat /mnt/data/test.tst
+111
+```
+
+```bash
+root@compute-vm-2-2-20-ssd-1734270746062:~# cat /etc/fstab
+# /etc/fstab: static file system information.
+#
+# Use 'blkid' to print the universally unique identifier for a
+# device; this may be used with UUID= as a more robust way to name devices
+# that works even if disks are added and removed. See fstab(5).
+#
+# <file system> <mount point>   <type>  <options>       <dump>  <pass>
+# / was on /dev/vda2 during curtin installation
+/dev/disk/by-uuid/9ca38502-006d-4f2a-89e1-4c5147e69837 / ext4 defaults 0 1
+/dev/vdb1/      /mnt/data                               xfs     default 0 0
 ```
