@@ -25,7 +25,7 @@ Ver Cluster Port Status Owner    Data directory              Log file
 ## зайдите из под пользователя postgres в psql и сделайте произвольную таблицу с произвольным содержимым
 ### postgres=# create table test(c1 text);
 ### postgres=# insert into test values('1');
-\q
+### \q
 
 ```bash
 root@compute-vm-2-2-20-ssd-1734270746062:~# su - postgres
