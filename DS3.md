@@ -141,6 +141,15 @@ root@compute-vm-2-2-20-ssd-1734270746062:~# cat /etc/fstab
 # / was on /dev/vda2 during curtin installation
 /dev/disk/by-uuid/9ca38502-006d-4f2a-89e1-4c5147e69837 / ext4 defaults 0 1
 /dev/disk/by-uuid/7ac83d15-a609-4f4f-8718-bf28e4044dc1  /mnt/data       ext4    defaults 0 0
-
-
+```
+```bash
+reboot
+root@compute-vm-2-2-20-ssd-1734270746062:~# df -h
+Filesystem      Size  Used Avail Use% Mounted on
+tmpfs           197M  1.2M  196M   1% /run
+/dev/vda2        20G  3.3G   16G  18% /
+tmpfs           984M  1.1M  983M   1% /dev/shm
+tmpfs           5.0M     0  5.0M   0% /run/lock
+/dev/vdb1       9.8G   24K  9.3G   1% /mnt/data
+tmpfs           197M   12K  197M   1% /run/user/1000
 ```
