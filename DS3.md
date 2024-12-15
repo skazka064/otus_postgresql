@@ -16,3 +16,17 @@ Ver Cluster Port Status Owner    Data directory              Log file
 16  main    5432 online postgres /var/lib/postgresql/16/main /var/log/postgresql/postgresql-16-main.log
 root@compute-vm-2-2-20-ssd-1734270746062:~#
 ```
+```bash
+
+root@compute-vm-2-2-20-ssd-1734270746062:~# su - postgres
+postgres@compute-vm-2-2-20-ssd-1734270746062:~$ psql
+psql (16.6 (Ubuntu 16.6-0ubuntu0.24.04.1))
+Type "help" for help.
+
+postgres=#  create table test(c1 text);
+CREATE TABLE
+postgres=# insert into test values ('Hello World');
+INSERT 0 1
+postgres=# \q
+postgres@compute-vm-2-2-20-ssd-1734270746062:~$
+```
