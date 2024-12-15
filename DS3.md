@@ -119,4 +119,6 @@ log      =internal log           bsize=4096   blocks=16384, version=2
          =                       sectsz=4096  sunit=1 blks, lazy-count=1
 realtime =none                   extsz=4096   blocks=0, rtextents=0
 ```
-
+```bash
+ vim /mnt/data/test.tst
+```
