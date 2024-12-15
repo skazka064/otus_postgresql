@@ -136,5 +136,6 @@ root@compute-vm-2-2-20-ssd-1734270746062:~# cat /etc/fstab
 # <file system> <mount point>   <type>  <options>       <dump>  <pass>
 # / was on /dev/vda2 during curtin installation
 /dev/disk/by-uuid/9ca38502-006d-4f2a-89e1-4c5147e69837 / ext4 defaults 0 1
-/dev/vdb1/      /mnt/data                               xfs     default 0 0
+/dev/vdb1/                                 /mnt/data    xfs     defaults 0 0
+
 ```
