@@ -62,3 +62,25 @@ root@compute-vm-2-2-20-ssd-1734270746062:~#
 ### добавьте свеже-созданный диск к виртуальной машине - надо зайти в режим ее редактирования и дальше выбрать пункт attach existing disk
 ### проинициализируйте диск согласно инструкции и подмонтировать файловую систему, только не забывайте менять имя диска на актуальное, в вашем случае это скорее всего ### будет /dev/sdb - https://www.digitalocean.com/community/tutorials/how-to-partition-and-format-storage-devices-in-linux
 ### перезагрузите инстанс и убедитесь, что диск остается примонтированным (если не так смотрим в сторону fstab)
+```bash
+root@compute-vm-2-2-20-ssd-1734270746062:~# fdisk -l
+Disk /dev/vda: 20 GiB, 21474836480 bytes, 41943040 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 4096 bytes
+I/O size (minimum/optimal): 4096 bytes / 4096 bytes
+Disklabel type: gpt
+Disk identifier: CE8F06C4-F24A-4270-979A-DC47B1426910
+
+Device     Start      End  Sectors Size Type
+/dev/vda1   2048     4095     2048   1M BIOS boot
+/dev/vda2   4096 41943006 41938911  20G Linux filesystem
+
+
+Disk /dev/vdb: 10 GiB, 10737418240 bytes, 20971520 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 4096 bytes
+I/O size (minimum/optimal): 4096 bytes / 4096 bytes
+root@compute-vm-2-2-20-ssd-1734270746062:~#
+```
+
+
