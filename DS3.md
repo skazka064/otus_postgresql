@@ -157,4 +157,38 @@ tmpfs           197M   12K  197M   1% /run/user/1000
 ## перенесите содержимое /var/lib/postgres/15 в /mnt/data - mv /var/lib/postgresql/15/mnt/data
 ```bash
 root@compute-vm-2-2-20-ssd-1734270746062:~# systemctl stop postgresql@16-main.service
+chown -R postgres:postgres /mnt/data/
+mv /var/lib/postgresql/16 /mnt/data
+root@compute-vm-2-2-20-ssd-1734270746062:~# pg_ctlcluster 16 main start
+Error: /var/lib/postgresql/16/main is not accessible or does not exist
+```
+## напишите получилось или нет и почему
+```bash
+vim /etc/postgresql/16/main/postgresql.conf
+data_directory = '/mnt/data/16/main'            # use data in another directory
+root@compute-vm-2-2-20-ssd-1734270746062:~# pg_ctlcluster 16 main start
+root@compute-vm-2-2-20-ssd-1734270746062:~# ps fp $(pgrep post)
+    PID TTY      STAT   TIME COMMAND
+   1862 ?        Ss     0:00 /usr/lib/postgresql/16/bin/postgres -D /mnt/data/16/main -c config_file=/etc/postgresql/16/main/postgresql.conf
+   1863 ?        Ss     0:00  \_ postgres: 16/main: checkpointer
+   1864 ?        Ss     0:00  \_ postgres: 16/main: background writer
+   1866 ?        Ss     0:00  \_ postgres: 16/main: walwriter
+   1867 ?        Ss     0:00  \_ postgres: 16/main: autovacuum launcher
+   1868 ?        Ss     0:00  \_ postgres: 16/main: logical replication launcher
+root@compute-vm-2-2-20-ssd-1734270746062:~#
+```sql
+postgres=# \dt+
+                                  List of relations
+ Schema | Name | Type  |  Owner   | Persistence | Access method | Size  | Description
+--------+------+-------+----------+-------------+---------------+-------+-------------
+ public | test | table | postgres | permanent   | heap          | 16 kB |
+(1 row)
+
+postgres=# select * from test ;
+     c1
+-------------
+ Hello World
+(1 row)
+
+postgres=#
 ```
