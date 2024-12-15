@@ -40,3 +40,20 @@ INSERT 0 1
 postgres=# \q
 postgres@compute-vm-2-2-20-ssd-1734270746062:~$
 ```
+
+## остановите postgres например через sudo -u postgres pg_ctlcluster 15 main stop
+```bash
+root@compute-vm-2-2-20-ssd-1734270746062:~# systemctl stop postgresql.service
+root@compute-vm-2-2-20-ssd-1734270746062:~# ps fp $(pgrep post)
+error: list of process IDs must follow p
+
+Usage:
+ ps [options]
+
+ Try 'ps --help <simple|list|output|threads|misc|all>'
+  or 'ps --help <s|l|o|t|m|a>'
+ for additional help text.
+
+For more details see ps(1).
+root@compute-vm-2-2-20-ssd-1734270746062:~#
+```
