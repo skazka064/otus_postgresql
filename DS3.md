@@ -82,5 +82,29 @@ Sector size (logical/physical): 512 bytes / 4096 bytes
 I/O size (minimum/optimal): 4096 bytes / 4096 bytes
 root@compute-vm-2-2-20-ssd-1734270746062:~#
 ```
+```bash
+root@compute-vm-2-2-20-ssd-1734270746062:~# mkdir /mnt/data
+root@compute-vm-2-2-20-ssd-1734270746062:~# fdisk /dev/vdb
+
+Welcome to fdisk (util-linux 2.39.3).
+Changes will remain in memory only, until you decide to write them.
+Be careful before using the write command.
+
+Device does not contain a recognized partition table.
+Created a new DOS (MBR) disklabel with disk identifier 0xeab61370.
+
+Command (m for help): n
+Partition type
+   p   primary (0 primary, 0 extended, 4 free)
+   e   extended (container for logical partitions)
+Select (default p):
+
+Using default response p.
+Partition number (1-4, default 1):
+First sector (2048-20971519, default 2048):
+Last sector, +/-sectors or +/-size{K,M,G,T,P} (2048-20971519, default 20971519):
+
+Created a new partition 1 of type 'Linux' and of size 10 GiB.
+```
 
 
