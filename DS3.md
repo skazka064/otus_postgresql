@@ -5,7 +5,7 @@
 apt-get update
 apt-get install postgresql-16 postgresql-contrib
 ```
-# проверьте что кластер запущен через sudo -u postgres pg_lsclusters
+## проверьте что кластер запущен через sudo -u postgres pg_lsclusters
 ```bash
 root@compute-vm-2-2-20-ssd-1734270746062:~# ps fp $(pgrep post)
     PID TTY      STAT   TIME COMMAND
@@ -19,10 +19,15 @@ root@compute-vm-2-2-20-ssd-1734270746062:~# ps fp $(pgrep post)
 ```bash
 Ver Cluster Port Status Owner    Data directory              Log file
 16  main    5432 online postgres /var/lib/postgresql/16/main /var/log/postgresql/postgresql-16-main.log
-root@compute-vm-2-2-20-ssd-1734270746062:~#
 ```
-```bash
 
+
+## зайдите из под пользователя postgres в psql и сделайте произвольную таблицу с произвольным содержимым
+### postgres=# create table test(c1 text);
+### postgres=# insert into test values('1');
+\q
+
+```bash
 root@compute-vm-2-2-20-ssd-1734270746062:~# su - postgres
 postgres@compute-vm-2-2-20-ssd-1734270746062:~$ psql
 psql (16.6 (Ubuntu 16.6-0ubuntu0.24.04.1))
