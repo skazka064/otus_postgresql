@@ -106,5 +106,17 @@ Last sector, +/-sectors or +/-size{K,M,G,T,P} (2048-20971519, default 20971519):
 
 Created a new partition 1 of type 'Linux' and of size 10 GiB.
 ```
-
+```bash
+root@compute-vm-2-2-20-ssd-1734270746062:~# mkfs.xfs /dev/vdb1
+meta-data=/dev/vdb1              isize=512    agcount=4, agsize=655296 blks
+         =                       sectsz=4096  attr=2, projid32bit=1
+         =                       crc=1        finobt=1, sparse=1, rmapbt=1
+         =                       reflink=1    bigtime=1 inobtcount=1 nrext64=0
+data     =                       bsize=4096   blocks=2621184, imaxpct=25
+         =                       sunit=0      swidth=0 blks
+naming   =version 2              bsize=4096   ascii-ci=0, ftype=1
+log      =internal log           bsize=4096   blocks=16384, version=2
+         =                       sectsz=4096  sunit=1 blks, lazy-count=1
+realtime =none                   extsz=4096   blocks=0, rtextents=0
+```
 
