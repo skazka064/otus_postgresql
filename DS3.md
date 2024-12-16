@@ -164,7 +164,11 @@ root@compute-vm-2-2-20-ssd-1734270746062:~# pg_ctlcluster 16 main start
 Error: /var/lib/postgresql/16/main is not accessible or does not exist
 ```
 ## напишите получилось или нет и почему
-### 
+### не получилось, потому что я переместил каталог с базой данных в другое место
+### т.е. процесс, призапуске, если мы не укажем в pd_ctl -D /путь/до/базы смотрит свой конфигурационный файл postgresql.conf
+### секцию FILE LOCATIONS и выбирает каталог БД оттуда. 
+### для того что бы база запустилась, надо либо поменять в этой секции местоположение базы, либо при запуске указать путь в опции pg_ctl -D /path_to_database
+
 ```bash
 vim /etc/postgresql/16/main/postgresql.conf
 data_directory = '/mnt/data/16/main'            # use data in another directory
@@ -195,7 +199,7 @@ postgres=# select * from test ;
 
 postgres=#
 ```
-
+# Данные сохранились
 ## задание со звездочкой *: не удаляя существующий инстанс ВМ сделайте новый, поставьте на его PostgreSQL, удалите файлы с данными из /var/lib/postgres, перемонтируйте внешний диск который сделали ранее от первой виртуальной машины ко второй и запустите PostgreSQL на второй машине так чтобы он работал с данными на внешнем диске, расскажите как вы это сделали и что в итоге получилось.
 ```bash
 root@compute-vm-2-2-20-ssd-1734280619230:~# ps fp $(pgrep post)
@@ -208,8 +212,11 @@ root@compute-vm-2-2-20-ssd-1734280619230:~# ps fp $(pgrep post)
    4584 ?        Ss     0:00  \_ postgres: 16/main: logical replication launcher
 root@compute-vm-2-2-20-ssd-1734280619230:~# systemctl stop postgresql@16-main.service
 root@compute-vm-2-2-20-ssd-1734280619230:~# rm -rf /var/lib/postgresql/*
-root@compute-vm-2-2-20-ssd-1734270746062:~# pg_ctlcluster 16 main stop
 
+```
+### я остановил кластер, убедился что он остановлен
+
+```bash
 root@compute-vm-2-2-20-ssd-1734280619230:~# ps fp $(pgrep post)
 error: list of process IDs must follow p
 
@@ -219,7 +226,10 @@ Usage:
  Try 'ps --help <simple|list|output|threads|misc|all>'
   or 'ps --help <s|l|o|t|m|a>'
  for additional help text.
+```
+### к виртуалке 2 примонтировал диск с базой данных от виртуалки1
 
+```bash
 For more details see ps(1).
 root@compute-vm-2-2-20-ssd-1734280619230:~#
 root@compute-vm-2-2-20-ssd-1734280619230:~# mkdir /mnt/data
@@ -251,7 +261,12 @@ drwx------  3 postgres postgres 4096 Dec 15 14:02 pg_wal
 drwx------  2 postgres postgres 4096 Dec 15 14:02 pg_xact
 -rw-------  1 postgres postgres   88 Dec 15 14:02 postgresql.auto.conf
 -rw-------  1 postgres postgres  120 Dec 15 16:31 postmaster.opts
-
+```
+### убедился что все примонтировалось
+### установил postgresql, убедился что он работает
+### затем остановил его
+### удалил директорию с базой
+```bash
 root@compute-vm-2-2-20-ssd-1734280619230:~# apt-get install postgresql-16 postgresql-contrib
 Reading package lists... Done
 Building dependency tree... Done
@@ -274,8 +289,9 @@ global/               pg_multixact/         pg_snapshots/         pg_tblspc/    
 pg_commit_ts/         pg_notify/            pg_stat/              pg_twophase/          postgresql.auto.conf
 pg_dynshmem/          pg_replslot/          pg_stat_tmp/          PG_VERSION            postmaster.opts
 root@compute-vm-2-2-20-ssd-1734280619230:~# rm -rf /var/lib/postgresql/*
-
-
+```
+### База данных не запустилась потому что опять же не нашла директорию
+```bash
 root@compute-vm-2-2-20-ssd-1734280619230:~# fdisk -l
 Disk /dev/vda: 20 GiB, 21474836480 bytes, 41943040 sectors
 Units: sectors of 1 * 512 = 512 bytes
@@ -328,7 +344,11 @@ drwx------  3 postgres postgres 4096 Dec 15 14:02 pg_wal
 drwx------  2 postgres postgres 4096 Dec 15 14:02 pg_xact
 -rw-------  1 postgres postgres   88 Dec 15 14:02 postgresql.auto.conf
 -rw-------  1 postgres postgres  120 Dec 15 16:31 postmaster.opts
+```
+### указал в postgresql.conf путь до базы
+### Все заработало, данные в таблице остались на месте
 
+```bash
 root@compute-vm-2-2-20-ssd-1734280619230:~# vim /etc/postgresql/16/main/postgresql.conf
 root@compute-vm-2-2-20-ssd-1734280619230:~# pg_ctlcluster 16 main start
 root@compute-vm-2-2-20-ssd-1734280619230:~# su - postgres
@@ -345,3 +365,4 @@ postgres=# select * from test;
 postgres=#
 
 ```
+
