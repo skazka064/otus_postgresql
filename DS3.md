@@ -124,6 +124,7 @@ Writing superblocks and filesystem accounting information: done
 
 ```
 ```bash
+Создал файл на примонтированном диске, что бы потом проверить его наличие при перезагрузке
  vim /mnt/data/test.tst
 root@compute-vm-2-2-20-ssd-1734270746062:~# cat /mnt/data/test.tst
 111
@@ -163,6 +164,7 @@ root@compute-vm-2-2-20-ssd-1734270746062:~# pg_ctlcluster 16 main start
 Error: /var/lib/postgresql/16/main is not accessible or does not exist
 ```
 ## напишите получилось или нет и почему
+### 
 ```bash
 vim /etc/postgresql/16/main/postgresql.conf
 data_directory = '/mnt/data/16/main'            # use data in another directory
