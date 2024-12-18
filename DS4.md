@@ -122,7 +122,8 @@ testdb=> \dt
 (1 row)
 
 ```
-### оказалось, что таблица t1 создана в схеме public, а мы дали роли право на чтение таблиц только в схеме testnm
+###  оказалось, что таблица t1 создана в схеме public, а мы дали роли право на чтение таблиц только в схеме testnm
+### попробуем дать, и посмотрим что получится
 ```sql
 testdb=> select * from pg_database where datname like '%test%' \gx
 -[ RECORD 1 ]--+---------------------------------------------------------
@@ -146,7 +147,14 @@ datacl         | {=Tc/postgres,postgres=CTc/postgres,readonly=c/postgres}
 
 postgres=# grant usage ON  schema public TO readonly ;
 GRANT
+
+postgres=# \c testdb testread
+You are now connected to database "testdb" as user "testread".
+testdb=>
+testdb=> select * from t1;
+ERROR:  permission denied for table t1
 ```
+### и... нет та же ошибка
 ### посмотрим список схем
 ```sql
 postgres=# \dn+
@@ -158,7 +166,8 @@ postgres=# \dn+
         |                   | readonly=U/pg_database_owner           |
 (1 row)
 ```
-### здесь можно заметить, что у redonly нет прав на использование public
+### здесь можно опять заметить, что у redonly нет прав на использование public, хотя мы выше давали это право
+### 
 ```sql
 postgres=# grant usage ON schema public to readonly ;
 GRANT
@@ -171,6 +180,7 @@ postgres=# \dn+
         |                   | readonly=U/pg_database_owner           |
 (1 row)
 ```
+### попробуем пойти другим путем, подключимся к базе testdb, где таблица t1 под пользователем postgres
 ### можно заметить, что при подключении к testdb под пользователем postgres доступ к таблице есть
 ```sql
 postgres=# \c testdb testread
@@ -233,4 +243,4 @@ testdb=> select * from t1;
 testdb=>
 
 ```
-### теперь получилось работать с правом select для пользователя testread
+### теперь получилось работать с привилегией select для пользователя testread
