@@ -145,4 +145,6 @@ daticurules    |
 datcollversion | 2.39
 datacl         | {=Tc/postgres,postgres=CTc/postgres,readonly=c/postgres}
 
+postgres=# grant usage ON  schema public TO readonly ;
+GRANT
 
