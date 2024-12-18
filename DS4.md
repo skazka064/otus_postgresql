@@ -1,29 +1,29 @@
 # BEGIN
-## создайте новую базу данных testdb
+### создайте новую базу данных testdb
 
 ```sql
 postgres=# create database testdb;
 CREATE DATABASE
 postgres=#
 ```
-## зайдите в созданную базу данных под пользователем postgres
+### зайдите в созданную базу данных под пользователем postgres
 ```sql
 postgres=# \c testdb
 You are now connected to database "testdb" as user "postgres".
 testdb=#
 ```
-## создайте новую схему testnm
+### создайте новую схему testnm
 ```sql
 testdb=# create schema testnm;
 CREATE SCHEMA
 testdb=#
 ```
-## создайте новую таблицу t1 с одной колонкой c1 типа integer
+### создайте новую таблицу t1 с одной колонкой c1 типа integer
 ```sql
 testdb=# create table t1 (c1 integer);
 CREATE TABLE
 ```
-## вставьте строку со значением c1=1
+### вставьте строку со значением c1=1
 ```sql
 testdb=# insert into t1 values (1);
 INSERT 0 1
