@@ -74,12 +74,20 @@ testdb=#
 testdb=# \c testdb testread
 connection to server on socket "/var/run/postgresql/.s.PGSQL.5432" failed: FATAL:  Peer authentication failed for user "testread"
 Previous connection kept
-testdb=# 
+testdb=# select * from t1;
+ c1
+----
+  1
+(1 row)
+
+testdb=# \q
+
 ```
 ### такое происходит потому что метод аутентификации для локальных пользовалелей выставлен peer
 ### это означает что, получая имя пользователя ОС клиента из ядра используется в качестве разрешенного имени пользователя базы данных
 ### однако у нас в ОС нет пользователя testread, поэтому происходит отказ
 ### я поменяю в файле pg_hba.conf метод peer на trust и тогда можно будет подключиться к базе
+### а select отработал, из-за того, что мы остались под предыдущим пользователем
 
 ```sql
 postgres=# select setting from pg_settings where setting like '%pg_hba%';
@@ -92,6 +100,16 @@ vim /etc/postgresql/16/main/pg_hba.conf
 # "local" is for Unix domain socket connections only
 local   all             all                                     trust
 
+root@compute-vm-2-2-20-hdd-1734505245653:~# pg_ctlcluster
+Error: Usage: /usr/bin/pg_ctlcluster <version> <cluster> <action> [-- <pg_ctl options>]
+root@compute-vm-2-2-20-hdd-1734505245653:~# pg_ctlcluster 16 main restart
+psql
+postgres=# \c testdb testread
+You are now connected to database "testdb" as user "testread".
+testdb=>
+testdb=> select * from t1;
+ERROR:  permission denied for table t1
+testdb=>
 
 ```
 
