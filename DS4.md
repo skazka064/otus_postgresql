@@ -187,6 +187,8 @@ testdb=# select * from t1;
 (1 row)
 ```
 ### значит посмотрим привилегии на таблицу t1
+# и здесь мы видим, что владелец у t1 postgres, т.к. при создании таблицы мы были под пользователем postgres (You are now connected to database "testdb" as user "postgres".)
+
 ```sql
 testdb=# select * from information_schema.table_privileges where table_name='t1' ;
  grantor  | grantee  | table_catalog | table_schema | table_name | privilege_type | is_grantable | with_hierarchy
