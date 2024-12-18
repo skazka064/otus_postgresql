@@ -18,3 +18,22 @@ testdb=# create schema testnm;
 CREATE SCHEMA
 testdb=#
 ```
+## создайте новую таблицу t1 с одной колонкой c1 типа integer
+testdb=# create table t1 (c1 integer);
+CREATE TABLE
+## вставьте строку со значением c1=1
+```sql
+testdb=# insert into t1 values (1);
+INSERT 0 1
+```
+### создайте новую роль readonly
+```sql
+testdb=# create role readonly;
+CREATE ROLE
+```
+### дайте новой роли право на подключение к базе данных testdb
+```sql
+testdb=# grant connect on database testdb to readonly ;
+GRANT
+```
+
