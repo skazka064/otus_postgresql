@@ -123,7 +123,10 @@ testdb=> \dt
 
 ```
 ###  оказалось, что таблица t1 создана в схеме public, а мы дали роли право на чтение таблиц только в схеме testnm
-### попробуем дать, и посмотрим что получится
+### попробуем дать, право для роли readonly использовать public, и посмотрим что получится
+### посмотрим, также привилегии базы testdb
+### для привилегии readonly есть привилегия connect(login), выдана postgres: readonly=c/postgres
+
 ```sql
 testdb=> select * from pg_database where datname like '%test%' \gx
 -[ RECORD 1 ]--+---------------------------------------------------------
@@ -155,31 +158,7 @@ testdb=> select * from t1;
 ERROR:  permission denied for table t1
 ```
 ### и... нет та же ошибка
-### посмотрим список схем
-```sql
-postgres=# \dn+
-                                       List of schemas
-  Name  |       Owner       |           Access privileges            |      Description
---------+-------------------+----------------------------------------+------------------------
- public | pg_database_owner | pg_database_owner=UC/pg_database_owner+| standard public schema
-        |                   | =U/pg_database_owner                  +|
-        |                   | readonly=U/pg_database_owner           |
-(1 row)
-```
-### здесь можно опять заметить, что у redonly нет прав на использование public, хотя мы выше давали это право
-### 
-```sql
-postgres=# grant usage ON schema public to readonly ;
-GRANT
-postgres=# \dn+
-                                       List of schemas
-  Name  |       Owner       |           Access privileges            |      Description
---------+-------------------+----------------------------------------+------------------------
- public | pg_database_owner | pg_database_owner=UC/pg_database_owner+| standard public schema
-        |                   | =U/pg_database_owner                  +|
-        |                   | readonly=U/pg_database_owner           |
-(1 row)
-```
+
 ### попробуем пойти другим путем, подключимся к базе testdb, где таблица t1 под пользователем postgres
 ### можно заметить, что при подключении к testdb под пользователем postgres доступ к таблице есть
 ```sql
@@ -197,7 +176,7 @@ testdb=# select * from t1;
 (1 row)
 ```
 ### значит посмотрим привилегии на таблицу t1
-# и здесь мы видим, что владелец у t1 postgres, т.к. при создании таблицы мы были под пользователем postgres (You are now connected to database "testdb" as user "postgres".)
+### и здесь мы видим, что владелец у t1 postgres, т.к. при создании таблицы мы были под пользователем postgres (You are now connected to database "testdb" as user "postgres".)
 
 ```sql
 testdb=# select * from information_schema.table_privileges where table_name='t1' ;
