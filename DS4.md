@@ -70,6 +70,7 @@ GRANT ROLE
 testdb=#
 ```
 ### зайдите под пользователем testread в базу данных testdb
+### сделайте select * from t1;
 ```sql
 testdb=# \c testdb testread
 connection to server on socket "/var/run/postgresql/.s.PGSQL.5432" failed: FATAL:  Peer authentication failed for user "testread"
@@ -112,6 +113,36 @@ ERROR:  permission denied for table t1
 testdb=>
 
 ```
+### select не отработал
+```sql
+testdb=> \dt
+        List of relations
+ Schema | Name | Type  |  Owner
+--------+------+-------+----------
+ public | t1   | table | postgres
+(1 row)
 
+```
+### оказалось, что таблица t1 создана в схеме public, а мы дали роли право на чтение таблиц только в схеме testnm
+
+testdb=> select * from pg_database where datname like '%test%' \gx
+-[ RECORD 1 ]--+---------------------------------------------------------
+oid            | 16388
+datname        | testdb
+datdba         | 10
+encoding       | 6
+datlocprovider | c
+datistemplate  | f
+datallowconn   | t
+datconnlimit   | -1
+datfrozenxid   | 722
+datminmxid     | 1
+dattablespace  | 1663
+datcollate     | en_US.UTF-8
+datctype       | en_US.UTF-8
+daticulocale   |
+daticurules    |
+datcollversion | 2.39
+datacl         | {=Tc/postgres,postgres=CTc/postgres,readonly=c/postgres}
 
 
