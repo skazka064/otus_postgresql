@@ -172,3 +172,64 @@ postgres=# \dn+
         |                   | readonly=U/pg_database_owner           |
 (1 row)
 ```
+### можно заметить, что при подключении к testdb под пользователем postgres доступ к таблице есть
+```sql
+postgres=# \c testdb testread
+Password for user testread:
+You are now connected to database "testdb" as user "testread".
+testdb=> select * from t1;
+ERROR:  permission denied for table t1
+testdb=> \c testdb postgres
+You are now connected to database "testdb" as user "postgres".
+testdb=# select * from t1;
+ c1
+----
+  1
+(1 row)
+```
+### значит посмотрим привилегии на таблицу t1
+```sql
+testdb=# select * from information_schema.table_privileges where table_name='t1' ;
+ grantor  | grantee  | table_catalog | table_schema | table_name | privilege_type | is_grantable | with_hierarchy
+----------+----------+---------------+--------------+------------+----------------+--------------+----------------
+ postgres | postgres | testdb        | public       | t1         | INSERT         | YES          | NO
+ postgres | postgres | testdb        | public       | t1         | SELECT         | YES          | YES
+ postgres | postgres | testdb        | public       | t1         | UPDATE         | YES          | NO
+ postgres | postgres | testdb        | public       | t1         | DELETE         | YES          | NO
+ postgres | postgres | testdb        | public       | t1         | TRUNCATE       | YES          | NO
+ postgres | postgres | testdb        | public       | t1         | REFERENCES     | YES          | NO
+ postgres | postgres | testdb        | public       | t1         | TRIGGER        | YES          | NO
+(7 rows)
+```
+
+### попробуем поменять владельца у таблицы t1 на readonly
+```sql
+ \c testdb postgres
+testdb=# alter table t1 owner to readonly ;
+ALTER TABLE
+testdb=# select * from information_schema.table_privileges where table_name='t1' ;
+ grantor  | grantee  | table_catalog | table_schema | table_name | privilege_type | is_grantable | with_hierarchy
+----------+----------+---------------+--------------+------------+----------------+--------------+----------------
+ readonly | readonly | testdb        | public       | t1         | INSERT         | YES          | NO
+ readonly | readonly | testdb        | public       | t1         | SELECT         | YES          | YES
+ readonly | readonly | testdb        | public       | t1         | UPDATE         | YES          | NO
+ readonly | readonly | testdb        | public       | t1         | DELETE         | YES          | NO
+ readonly | readonly | testdb        | public       | t1         | TRUNCATE       | YES          | NO
+ readonly | readonly | testdb        | public       | t1         | REFERENCES     | YES          | NO
+ readonly | readonly | testdb        | public       | t1         | TRIGGER        | YES          | NO
+(7 rows)
+
+
+testdb=# \c testdb testread
+Password for user testread:
+You are now connected to database "testdb" as user "testread".
+testdb=> select * from t1;
+ c1
+----
+  1
+(1 row)
+
+testdb=>
+
+```
+### теперь получилось работать с правом select для пользователя testread
