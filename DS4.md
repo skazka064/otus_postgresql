@@ -223,3 +223,43 @@ testdb=>
 
 ```
 ### теперь получилось работать с привилегией select для пользователя testread
+### вернем владельца на postgres
+```sql
+testdb=# alter table t1 owner to postgres ;
+ALTER TABLE
+testdb=# select * from information_schema.table_privileges where table_name='t1' ;
+ grantor  | grantee  | table_catalog | table_schema | table_name | privilege_type | is_grantable | with_hierarchy
+----------+----------+---------------+--------------+------------+----------------+--------------+----------------
+ postgres | postgres | testdb        | public       | t1         | INSERT         | YES          | NO
+ postgres | postgres | testdb        | public       | t1         | SELECT         | YES          | YES
+ postgres | postgres | testdb        | public       | t1         | UPDATE         | YES          | NO
+ postgres | postgres | testdb        | public       | t1         | DELETE         | YES          | NO
+ postgres | postgres | testdb        | public       | t1         | TRUNCATE       | YES          | NO
+ postgres | postgres | testdb        | public       | t1         | REFERENCES     | YES          | NO
+ postgres | postgres | testdb        | public       | t1         | TRIGGER        | YES          | NO
+(7 rows)
+```
+### а теперь дадим роли readonly право select на все таблицы в схеме public
+### и подключимся к testdb пользователем testread
+### доступ к таблице получен
+```sql
+testdb=# grant select on all tables in schema public to readonly ;
+GRANT
+testdb=# select * from t1;
+ c1
+----
+  1
+(1 row)
+
+testdb=# \c testdb testread
+Password for user testread:
+You are now connected to database "testdb" as user "testread".
+testdb=> select * from t1;
+ c1
+----
+  1
+(1 row)
+
+```
+
+
