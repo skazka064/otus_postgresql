@@ -19,8 +19,10 @@ CREATE SCHEMA
 testdb=#
 ```
 ## создайте новую таблицу t1 с одной колонкой c1 типа integer
+```sql
 testdb=# create table t1 (c1 integer);
 CREATE TABLE
+```
 ## вставьте строку со значением c1=1
 ```sql
 testdb=# insert into t1 values (1);
