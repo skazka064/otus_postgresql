@@ -124,7 +124,7 @@ testdb=> \dt
 
 ```
 ### оказалось, что таблица t1 создана в схеме public, а мы дали роли право на чтение таблиц только в схеме testnm
-
+```sql
 testdb=> select * from pg_database where datname like '%test%' \gx
 -[ RECORD 1 ]--+---------------------------------------------------------
 oid            | 16388
@@ -147,4 +147,28 @@ datacl         | {=Tc/postgres,postgres=CTc/postgres,readonly=c/postgres}
 
 postgres=# grant usage ON  schema public TO readonly ;
 GRANT
-
+```
+### посмотрим список схем
+```sql
+postgres=# \dn+
+                                       List of schemas
+  Name  |       Owner       |           Access privileges            |      Description
+--------+-------------------+----------------------------------------+------------------------
+ public | pg_database_owner | pg_database_owner=UC/pg_database_owner+| standard public schema
+        |                   | =U/pg_database_owner                  +|
+        |                   | readonly=U/pg_database_owner           |
+(1 row)
+```
+### здесь можно заметить, что у redonly нет прав на использование public
+```sql
+postgres=# grant usage ON schema public to readonly ;
+GRANT
+postgres=# \dn+
+                                       List of schemas
+  Name  |       Owner       |           Access privileges            |      Description
+--------+-------------------+----------------------------------------+------------------------
+ public | pg_database_owner | pg_database_owner=UC/pg_database_owner+| standard public schema
+        |                   | =U/pg_database_owner                  +|
+        |                   | readonly=U/pg_database_owner           |
+(1 row)
+```
