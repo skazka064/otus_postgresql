@@ -69,8 +69,31 @@ testdb=# grant readonly to testread ;
 GRANT ROLE
 testdb=#
 ```
+### зайдите под пользователем testread в базу данных testdb
+```sql
+testdb=# \c testdb testread
+connection to server on socket "/var/run/postgresql/.s.PGSQL.5432" failed: FATAL:  Peer authentication failed for user "testread"
+Previous connection kept
+testdb=# 
+```
+### такое происходит потому что метод аутентификации для локальных пользовалелей выставлен peer
+### это означает что, получая имя пользователя ОС клиента из ядра используется в качестве разрешенного имени пользователя базы данных
+### однако у нас в ОС нет пользователя testread, поэтому происходит отказ
+### я поменяю в файле pg_hba.conf метод peer на trust и тогда можно будет подключиться к базе
+
+```sql
+postgres=# select setting from pg_settings where setting like '%pg_hba%';
+               setting
+-------------------------------------
+ /etc/postgresql/16/main/pg_hba.conf
+(1 row)
+
+vim /etc/postgresql/16/main/pg_hba.conf
+# "local" is for Unix domain socket connections only
+local   all             all                                     trust
 
 
+```
 
 
 
