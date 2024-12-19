@@ -361,3 +361,9 @@ testdb=> select * from testnm.t1;
 
 
 ```
+### как сделать так чтобы такое больше не повторялось?
+```sql
+testdb=> alter default privileges in schema testnm grant select on tables to readonly ;
+ALTER DEFAULT PRIVILEGES
+```
+### создадим новую таблицу, что бы это проверить
