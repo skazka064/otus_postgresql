@@ -290,3 +290,37 @@ You are now connected to database "testdb" as user "testread".
 testdb=>
 ```
 ### сделайте select * from testnm.t1;
+```sql
+testdb=> select * from testnm.t1;
+ERROR:  permission denied for table t1
+testdb=> \dt
+Did not find any relations.
+testdb=> show search_path
+testdb-> ;
+   search_path
+-----------------
+ "$user", public
+(1 row)
+```
+### select не удался, посмотрим что в search_path
+### добавим схему testnm в search_path
+```sql
+testdb=> set search_path to "$user",public,testnm
+testdb-> ;
+SET
+testdb=> show search_path;
+       search_path
+-------------------------
+ "$user", public, testnm
+(1 row)
+```
+### посмотрим информацию о таблице 
+```sql
+testdb=> \dt+
+                                     List of relations
+ Schema | Name | Type  |  Owner   | Persistence | Access method |    Size    | Description
+--------+------+-------+----------+-------------+---------------+------------+-------------
+ testnm | t1   | table | postgres | permanent   | heap          | 8192 bytes |
+(1 row)
+
+```
