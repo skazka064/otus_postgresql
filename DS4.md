@@ -418,5 +418,50 @@ testdb=# select * from testnm.t2;
 (1 row)
 
 testdb=#
+testdb=# select * from testnm.t1;
+ c1
+----
+  1
+(1 row)
+
 ```
-### сейчас удалось выбрать данные из вновь созданной таблицы t2 c такой настройкой  alter default privileges in schema testnm grant select on tables to readonly ;
+### сейчас удалось выбрать данные из вновь созданной таблицы t2 c такой настройкой  alter default privileges in schema testnm grant select on tables to readonly , а так же и из t1
+### теперь попробуйте выполнить команду create table t2(c1 integer); insert into t2 values (2);
+testdb=# drop table testnm.t2;
+DROP TABLE
+testdb=# create table t2(c1 integer);
+CREATE TABLE
+testdb=# insert into t2 values (2);
+INSERT 0 1
+testdb=# sea
+
+testdb=# show search_path ;
+   search_path
+-----------------
+ "$user", public
+(1 row)
+
+testdb=#
+### дело в том, что по умолчанию все объекты, если не указать схему создаются в схеме public, а на нее у нас и у всех есть разрешения.
+
+### теперь попробуйте выполнить команду create table t3(c1 integer); insert into t2 values (2);
+```sql
+testdb=# REVOKE CREATE on SCHEMA public FROM public;
+REVOKE
+testdb=# REVOKE ALL on DATABASE testdb FROM public;
+REVOKE
+
+testdb=# \c testdb testread;
+Password for user testread:
+You are now connected to database "testdb" as user "testread".
+testdb=>  create table t3(c1 integer);
+ERROR:  permission denied for schema public
+LINE 1: create table t3(c1 integer);
+                     ^
+testdb=> insert into t2 values (3);
+ERROR:  permission denied for table t2
+testdb=>
+```
+### а вот сейчас не получилось это сделать, потому что мы отобрали у public создавать в public а также отобрали все в базе testdb для public
+
+
