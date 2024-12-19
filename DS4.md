@@ -367,3 +367,56 @@ testdb=> alter default privileges in schema testnm grant select on tables to rea
 ALTER DEFAULT PRIVILEGES
 ```
 ### создадим новую таблицу, что бы это проверить
+```sql
+testdb=> \c testdb postgres
+You are now connected to database "testdb" as user "postgres".
+testdb=# create table testnm.t2 (c1 integer) ;
+CREATE TABLE
+testdb=# insert into testnm.t2 values (2);
+INSERT 0 1
+testdb=# \c testdb testread
+Password for user testread:
+You are now connected to database "testdb" as user "testread".
+testdb=> select * from testnm.t2;
+ERROR:  permission denied for table t2
+```
+### не получилось, потому что я создал таблицу t2 под пользователем postgres
+### поменяем владельца 
+```sql
+postgres=# \c testdb
+You are now connected to database "testdb" as user "postgres".
+testdb=# \dn
+      List of schemas
+  Name  |       Owner
+--------+-------------------
+ public | pg_database_owner
+ testnm | postgres
+(2 rows)
+
+testdb=# \c postgres postgres
+You are now connected to database "postgres" as user "postgres".
+postgres=# \c testdb
+You are now connected to database "testdb" as user "postgres".
+testdb=# alter schema
+information_schema  pg_catalog          pg_toast            public              testnm
+testdb=# alter schema testnm
+OWNER TO   RENAME TO
+testdb=# alter schema testnm owner to testread ;
+ALTER SCHEMA
+testdb=# \dn
+      List of schemas
+  Name  |       Owner
+--------+-------------------
+ public | pg_database_owner
+ testnm | testread
+(2 rows)
+
+testdb=# select * from testnm.t2;
+ c1
+----
+  2
+(1 row)
+
+testdb=#
+```
+### сейчас удалось выбрать данные из вновь созданной таблицы t2 c такой настройкой  alter default privileges in schema testnm grant select on tables to readonly ;
