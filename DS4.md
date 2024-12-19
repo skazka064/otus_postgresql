@@ -261,5 +261,32 @@ testdb=> select * from t1;
 (1 row)
 
 ```
-
-
+### вернитесь в базу данных testdb под пользователем postgres
+```sql
+postgres=# \c testdb
+You are now connected to database "testdb" as user "postgres".
+```
+### удалите таблицу t1
+```sql
+testdb=# drop table t1 ;
+DROP TABLE
+testdb=#
+```
+### создайте ее заново но уже с явным указанием имени схемы testnm
+```sql
+testdb=# create table testnm.t1 (c1 integer) ;
+CREATE TABLE
+```
+### вставьте строку со значением c1=1
+```sql
+testdb=# insert into testnm.t1 values ('1');
+INSERT 0 1
+```
+### зайдите под пользователем testread в базу данных testdb
+```sql
+testdb=# \c testdb testread
+Password for user testread:
+You are now connected to database "testdb" as user "testread".
+testdb=>
+```
+### сделайте select * from testnm.t1;
