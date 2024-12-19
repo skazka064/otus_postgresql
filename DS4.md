@@ -427,6 +427,7 @@ testdb=# select * from testnm.t1;
 ```
 ### сейчас удалось выбрать данные из вновь созданной таблицы t2 c такой настройкой  alter default privileges in schema testnm grant select on tables to readonly , а так же и из t1
 ### теперь попробуйте выполнить команду create table t2(c1 integer); insert into t2 values (2);
+```sql
 testdb=# drop table testnm.t2;
 DROP TABLE
 testdb=# create table t2(c1 integer);
@@ -442,6 +443,7 @@ testdb=# show search_path ;
 (1 row)
 
 testdb=#
+```
 ### дело в том, что по умолчанию все объекты, если не указать схему создаются в схеме public, а на нее у нас и у всех есть разрешения.
 
 ### теперь попробуйте выполнить команду create table t3(c1 integer); insert into t2 values (2);
