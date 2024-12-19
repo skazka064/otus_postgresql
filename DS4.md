@@ -324,3 +324,40 @@ testdb=> \dt+
 (1 row)
 
 ```
+### выполним  select * from information_schema.table_privileges where table_name='t1' ;
+```sql
+postgres=> \c postgres postgres
+You are now connected to database "postgres" as user "postgres".
+postgres=# select * from information_schema.table_privileges where table_name='t1' ;
+ grantor | grantee | table_catalog | table_schema | table_name | privilege_type | is_grantable | with_hierarchy
+---------+---------+---------------+--------------+------------+----------------+--------------+----------------
+(0 rows)
+
+```
+### запрос возвратил ноль строк, значит привелегии отсутствуют
+### попробуем дать привилегии еще раз
+```sql
+testdb=# grant select on all tables in schema testnm to readonly;
+GRANT
+```
+### на этот раз запрос отработал
+### а до этого не отрабатывал, т.к. гранты действовали только на текущие объекты, а мы создали новую таблицу после выдачи привелегий.
+
+```sql
+testdb=> select * from information_schema.table_privileges where table_name='t1' ;
+ grantor  | grantee  | table_catalog | table_schema | table_name | privilege_type | is_grantable | with_hierarchy
+----------+----------+---------------+--------------+------------+----------------+--------------+----------------
+ postgres | readonly | testdb        | testnm       | t1         | SELECT         | NO           | YES
+(1 row)
+
+testdb=# \c testdb testread
+Password for user testread:
+You are now connected to database "testdb" as user "testread".
+testdb=> select * from testnm.t1;
+ c1
+----
+  1
+(1 row)
+
+
+```
