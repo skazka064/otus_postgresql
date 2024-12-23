@@ -215,5 +215,74 @@ latency average = 1.651 ms
 latency stddev = 1.556 ms
 tps = 605.396157 (including connections establishing)
 tps = 605.401937 (excluding connections establishing)
+```
+### давайте разберемся включим только первые две секции, остальные закомментируем
+```sql
+# Memory Configuration
+shared_buffers = 1GB
+effective_cache_size = 3GB
+work_mem = 10MB
+maintenance_work_mem = 205MB
+
+# Checkpoint Related Configuration
+min_wal_size = 2GB
+max_wal_size = 3GB
+checkpoint_completion_target = 0.9
+wal_buffers = -1
+```
+```sql
+postgres@user-VirtualBox:~$ pgbench -j 2 -P 30 -T 300
+starting vacuum...end.
+progress: 30.0 s, 633.2 tps, lat 1.579 ms stddev 1.230
+progress: 60.0 s, 617.9 tps, lat 1.618 ms stddev 1.383
+progress: 90.0 s, 618.0 tps, lat 1.618 ms stddev 1.392
+progress: 120.0 s, 555.9 tps, lat 1.798 ms stddev 1.700
+progress: 150.0 s, 663.0 tps, lat 1.508 ms stddev 1.277
+progress: 180.0 s, 624.4 tps, lat 1.601 ms stddev 1.783
+progress: 210.0 s, 521.4 tps, lat 1.917 ms stddev 1.727
+progress: 240.0 s, 505.0 tps, lat 1.980 ms stddev 1.295
+progress: 270.0 s, 493.6 tps, lat 2.025 ms stddev 1.541
+progress: 300.0 s, 488.2 tps, lat 2.048 ms stddev 2.067
+transaction type: <builtin: TPC-B (sort of)>
+scaling factor: 1
+query mode: simple
+number of clients: 1
+number of threads: 1
+duration: 300 s
+number of transactions actually processed: 171618
+latency average = 1.748 ms
+latency stddev = 1.558 ms
+tps = 572.057612 (including connections establishing)
+tps = 572.061609 (excluding connections establishing)
 
 ```
+### убрал все, оставил добавление блока Memory
+
+```sql
+postgres@user-VirtualBox:~$ pgbench -j 2 -P 30 -T 300
+starting vacuum...end.
+progress: 30.0 s, 743.2 tps, lat 1.345 ms stddev 0.862
+progress: 60.0 s, 686.8 tps, lat 1.456 ms stddev 0.967
+progress: 90.0 s, 766.6 tps, lat 1.304 ms stddev 0.967
+progress: 120.0 s, 804.4 tps, lat 1.243 ms stddev 0.841
+progress: 150.0 s, 787.4 tps, lat 1.270 ms stddev 1.057
+progress: 180.0 s, 737.7 tps, lat 1.355 ms stddev 1.190
+progress: 210.0 s, 745.7 tps, lat 1.341 ms stddev 0.974
+progress: 240.0 s, 776.3 tps, lat 1.288 ms stddev 0.914
+progress: 270.0 s, 724.4 tps, lat 1.380 ms stddev 1.080
+progress: 300.0 s, 786.0 tps, lat 1.272 ms stddev 0.991
+transaction type: <builtin: TPC-B (sort of)>
+scaling factor: 1
+query mode: simple
+number of clients: 1
+number of threads: 1
+duration: 300 s
+number of transactions actually processed: 226751
+latency average = 1.323 ms
+latency stddev = 0.990 ms
+tps = 755.834916 (including connections establishing)
+tps = 755.843826 (excluding connections establishing)
+
+```
+### результаты лучше, но достигнуты эталонных
+### попробую перезагрузить виртуалку
