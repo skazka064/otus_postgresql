@@ -356,3 +356,85 @@ log_autovacuum_min_duration = 0
 log_destination = 'csvlog'
 
 ```
+### результаты
+```sql
+root@user-VirtualBox:~# su - postgres
+postgres@user-VirtualBox:~$ pgbench -j 2 -P 30 -T 300
+starting vacuum...end.
+progress: 30.0 s, 874.0 tps, lat 1.144 ms stddev 0.724
+progress: 60.0 s, 704.8 tps, lat 1.418 ms stddev 0.990
+progress: 90.0 s, 652.3 tps, lat 1.533 ms stddev 0.986
+progress: 120.0 s, 648.4 tps, lat 1.542 ms stddev 1.043
+progress: 150.0 s, 613.2 tps, lat 1.630 ms stddev 1.018
+progress: 180.0 s, 591.6 tps, lat 1.690 ms stddev 1.371
+progress: 210.0 s, 584.9 tps, lat 1.709 ms stddev 1.104
+progress: 240.0 s, 596.9 tps, lat 1.675 ms stddev 1.110
+progress: 270.0 s, 568.5 tps, lat 1.757 ms stddev 1.022
+progress: 300.0 s, 600.2 tps, lat 1.667 ms stddev 1.126
+transaction type: <builtin: TPC-B (sort of)>
+scaling factor: 1
+query mode: simple
+number of clients: 1
+number of threads: 1
+duration: 300 s
+number of transactions actually processed: 193040
+latency average = 1.554 ms
+latency stddev = 1.063 ms
+tps = 643.451103 (including connections establishing)
+tps = 643.461027 (excluding connections establishing)
+```
+```sql
+postgres@user-VirtualBox:~$ pgbench  -j 2 -P 30 -T 300 -c 90
+starting vacuum...end.
+progress: 30.0 s, 773.8 tps, lat 115.314 ms stddev 136.459
+progress: 60.0 s, 746.9 tps, lat 120.524 ms stddev 139.662
+progress: 90.0 s, 605.3 tps, lat 148.192 ms stddev 163.169
+progress: 120.0 s, 672.6 tps, lat 134.220 ms stddev 155.366
+progress: 150.0 s, 754.2 tps, lat 119.404 ms stddev 129.209
+progress: 180.0 s, 890.6 tps, lat 101.010 ms stddev 112.379
+progress: 210.0 s, 898.3 tps, lat 99.790 ms stddev 109.681
+progress: 240.0 s, 445.9 tps, lat 201.161 ms stddev 236.920
+progress: 270.0 s, 519.5 tps, lat 173.426 ms stddev 192.265
+progress: 300.0 s, 539.1 tps, lat 167.378 ms stddev 196.882
+transaction type: <builtin: TPC-B (sort of)>
+scaling factor: 1
+query mode: simple
+number of clients: 90
+number of threads: 2
+duration: 300 s
+number of transactions actually processed: 205476
+latency average = 131.457 ms
+latency stddev = 156.482 ms
+tps = 683.667618 (including connections establishing)
+tps = 683.675497 (excluding connections establishing)
+
+```
+
+### попробую увеличить количество потоков до 10(хотя это не рекомендуется, т.к. на виртуалке всего 2 vCPU)
+### и выставлю в 90 число имитируемых клиентов, то есть число одновременных сеансов базы данных. Значение по умолчанию — 1.
+```sql
+
+postgres@user-VirtualBox:~$ pgbench  -j 10 -P 30 -T 300 -c 90
+starting vacuum...end.
+progress: 30.0 s, 543.5 tps, lat 164.156 ms stddev 193.578
+progress: 60.0 s, 537.8 tps, lat 166.610 ms stddev 196.598
+progress: 90.0 s, 583.0 tps, lat 154.153 ms stddev 178.186
+progress: 120.0 s, 580.2 tps, lat 155.525 ms stddev 177.967
+progress: 150.0 s, 471.1 tps, lat 190.889 ms stddev 200.021
+progress: 180.0 s, 530.4 tps, lat 169.992 ms stddev 195.639
+progress: 210.0 s, 554.4 tps, lat 162.409 ms stddev 181.286
+progress: 240.0 s, 587.4 tps, lat 152.905 ms stddev 182.416
+progress: 270.0 s, 544.7 tps, lat 164.973 ms stddev 180.504
+progress: 300.0 s, 560.7 tps, lat 160.122 ms stddev 189.369
+transaction type: <builtin: TPC-B (sort of)>
+scaling factor: 1
+query mode: simple
+number of clients: 90
+number of threads: 10
+duration: 300 s
+number of transactions actually processed: 164885
+latency average = 163.812 ms
+latency stddev = 188.079 ms
+tps = 548.558684 (including connections establishing)
+tps = 548.593868 (excluding connections establishing)
+```
