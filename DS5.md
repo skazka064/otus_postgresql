@@ -183,3 +183,37 @@ log_autovacuum_min_duration = 0
 # CSV Configuration
 log_destination = 'csvlog'
 ```
+
+### результаты ухудшились
+```sql
+
+postgres@user-VirtualBox:~$ vim /etc/postgresql/12/main/postgresql.conf
+postgres@user-VirtualBox:~$ exit
+logout
+root@user-VirtualBox:~# pg_ctlcluster 12 main restart
+root@user-VirtualBox:~# su - postgres
+postgres@user-VirtualBox:~$ pgbench -j 2 -P 30 -T 300
+starting vacuum...end.
+progress: 30.0 s, 564.7 tps, lat 1.770 ms stddev 1.518
+progress: 60.0 s, 570.1 tps, lat 1.754 ms stddev 1.556
+progress: 90.0 s, 581.5 tps, lat 1.719 ms stddev 1.516
+progress: 120.0 s, 687.4 tps, lat 1.454 ms stddev 1.058
+progress: 150.0 s, 676.7 tps, lat 1.477 ms stddev 1.297
+progress: 180.0 s, 608.2 tps, lat 1.643 ms stddev 2.028
+progress: 210.0 s, 671.6 tps, lat 1.489 ms stddev 1.428
+progress: 240.0 s, 585.8 tps, lat 1.707 ms stddev 1.514
+progress: 270.0 s, 555.0 tps, lat 1.801 ms stddev 1.631
+progress: 300.0 s, 552.9 tps, lat 1.808 ms stddev 1.868
+transaction type: <builtin: TPC-B (sort of)>
+scaling factor: 1
+query mode: simple
+number of clients: 1
+number of threads: 1
+duration: 300 s
+number of transactions actually processed: 181619
+latency average = 1.651 ms
+latency stddev = 1.556 ms
+tps = 605.396157 (including connections establishing)
+tps = 605.401937 (excluding connections establishing)
+
+```
