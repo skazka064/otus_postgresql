@@ -82,3 +82,14 @@ latency stddev = 1.601 ms
 tps = 626.256249 (including connections establishing)
 tps = 626.260448 (excluding connections establishing)
 ```
+### в конфигураторе pgconfig.org определил оптимальные настройки 
+### попробуем профиль General web addlication
+### и настроим только память
+```sql
+# Memory Configuration
+shared_buffers = 1GB
+effective_cache_size = 3GB
+work_mem = 10MB
+maintenance_work_mem = 205MB
+```
+### оптимизатор увеличил shared_buffers work_mem maintenance_work_mem и уменьшил effective_cache_size
