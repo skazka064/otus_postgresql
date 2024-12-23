@@ -56,3 +56,29 @@ postgres=# show checkpoint_timeout ;
 (1 row)
 
 ```
+### запустил pgbench и получил вот такие результаты
+```sql
+postgres@user-VirtualBox:~$ pgbench -j 2 -P 30 -T 300
+starting vacuum...end.
+progress: 30.0 s, 753.2 tps, lat 1.327 ms stddev 1.035
+progress: 60.0 s, 593.9 tps, lat 1.683 ms stddev 1.633
+progress: 90.0 s, 607.0 tps, lat 1.646 ms stddev 1.403
+progress: 120.0 s, 650.1 tps, lat 1.538 ms stddev 1.520
+progress: 150.0 s, 492.7 tps, lat 2.029 ms stddev 2.422
+progress: 180.0 s, 578.9 tps, lat 1.727 ms stddev 1.706
+progress: 210.0 s, 668.4 tps, lat 1.496 ms stddev 1.509
+progress: 240.0 s, 577.3 tps, lat 1.732 ms stddev 1.661
+progress: 270.0 s, 680.0 tps, lat 1.470 ms stddev 1.705
+progress: 300.0 s, 660.9 tps, lat 1.513 ms stddev 1.297
+transaction type: <builtin: TPC-B (sort of)>
+scaling factor: 1
+query mode: simple
+number of clients: 1
+number of threads: 1
+duration: 300 s
+number of transactions actually processed: 187877
+latency average = 1.596 ms
+latency stddev = 1.601 ms
+tps = 626.256249 (including connections establishing)
+tps = 626.260448 (excluding connections establishing)
+```
