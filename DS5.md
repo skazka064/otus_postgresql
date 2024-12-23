@@ -104,3 +104,28 @@ work_mem = 10MB
 maintenance_work_mem = 205MB
 ```
 ### оптимизатор увеличил shared_buffers work_mem maintenance_work_mem и уменьшил effective_cache_size
+```sql
+postgres@user-VirtualBox:~$ pgbench -j 2 -P 30 -T 300
+starting vacuum...end.
+progress: 30.0 s, 900.6 tps, lat 1.110 ms stddev 0.581
+progress: 60.0 s, 866.4 tps, lat 1.154 ms stddev 0.573
+progress: 90.0 s, 897.0 tps, lat 1.115 ms stddev 0.581
+progress: 120.0 s, 881.2 tps, lat 1.134 ms stddev 0.753
+progress: 150.0 s, 845.7 tps, lat 1.183 ms stddev 1.138
+progress: 180.0 s, 886.8 tps, lat 1.127 ms stddev 0.653
+progress: 210.0 s, 875.3 tps, lat 1.142 ms stddev 0.807
+progress: 240.0 s, 712.3 tps, lat 1.404 ms stddev 1.140
+progress: 270.0 s, 591.8 tps, lat 1.689 ms stddev 1.441
+progress: 300.0 s, 601.8 tps, lat 1.661 ms stddev 1.586
+transaction type: <builtin: TPC-B (sort of)>
+scaling factor: 1
+query mode: simple
+number of clients: 1
+number of threads: 1
+duration: 300 s
+number of transactions actually processed: 241771
+latency average = 1.241 ms
+latency stddev = 0.959 ms
+tps = 805.901087 (including connections establishing)
+tps = 805.906595 (excluding connections establishing)
+```
