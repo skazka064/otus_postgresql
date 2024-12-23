@@ -439,3 +439,4 @@ latency stddev = 188.079 ms
 tps = 548.558684 (including connections establishing)
 tps = 548.593868 (excluding connections establishing)
 ```
+### создам ВМ в облаке попробую протестировать в ней
