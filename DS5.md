@@ -82,6 +82,10 @@ latency stddev = 1.601 ms
 tps = 626.256249 (including connections establishing)
 tps = 626.260448 (excluding connections establishing)
 ```
+
+### посмотрим утилизацию ресурсов
+![Иллюстрация к проекту](2024-12-23_12-32-56.png)
+
 ### в конфигураторе pgconfig.org определил оптимальные настройки 
 ### попробуем профиль General web addlication
 ### и настроим только память
