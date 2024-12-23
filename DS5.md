@@ -311,6 +311,7 @@ latency stddev = 1.170 ms
 tps = 675.603460 (including connections establishing)
 tps = 675.608599 (excluding connections establishing)
 ```
+### Резулькаты все равно остались хуже первоначальных эталонных
 ### Теперь попробуем использовать конфигурацию для OLTP нагрузки 
 ### Она отличается увеличенным work_mem с 10MB до 14MB
 ```sql
