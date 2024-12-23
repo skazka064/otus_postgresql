@@ -284,5 +284,75 @@ tps = 755.834916 (including connections establishing)
 tps = 755.843826 (excluding connections establishing)
 
 ```
-### результаты лучше, но достигнуты эталонных
+### результаты лучше, но не достигнуты эталонных, полученных в предыдущих тестах
 ### попробую перезагрузить виртуалку
+```sql
+postgres@user-VirtualBox:~$ pgbench -j 2 -P 30 -T 300
+starting vacuum...end.
+progress: 30.0 s, 909.7 tps, lat 1.099 ms stddev 0.655
+progress: 60.0 s, 895.4 tps, lat 1.116 ms stddev 0.731
+progress: 90.0 s, 746.1 tps, lat 1.340 ms stddev 0.551
+progress: 120.0 s, 738.7 tps, lat 1.353 ms stddev 0.830
+progress: 150.0 s, 594.8 tps, lat 1.681 ms stddev 1.654
+progress: 180.0 s, 553.4 tps, lat 1.806 ms stddev 1.669
+progress: 210.0 s, 700.4 tps, lat 1.427 ms stddev 1.126
+progress: 240.0 s, 567.3 tps, lat 1.762 ms stddev 1.257
+progress: 270.0 s, 508.3 tps, lat 1.967 ms stddev 1.458
+progress: 300.0 s, 541.8 tps, lat 1.845 ms stddev 1.367
+transaction type: <builtin: TPC-B (sort of)>
+scaling factor: 1
+query mode: simple
+number of clients: 1
+number of threads: 1
+duration: 300 s
+number of transactions actually processed: 202686
+latency average = 1.480 ms
+latency stddev = 1.170 ms
+tps = 675.603460 (including connections establishing)
+tps = 675.608599 (excluding connections establishing)
+```
+### Теперь попробуем использовать конфигурацию для OLTP нагрузки 
+### Она отличается увеличенным work_mem с 10MB до 14MB
+```sql
+# Memory Configuration
+shared_buffers = 1GB
+effective_cache_size = 3GB
+work_mem = 14MB
+maintenance_work_mem = 205MB
+
+# Checkpoint Related Configuration
+min_wal_size = 2GB
+max_wal_size = 3GB
+checkpoint_completion_target = 0.9
+wal_buffers = -1
+
+# Network Related Configuration
+listen_addresses = '*'
+max_connections = 100
+
+# Storage Configuration
+random_page_cost = 1.1
+effective_io_concurrency = 200
+
+# Worker Processes Configuration
+max_worker_processes = 8
+max_parallel_workers_per_gather = 2
+max_parallel_workers = 2
+
+# Logging configuration for pgbadger
+logging_collector = on
+log_checkpoints = on
+log_connections = on
+log_disconnections = on
+log_lock_waits = on
+log_temp_files = 0
+lc_messages = 'C'
+
+# Adjust the minimum time to collect the data
+log_min_duration_statement = '10s'
+log_autovacuum_min_duration = 0
+
+# CSV Configuration
+log_destination = 'csvlog'
+
+```
