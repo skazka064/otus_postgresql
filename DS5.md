@@ -475,5 +475,5 @@ latency stddev = 0.912 ms
 tps = 848.195516 (including connections establishing)
 tps = 848.201587 (excluding connections establishing)
 ```
-![Иллюстрация к проекту](2024-12-25_12-09-09.png)
+![Иллюстрация к проекту](img/2024-12-25_12-09-09.png)
 
