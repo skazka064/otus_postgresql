@@ -447,6 +447,48 @@ tps = 548.593868 (excluding connections establishing)
 ### попробуем использовать нагрузку DWH- но это скорее будет OLAP нагрузка, чем OLTP, а pgbench специализируется по транзакционным нагрузкам, проверим гипотезу и возьмем настройки из pgconfig.org для DWH
 ### относительно OLTP нагрузки, мы увеличили work_mem на 4MB остальные настройки такие же как и у OLTP
 ### work_mem используется для сортировок, построения hash таблиц. Это позволяет выполнять данные операции в памяти, что гораздо быстрее обращения к диску. В рамках одного запроса данный параметр может быть использован множество раз. Если, например запрос содержит пять операций сортировки, то память, которая потребуется для его выполнения уже как минимум work_mem*5 Т.к. скорее всего на сервере я не один и сессий много, то каждаяиз них может использовать этот параметр по нескольку раз, поэтому не рекомендуется делать его слишком большим. Можно выставить небольшое значение для глобального параметра в конфиге и потом, в случае сложных запросов, менять этот параметр локально (для текущей сессии). Здесь мы увеличили этот параметр, т.к. OLAP нагрузка не подразумевает слишком большого количества подключений/пользователей как OLTP нагрузка, и т.к. каждая сессия будет "отъедать" work_mem. И в OLAP нагрузке может быть большое количество  операций сортировок, по этой причине рекомендуется work_mem немного увеличить
+```sql
+# Memory Configuration
+shared_buffers = 1GB
+effective_cache_size = 3GB
+work_mem = 20MB
+maintenance_work_mem = 205MB
+
+# Checkpoint Related Configuration
+min_wal_size = 2GB
+max_wal_size = 3GB
+checkpoint_completion_target = 0.9
+wal_buffers = -1
+
+# Network Related Configuration
+listen_addresses = '*'
+max_connections = 100
+
+# Storage Configuration
+random_page_cost = 1.1
+effective_io_concurrency = 200
+
+# Worker Processes Configuration
+max_worker_processes = 8
+max_parallel_workers_per_gather = 2
+max_parallel_workers = 2
+
+# Logging configuration for pgbadger
+logging_collector = on
+log_checkpoints = on
+log_connections = on
+log_disconnections = on
+log_lock_waits = on
+log_temp_files = 0
+lc_messages = 'C'
+
+# Adjust the minimum time to collect the data
+log_min_duration_statement = '10s'
+log_autovacuum_min_duration = 0
+
+# CSV Configuration
+log_destination = 'csvlog'
+```
 ### и получилось вот что:
 ```sql
 root@user-VirtualBox:~# pg_ctlcluster 12 main restart
