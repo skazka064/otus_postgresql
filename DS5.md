@@ -447,6 +447,33 @@ tps = 548.593868 (excluding connections establishing)
 ### попробуем использовать нагрузку DWH- но это скорее будет OLAP нагрузка, чем OLTP, а pgbench специализируется по транзакционным нагрузкам, проверим гипотезу и возьмем настройки из pgconfig.org для DWH
 ### относительно OLTP нагрузки, мы увеличили work_mem на 4MB остальные настройки такие же как и у OLTP
 ### work_mem используется для сортировок, построения hash таблиц. Это позволяет выполнять данные операции в памяти, что гораздо быстрее обращения к диску. В рамках одного запроса данный параметр может быть использован множество раз. Если, например запрос содержит пять операций сортировки, то память, которая потребуется для его выполнения уже как минимум work_mem*5 Т.к. скорее всего на сервере я не один и сессий много, то каждаяиз них может использовать этот параметр по нескольку раз, поэтому не рекомендуется делать его слишком большим. Можно выставить небольшое значение для глобального параметра в конфиге и потом, в случае сложных запросов, менять этот параметр локально (для текущей сессии). Здесь мы увеличили этот параметр, т.к. OLAP нагрузка не подразумевает слишком большого количества подключений/пользователей как OLTP нагрузка, и т.к. каждая сессия будет "отъедать" work_mem. И в OLAP нагрузке может быть большое количество  операций сортировок, по этой причине рекомендуется work_mem немного увеличить
-
-
+### и получилось вот что:
+```sql
+root@user-VirtualBox:~# pg_ctlcluster 12 main restart
+root@user-VirtualBox:~# su - postgres
+postgres@user-VirtualBox:~$ pgbench  -j 10 -P 30 -T 300
+starting vacuum...end.
+progress: 30.0 s, 750.2 tps, lat 1.332 ms stddev 0.932
+progress: 60.0 s, 858.2 tps, lat 1.165 ms stddev 0.748
+progress: 90.0 s, 920.5 tps, lat 1.086 ms stddev 0.622
+progress: 120.0 s, 831.5 tps, lat 1.202 ms stddev 1.293
+progress: 150.0 s, 827.2 tps, lat 1.209 ms stddev 1.320
+progress: 180.0 s, 908.4 tps, lat 1.101 ms stddev 0.665
+progress: 210.0 s, 870.8 tps, lat 1.148 ms stddev 0.770
+progress: 240.0 s, 751.5 tps, lat 1.330 ms stddev 0.921
+progress: 270.0 s, 885.8 tps, lat 1.129 ms stddev 0.829
+progress: 300.0 s, 877.8 tps, lat 1.139 ms stddev 0.771
+transaction type: <builtin: TPC-B (sort of)>
+scaling factor: 1
+query mode: simple
+number of clients: 1
+number of threads: 1
+duration: 300 s
+number of transactions actually processed: 254459
+latency average = 1.179 ms
+latency stddev = 0.912 ms
+tps = 848.195516 (including connections establishing)
+tps = 848.201587 (excluding connections establishing)
+```
+![Иллюстрация к проекту](img/2024-12-25_09-50-18.png)
 
