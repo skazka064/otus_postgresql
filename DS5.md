@@ -523,11 +523,48 @@ tps = 848.201587 (excluding connections establishing)
 
 ### результаты получились отличные , пока это самый большой TPS и самая маленькая задержка. Даже по графику видно, что процессорные мощности использовались в оптимальном режиме, расход памяти тоже в норме. Все основные системы работали не в пике нагрузки. Но производительность на данный момент максимальная.
 ### 
-
-
-
-
 ### теперь изменим настройки Postgresql и применим настройки для "БД и приложение на одном сервере" настройка для mixed нагрузки
+# Memory Configuration
+```sql
+shared_buffers = 512MB
+effective_cache_size = 2GB
+work_mem = 4MB
+maintenance_work_mem = 102MB
 
+# Checkpoint Related Configuration
+min_wal_size = 2GB
+max_wal_size = 3GB
+checkpoint_completion_target = 0.9
+wal_buffers = -1
+
+# Network Related Configuration
+listen_addresses = '*'
+max_connections = 100
+
+# Storage Configuration
+random_page_cost = 1.1
+effective_io_concurrency = 200
+
+# Worker Processes Configuration
+max_worker_processes = 8
+max_parallel_workers_per_gather = 2
+max_parallel_workers = 2
+
+# Logging configuration for pgbadger
+logging_collector = on
+log_checkpoints = on
+log_connections = on
+log_disconnections = on
+log_lock_waits = on
+log_temp_files = 0
+lc_messages = 'C'
+
+# Adjust the minimum time to collect the data
+log_min_duration_statement = '10s'
+log_autovacuum_min_duration = 0
+
+# CSV Configuration
+log_destination = 'csvlog'
+```
 
 
