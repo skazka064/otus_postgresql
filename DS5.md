@@ -566,5 +566,75 @@ log_autovacuum_min_duration = 0
 # CSV Configuration
 log_destination = 'csvlog'
 ```
+### Получились вот такие результаты
+```sql
+postgres@Ubuntu:~$  pgbench  -j 2 -P 30 -T 300
+starting vacuum...end.
+progress: 30.0 s, 486.5 tps, lat 2.054 ms stddev 2.291
+progress: 60.0 s, 610.3 tps, lat 1.638 ms stddev 1.417
+progress: 90.0 s, 549.9 tps, lat 1.818 ms stddev 2.634
+progress: 120.0 s, 611.1 tps, lat 1.636 ms stddev 1.567
+progress: 150.0 s, 636.5 tps, lat 1.571 ms stddev 1.194
+progress: 180.0 s, 631.1 tps, lat 1.584 ms stddev 2.321
+progress: 210.0 s, 609.9 tps, lat 1.639 ms stddev 1.680
+progress: 240.0 s, 504.1 tps, lat 1.983 ms stddev 4.699
+progress: 270.0 s, 389.2 tps, lat 2.569 ms stddev 2.908
+progress: 300.0 s, 543.9 tps, lat 1.838 ms stddev 1.971
+transaction type: <builtin: TPC-B (sort of)>
+scaling factor: 1
+query mode: simple
+number of clients: 1
+number of threads: 1
+duration: 300 s
+number of transactions actually processed: 167178
+latency average = 1.794 ms
+latency stddev = 2.398 ms
+tps = 557.257538 (including connections establishing)
+tps = 557.262687 (excluding connections establishing)
+```
+### Эти результаты оказались самыми худшими.
+### попробуем теперь с настройками Developer local machine
 
+```sql
+# Memory Configuration
+shared_buffers = 256MB
+effective_cache_size = 614MB
+work_mem = 839kB
+maintenance_work_mem = 41MB
 
+# Checkpoint Related Configuration
+min_wal_size = 2GB
+max_wal_size = 3GB
+checkpoint_completion_target = 0.9
+wal_buffers = -1
+
+# Network Related Configuration
+listen_addresses = '*'
+max_connections = 100
+
+# Storage Configuration
+random_page_cost = 1.1
+effective_io_concurrency = 200
+
+# Worker Processes Configuration
+max_worker_processes = 8
+max_parallel_workers_per_gather = 2
+max_parallel_workers = 2
+
+# Logging configuration for pgbadger
+logging_collector = on
+log_checkpoints = on
+log_connections = on
+log_disconnections = on
+log_lock_waits = on
+log_temp_files = 0
+lc_messages = 'C'
+
+# Adjust the minimum time to collect the data
+log_min_duration_statement = '10s'
+log_autovacuum_min_duration = 0
+
+# CSV Configuration
+log_destination = 'csvlog'
+
+```
