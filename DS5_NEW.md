@@ -176,7 +176,7 @@ latency stddev = 51.954 ms
 tps = 1050.774504 (including connections establishing)
 tps = 1050.811858 (excluding connections establishing)
 ```
-#### количество tps увеличилось на 10 %
+#### количество tps увеличилось на 10% от дефолтных
 #### теперь попробуем настройки OLTP
 <table>
  <th>Num</th>
@@ -228,27 +228,26 @@ tps = 1050.811858 (excluding connections establishing)
 </table>
 
 ```sql
-
-postgres@Ubuntu:~$ pgbench -c 50 -j 2 -P 10 -T 60
+postgres@Ubuntu:~$  pgbench -c 50 -j 2 -P 10 -T 60
 starting vacuum...end.
-progress: 10.0 s, 907.4 tps, lat 54.305 ms stddev 55.671
-progress: 20.0 s, 986.0 tps, lat 50.737 ms stddev 50.532
-progress: 30.0 s, 1007.9 tps, lat 49.667 ms stddev 50.061
-progress: 40.0 s, 992.7 tps, lat 50.346 ms stddev 49.687
-progress: 50.0 s, 952.9 tps, lat 52.467 ms stddev 55.842
-progress: 60.0 s, 734.5 tps, lat 67.910 ms stddev 65.627
+progress: 10.0 s, 1059.6 tps, lat 46.626 ms stddev 50.903
+progress: 20.0 s, 691.3 tps, lat 72.126 ms stddev 81.309
+progress: 30.0 s, 863.6 tps, lat 58.004 ms stddev 66.803
+progress: 40.0 s, 805.3 tps, lat 62.058 ms stddev 70.010
+progress: 50.0 s, 933.1 tps, lat 53.747 ms stddev 60.760
+progress: 60.0 s, 957.1 tps, lat 52.101 ms stddev 59.287
 transaction type: <builtin: TPC-B (sort of)>
 scaling factor: 1
 query mode: simple
 number of clients: 50
 number of threads: 2
 duration: 60 s
-number of transactions actually processed: 55865
-latency average = 53.688 ms
-latency stddev = 54.648 ms
-tps = 928.800438 (including connections establishing)
-tps = 928.845062 (excluding connections establishing)
-
+number of transactions actually processed: 53150
+latency average = 56.443 ms
+latency stddev = 64.832 ms
+tps = 884.029625 (including connections establishing)
+tps = 884.058544 (excluding connections establishing)
 
 ```
-
+#### количество tps уменьшилось на 6% от дефолтных и 16% от предыдущих (WEB)
+#### 
