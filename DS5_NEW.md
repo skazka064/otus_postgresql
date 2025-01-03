@@ -521,3 +521,24 @@ tps = 1049.931302 (excluding connections establishing)
 curl -s https://packagecloud.io/install/repositories/akopytov/sysbench/script.deb.sh | sudo bash
 sudo apt -y install sysbench
 ```
+#### скачал sysbench-tpcc
+```bash
+root@Ubuntu:~/sysbench-tpcc# ll
+total 108
+drwxr-xr-x 3 root root  4096 Jan  3 22:52 ./
+drwx------ 8 root root  4096 Jan  3 22:52 ../
+drwxr-xr-x 8 root root  4096 Jan  3 22:52 .git/
+-rw-r--r-- 1 root root 11342 Jan  3 22:52 LICENSE
+-rw-r--r-- 1 root root   984 Jan  3 22:52 README.md
+-rw-r--r-- 1 root root 12320 Jan  3 22:52 tpcc_check.lua
+-rw-r--r-- 1 root root 21400 Jan  3 22:52 tpcc_common.lua
+-rwxr-xr-x 1 root root  1863 Jan  3 22:52 tpcc.lua*
+-rwxr-xr-x 1 root root 29681 Jan  3 22:52 tpcc_run.lua*
+-rw-r--r-- 1 root root  1369 Jan  3 22:52 tpcc-scm-1.rockspec
+root@Ubuntu:~/sysbench-tpcc#
+```
+#### инициализировал данные и запусил тест
+```bash
+./tpcc.lua --pgsql-user=postgres --pgsql-db=sbtest --time=120 --threads=56 --report-interval=1 --tables=10 --scale=100 --use_fk=0  --trx_level=RC --db-driver=pgsql prepare
+./tpcc.lua  --pgsql-user=postgres --pgsql-db=sbtest --time=300 --threads=64 --report-interval=1 --tables=10 --scale=100 --db-driver=pgsql run
+```
