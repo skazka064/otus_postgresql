@@ -67,3 +67,41 @@ postgres=# show max_wal_size ;
 (1 row)
 ```
 #### максимальный размер  до которого может возрастать wal между контрольными точками в wal. Значение по умолчанию 1ГБ. Увеличение этого параметра может привести к увеличению времени, которое понадобится для восстановления после сбоя. Но позволит реже выполнять операцию сбрасывания на диск. Так же сбрасывание может выполнится и при достижении нужного времени, определенного в параметре checkpoint_timeout
+#### Найдем расположение конфиг файла через psql 
+```sql
+postgres=# show config_file ;
+               config_file
+-----------------------------------------
+ /etc/postgresql/12/main/postgresql.conf
+
+postgres=# select current_setting('config_file');
+             current_setting
+-----------------------------------------
+ /etc/postgresql/12/main/postgresql.conf
+(1 row)
+
+```
+#### запустим pgbench сначала с дефолтным конфигом
+```sql
+postgres@Ubuntu:~$ pgbench -c 50 -j 2 -P 10 -T 60
+starting vacuum...end.
+progress: 10.0 s, 1016.1 tps, lat 48.672 ms stddev 50.000
+progress: 20.0 s, 722.7 tps, lat 69.077 ms stddev 78.785
+progress: 30.0 s, 783.3 tps, lat 63.720 ms stddev 84.850
+progress: 40.0 s, 987.6 tps, lat 50.691 ms stddev 53.640
+progress: 50.0 s, 1052.8 tps, lat 47.532 ms stddev 48.866
+progress: 60.0 s, 1067.2 tps, lat 46.823 ms stddev 50.160
+transaction type: <builtin: TPC-B (sort of)>
+scaling factor: 1
+query mode: simple
+number of clients: 50
+number of threads: 2
+duration: 60 s
+number of transactions actually processed: 56347
+latency average = 53.215 ms
+latency stddev = 61.207 ms
+tps = 937.638183 (including connections establishing)
+tps = 937.678190 (excluding connections establishing)
+```
+#### теперь попробуем настроить сервер на максимальную производительность. Будем это делать через pgconfig
+
