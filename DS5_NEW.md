@@ -539,6 +539,6 @@ root@Ubuntu:~/sysbench-tpcc#
 ```
 #### инициализировал данные и запусил тест
 ```bash
-./tpcc.lua --pgsql-user=postgres --pgsql-db=sbtest --time=120 --threads=56 --report-interval=1 --tables=10 --scale=100 --use_fk=0  --trx_level=RC --db-driver=pgsql prepare
+./tpcc.lua --pgsql-user=postgres --pgsql-db=sbtest --time=120 --threads=2 --report-interval=1 --tables=10 --scale=10 --use_fk=0  --trx_level=RC --db-driver=pgsql prepare
 ./tpcc.lua  --pgsql-user=postgres --pgsql-db=sbtest --time=300 --threads=64 --report-interval=1 --tables=10 --scale=100 --db-driver=pgsql run
 ```
