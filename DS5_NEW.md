@@ -119,11 +119,15 @@ tps = 937.678190 (excluding connections establishing)
    <td>10MB</td>
    <td>4MB</td>
   </tr>
-     <tr>
+ <tr>
    <td>effective_cache_size</td>
    <td>3GB</td>
    <td>4GB</td>
   </tr>
-
+   <tr>
+   <td>max_connections</td>
+   <td>100</td>
+   <td>100</td>
+  </tr>
 </table>
 
