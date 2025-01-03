@@ -115,6 +115,7 @@ tps = 937.678190 (excluding connections establishing)
 ### General WEB Aplication
 ### мы увеличили shared_buffers, work_mem, max_wal_size
 ### уменьшили effective_cache_size
+### значение wal_buffers=-1 означает 1/32 от shared_buffers
 <table>
  <th>Num</th>
  <th>Значение</th>
