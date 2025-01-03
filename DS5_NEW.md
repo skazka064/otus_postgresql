@@ -105,13 +105,16 @@ tps = 937.678190 (excluding connections establishing)
 ```
 #### теперь попробуем настроить сервер на максимальную производительность. Будем это делать через pgconfig
 ### General WEB Aplication
-
-|Значение|NEW|DEFAULT
+<table>
+ <tr>Значение</tr>
+  <td>
+||NEW|DEFAULT
 ------------------------------
 |shared_buffers|  1GB |     128MB
 --------------------------------
 |work_mem|  10MB       |     4MB
 ---------------------------------
 |effective_cache_size| 3GB   
-    
+  </td> 
+</table>
 
