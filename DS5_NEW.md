@@ -107,9 +107,10 @@ tps = 937.678190 (excluding connections establishing)
 ### General WEB Aplication
 <table>
  <tr>Значение</tr>
+  <tr>NEW</tr>
+ <tr>DEFAULT</tr>
   <td>
-||NEW|DEFAULT
-------------------------------
+
 |shared_buffers|  1GB |     128MB
 --------------------------------
 |work_mem|  10MB       |     4MB
