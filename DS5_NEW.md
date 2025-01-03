@@ -395,7 +395,7 @@ tps = 1037.226824 (excluding connections establishing)
  <tr>
   <td>5</td>
    <td>max_wal_size</td>
-   <td>3GB</td
+   <td>3GB</td>
    <td>3GB</td>
    <td>3GB</td>
    <td>3GB</td>
