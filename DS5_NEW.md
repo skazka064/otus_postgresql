@@ -141,15 +141,12 @@ tps = 937.678190 (excluding connections establishing)
    <td>max_wal_size</td>
    <td>3GB</td>
    <td>1GB</td>
-  </tr>
- 
+  </tr> 
    <tr>
   td>6</td>
    <td>checkpoint_timeout</td>
    <td>5min</td>
    <td>5min</td>
-  </tr>
- 
- 
+  </tr> 
 </table>
 
