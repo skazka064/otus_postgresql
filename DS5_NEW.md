@@ -178,6 +178,55 @@ tps = 1050.811858 (excluding connections establishing)
 ```
 #### количество tps увеличилось на 10 %
 #### теперь попробуем настройки OLTP
+<table>
+ <th>Num</th>
+ <th>Значение</th>
+  <th>NEW</th>
+ <th>DEFAULT</th>
+  <tr>
+   <td>1</td>
+   <td>shared_buffers</td>
+   <td>1GB</td>
+   <td>128MB</td>
+  </tr>
+   <tr>
+     <td>2</td>
+   <td>work_mem</td>
+   <td>14MB</td>
+   <td>4MB</td>
+  </tr>
+ <tr>
+   <td>3</td>
+   <td>effective_cache_size</td>
+   <td>3GB</td>
+   <td>4GB</td>
+  </tr> 
+   <tr>
+     <td>4</td>
+   <td>max_connections</td>
+   <td>100</td>
+   <td>100</td>
+  </tr> 
+ <tr>
+  <td>5</td>
+   <td>max_wal_size</td>
+   <td>3GB</td>
+   <td>1GB</td>
+  </tr> 
+   <tr>
+  <td>6</td>
+   <td>checkpoint_timeout</td>
+   <td>5min</td>
+   <td>5min</td>
+  </tr> 
+   <tr>
+  <td>7</td>
+   <td>wal_buffers</td>
+   <td>-1</td>
+   <td>4MB</td>
+  </tr> 
+</table>
+
 ```sql
 
 postgres@Ubuntu:~$ pgbench -c 50 -j 2 -P 10 -T 60
