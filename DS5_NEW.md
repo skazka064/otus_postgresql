@@ -147,5 +147,11 @@ tps = 937.678190 (excluding connections establishing)
    <td>5min</td>
    <td>5min</td>
   </tr> 
+   <tr>
+  <td>7</td>
+   <td>wal_buffers</td>
+   <td>-1</td>
+   <td>4MB</td>
+  </tr> 
 </table>
 
