@@ -177,4 +177,29 @@ tps = 1050.774504 (including connections establishing)
 tps = 1050.811858 (excluding connections establishing)
 ```
 #### количество tps увеличилось на 10 %
+#### теперь попробуем настройки OLTP
+```sql
+
+postgres@Ubuntu:~$ pgbench -c 50 -j 2 -P 10 -T 60
+starting vacuum...end.
+progress: 10.0 s, 907.4 tps, lat 54.305 ms stddev 55.671
+progress: 20.0 s, 986.0 tps, lat 50.737 ms stddev 50.532
+progress: 30.0 s, 1007.9 tps, lat 49.667 ms stddev 50.061
+progress: 40.0 s, 992.7 tps, lat 50.346 ms stddev 49.687
+progress: 50.0 s, 952.9 tps, lat 52.467 ms stddev 55.842
+progress: 60.0 s, 734.5 tps, lat 67.910 ms stddev 65.627
+transaction type: <builtin: TPC-B (sort of)>
+scaling factor: 1
+query mode: simple
+number of clients: 50
+number of threads: 2
+duration: 60 s
+number of transactions actually processed: 55865
+latency average = 53.688 ms
+latency stddev = 54.648 ms
+tps = 928.800438 (including connections establishing)
+tps = 928.845062 (excluding connections establishing)
+
+
+```
 
