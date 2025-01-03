@@ -420,4 +420,25 @@ tps = 1037.226824 (excluding connections establishing)
    <td>4MB</td>
   </tr> 
 </table>
+```sql
+postgres@Ubuntu:~$  pgbench -c 50 -j 2 -P 10 -T 60
+starting vacuum...end.
+progress: 10.0 s, 1031.5 tps, lat 47.742 ms stddev 48.873
+progress: 20.0 s, 1056.4 tps, lat 47.426 ms stddev 49.041
+progress: 30.0 s, 1064.4 tps, lat 47.008 ms stddev 47.425
+progress: 40.0 s, 1057.5 tps, lat 47.122 ms stddev 48.080
+progress: 50.0 s, 1053.9 tps, lat 47.493 ms stddev 51.148
+progress: 60.0 s, 1044.4 tps, lat 47.981 ms stddev 48.937
+transaction type: <builtin: TPC-B (sort of)>
+scaling factor: 1
+query mode: simple
+number of clients: 50
+number of threads: 2
+duration: 60 s
+number of transactions actually processed: 63131
+latency average = 47.499 ms
+latency stddev = 48.944 ms
+tps = 1049.879119 (including connections establishing)
+tps = 1049.931302 (excluding connections establishing)
 
+```
