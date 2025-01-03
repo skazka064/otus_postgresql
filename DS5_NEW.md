@@ -170,6 +170,12 @@ tps = 937.678190 (excluding connections establishing)
    <td>200</td>
   <td>1</td>
   </tr> 
+  <tr>
+ <td>9</td>
+   <td>maintenance_work_mem</td>
+   <td>205МБ</td>
+  <td>64МБ</td>
+  </tr> 
 </table>
 
 ```sql
@@ -257,6 +263,13 @@ tps = 1050.811858 (excluding connections establishing)
     <td>200</td>
     <td>1</td>
   </tr>
+   <tr>
+ <td>9</td>
+   <td>maintenance_work_mem</td>
+   <td>205МБ</td>
+    <td>205МБ</td>
+  <td>64МБ</td>
+  </tr> 
 </table>
 
 ```sql
@@ -350,12 +363,19 @@ tps = 1037.126195 (excluding connections establishing)
  <tr>
  <td>8</td>
    <td>effective_io_concurrency</td>
-   
    <td>200</td>
     <td>200</td>
     <td>200</td>
     <td>1</td>
   </tr>
+  <tr>
+ <td>9</td>
+   <td>maintenance_work_mem</td>
+   <td>205МБ</td>
+    <td>205МБ</td>
+   <td>205МБ</td>
+  <td>64МБ</td>
+  </tr> 
 </table>
 
 ```sql
@@ -460,6 +480,15 @@ tps = 1037.226824 (excluding connections establishing)
     <td>200</td>
     <td>200</td>
     <td>1</td>
+  </tr> 
+  <tr>
+ <td>9</td>
+   <td>maintenance_work_mem</td>
+   <td>102МБ</td>
+   <td>205МБ</td>
+    <td>205МБ</td>
+   <td>205МБ</td>
+  <td>64МБ</td>
   </tr> 
 </table>
 
