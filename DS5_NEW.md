@@ -109,7 +109,7 @@ tps = 937.678190 (excluding connections establishing)
 <table>
  <th>Num</th>
  <th>Значение</th>
-  <th>NEW</th>
+  <th>WEB</th>
  <th>DEFAULT</th>
   <tr>
    <td>1</td>
@@ -181,7 +181,7 @@ tps = 1050.811858 (excluding connections establishing)
 <table>
  <th>Num</th>
  <th>Значение</th>
-  <th>NEW</th>
+  <th>OLTP</th>
  <th>WEB</th>
  <th>DEFAULT</th>
   <tr>
@@ -238,24 +238,111 @@ tps = 1050.811858 (excluding connections establishing)
 ```sql
 postgres@Ubuntu:~$  pgbench -c 50 -j 2 -P 10 -T 60
 starting vacuum...end.
-progress: 10.0 s, 1059.6 tps, lat 46.626 ms stddev 50.903
-progress: 20.0 s, 691.3 tps, lat 72.126 ms stddev 81.309
-progress: 30.0 s, 863.6 tps, lat 58.004 ms stddev 66.803
-progress: 40.0 s, 805.3 tps, lat 62.058 ms stddev 70.010
-progress: 50.0 s, 933.1 tps, lat 53.747 ms stddev 60.760
-progress: 60.0 s, 957.1 tps, lat 52.101 ms stddev 59.287
+progress: 10.0 s, 1010.9 tps, lat 48.905 ms stddev 50.710
+progress: 20.0 s, 1055.6 tps, lat 47.351 ms stddev 49.515
+progress: 30.0 s, 1056.1 tps, lat 47.287 ms stddev 49.398
+progress: 40.0 s, 1068.7 tps, lat 46.753 ms stddev 48.998
+progress: 50.0 s, 973.0 tps, lat 51.433 ms stddev 52.827
+progress: 60.0 s, 1066.7 tps, lat 46.873 ms stddev 49.806
 transaction type: <builtin: TPC-B (sort of)>
 scaling factor: 1
 query mode: simple
 number of clients: 50
 number of threads: 2
 duration: 60 s
-number of transactions actually processed: 53150
-latency average = 56.443 ms
-latency stddev = 64.832 ms
-tps = 884.029625 (including connections establishing)
-tps = 884.058544 (excluding connections establishing)
+number of transactions actually processed: 62360
+latency average = 48.092 ms
+latency stddev = 50.248 ms
+tps = 1037.078383 (including connections establishing)
+tps = 1037.126195 (excluding connections establishing)
 
 ```
-#### количество tps уменьшилось на 6% от дефолтных и 16% от предыдущих (WEB)
-#### от предыдущих настроек текущие настройки отличаются только work_mem, причем он больше
+#### количество tps уменьшилось 1% от предыдущих (WEB)
+#### от предыдущих настроек текущие настройки отличаются только work_mem, причем здесь мы его увеличили. Но в документации сказано, что его слишком сильно нельзя увеличивать. возможно результаты стали хуже из-за увеличения work_mem
+#### теперь попробуем DWH настройки
+<table>
+ <th>Num</th>
+ <th>Значение</th>
+  <th>DWH</th>
+ <th>WEB</th>
+ <th>OLTP</th>
+ <th>DEFAULT</th>
+  <tr>
+   <td>1</td>
+   <td>shared_buffers</td>
+    <td>1GB</td>
+    <td>1GB</td>
+    <td>1GB</td>
+    <td>128MB</td>
+  </tr>
+   <tr>
+     <td>2</td>
+   <td>work_mem</td>
+   <td>20MB</td>
+   <td>14MB</td>
+   <td>10MB</td>
+   <td>4MB</td>
+  </tr>
+ <tr>
+   <td>3</td>
+   <td>effective_cache_size</td>
+   <td>3GB</td>
+   <td>3GB</td>
+   <td>3GB</td>
+   <td>4GB</td>
+  </tr> 
+   <tr>
+     <td>4</td>
+   <td>max_connections</td>
+    <td>100</td>
+    <td>100</td>
+   <td>100</td>
+   <td>100</td>
+  </tr> 
+ <tr>
+  <td>5</td>
+   <td>max_wal_size</td>
+   <td>3GB</td>
+   <td>3GB</td>
+   <td>3GB</td>
+   <td>1GB</td>
+  </tr> 
+   <tr>
+  <td>6</td>
+   <td>checkpoint_timeout</td>
+    <td>5min</td>
+    <td>5min</td>
+   <td>5min</td>
+   <td>5min</td>
+  </tr> 
+   <tr>
+  <td>7</td>
+   <td>wal_buffers</td>
+   <td>-1</td>
+    <td>-1</td>
+    <td>-1</td>
+   <td>4MB</td>
+  </tr> 
+</table>
+```sql
+postgres@Ubuntu:~$  pgbench -c 50 -j 2 -P 10 -T 60
+starting vacuum...end.
+progress: 10.0 s, 1034.1 tps, lat 47.643 ms stddev 50.625
+progress: 20.0 s, 1057.5 tps, lat 47.324 ms stddev 47.194
+progress: 30.0 s, 1055.4 tps, lat 47.435 ms stddev 47.505
+progress: 40.0 s, 1041.1 tps, lat 48.013 ms stddev 49.038
+progress: 50.0 s, 989.6 tps, lat 50.475 ms stddev 53.037
+progress: 60.0 s, 1052.8 tps, lat 47.427 ms stddev 49.623
+transaction type: <builtin: TPC-B (sort of)>
+scaling factor: 1
+query mode: simple
+number of clients: 50
+number of threads: 2
+duration: 60 s
+number of transactions actually processed: 62355
+latency average = 48.079 ms
+latency stddev = 49.568 ms
+tps = 1037.173264 (including connections establishing)
+tps = 1037.226824 (excluding connections establishing)
+```
+#### результаты почти такие же как и OLTP
