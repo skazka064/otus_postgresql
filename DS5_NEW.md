@@ -420,6 +420,7 @@ tps = 1037.226824 (excluding connections establishing)
    <td>4MB</td>
   </tr> 
 </table>
+
 ```sql
 postgres@Ubuntu:~$  pgbench -c 50 -j 2 -P 10 -T 60
 starting vacuum...end.
@@ -440,5 +441,4 @@ latency average = 47.499 ms
 latency stddev = 48.944 ms
 tps = 1049.879119 (including connections establishing)
 tps = 1049.931302 (excluding connections establishing)
-
 ```
