@@ -516,3 +516,8 @@ tps = 1049.931302 (excluding connections establishing)
 ## ВЫВОД
 ##
 ## тестирование с помощью  sysbench-tpcc
+#### установил sysbench
+```bash
+curl -s https://packagecloud.io/install/repositories/akopytov/sysbench/script.deb.sh | sudo bash
+sudo apt -y install sysbench
+```
