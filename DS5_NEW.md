@@ -134,16 +134,15 @@ tps = 937.678190 (excluding connections establishing)
    <td>max_connections</td>
    <td>100</td>
    <td>100</td>
-  </tr>
- 
+  </tr> 
  <tr>
-  td>5</td>
+  <td>5</td>
    <td>max_wal_size</td>
    <td>3GB</td>
    <td>1GB</td>
   </tr> 
    <tr>
-  td>6</td>
+  <td>6</td>
    <td>checkpoint_timeout</td>
    <td>5min</td>
    <td>5min</td>
