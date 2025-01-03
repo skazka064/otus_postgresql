@@ -162,12 +162,11 @@ tps = 937.678190 (excluding connections establishing)
    <td>4MB</td>
   </tr> 
   <tr>
+ <tr>
  <td>8</td>
    <td>effective_io_concurrency</td>
- 
-    <td>1</td>
-  </tr>
- 
+  <td>1</td>
+  </tr> 
 </table>
 
 ```sql
