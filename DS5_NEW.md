@@ -66,6 +66,14 @@ postgres=# show max_wal_size ;
  1GB
 (1 row)
 ```
+#### Задаёт допустимое число параллельных операций ввода/вывода, которое говорит PostgreSQL о том, сколько операций ввода/вывода могут быть выполнены одновременно. Чем больше это число, тем больше операций ввода/вывода будет пытаться выполнить параллельно PostgreSQL в отдельном сеансе. Допустимые значения лежат в интервале от 1 до 1000, а нулевое значение отключает асинхронные запросы ввода/вывода. В настоящее время этот параметр влияет только на сканирование по битовой карте.
+```sql
+postgres=# show effective_io_concurrency ;
+ effective_io_concurrency
+--------------------------
+ 1
+(1 row)
+```
 #### максимальный размер  до которого может возрастать wal между контрольными точками в wal. Значение по умолчанию 1ГБ. Увеличение этого параметра может привести к увеличению времени, которое понадобится для восстановления после сбоя. Но позволит реже выполнять операцию сбрасывания на диск. Так же сбрасывание может выполнится и при достижении нужного времени, определенного в параметре checkpoint_timeout
 #### Найдем расположение конфиг файла через psql 
 ```sql
@@ -153,6 +161,13 @@ tps = 937.678190 (excluding connections establishing)
    <td>-1</td>
    <td>4MB</td>
   </tr> 
+  <tr>
+ <td>8</td>
+   <td>effective_io_concurrency</td>
+ 
+    <td>1</td>
+  </tr>
+ 
 </table>
 
 ```sql
@@ -233,6 +248,13 @@ tps = 1050.811858 (excluding connections establishing)
     <td>-1</td>
    <td>4MB</td>
   </tr> 
+ <tr>
+ <td>8</td>
+   <td>effective_io_concurrency</td>
+     <td>200</td>
+    <td>200</td>
+    <td>1</td>
+  </tr>
 </table>
 
 ```sql
@@ -323,6 +345,15 @@ tps = 1037.126195 (excluding connections establishing)
     <td>-1</td>
    <td>4MB</td>
   </tr> 
+ <tr>
+ <td>8</td>
+   <td>effective_io_concurrency</td>
+   
+   <td>200</td>
+    <td>200</td>
+    <td>200</td>
+    <td>1</td>
+  </tr>
 </table>
 
 ```sql
@@ -418,6 +449,15 @@ tps = 1037.226824 (excluding connections establishing)
     <td>-1</td>
     <td>-1</td>
    <td>4MB</td>
+  </tr> 
+ <tr>
+ <td>8</td>
+   <td>effective_io_concurrency</td>
+   <td>200</td>
+   <td>200</td>
+    <td>200</td>
+    <td>200</td>
+    <td>1</td>
   </tr> 
 </table>
 
