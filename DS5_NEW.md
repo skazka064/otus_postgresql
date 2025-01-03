@@ -264,8 +264,8 @@ tps = 1037.126195 (excluding connections establishing)
  <th>Num</th>
  <th>Значение</th>
   <th>DWH</th>
- <th>WEB</th>
  <th>OLTP</th>
+ <th>WEB</th>
  <th>DEFAULT</th>
   <tr>
    <td>1</td>
