@@ -105,6 +105,7 @@ tps = 937.678190 (excluding connections establishing)
 ```
 #### теперь попробуем настроить сервер на максимальную производительность. Будем это делать через pgconfig
 ### General WEB Aplication
+
 <table>
  <th>Num</th>
  <th>Значение</th>
@@ -127,8 +128,7 @@ tps = 937.678190 (excluding connections establishing)
    <td>effective_cache_size</td>
    <td>3GB</td>
    <td>4GB</td>
-  </tr>
- 
+  </tr> 
    <tr>
      <td>4</td>
    <td>max_connections</td>
@@ -154,6 +154,7 @@ tps = 937.678190 (excluding connections establishing)
    <td>4MB</td>
   </tr> 
 </table>
+
 ```sql
 postgres@Ubuntu:~$ pgbench -c 50 -j 2 -P 10 -T 60
 starting vacuum...end.
