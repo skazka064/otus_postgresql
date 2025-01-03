@@ -513,3 +513,6 @@ latency stddev = 48.944 ms
 tps = 1049.879119 (including connections establishing)
 tps = 1049.931302 (excluding connections establishing)
 ```
+## ВЫВОД
+##
+## тестирование с помощью  sysbench-tpcc
