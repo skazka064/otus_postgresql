@@ -538,10 +538,12 @@ drwxr-xr-x 8 root root  4096 Jan  3 22:52 .git/
 root@Ubuntu:~/sysbench-tpcc#
 ```
 #### инициализировал данные и запусил тест; работать будем под пользователем postgres, база данных sbtest- ее пришлось создать; разберемся с настройками время теста=120 секунд, потоки=2, каждую секунду фиксировать статистику работы, 10 таблиц, масштаб=1(большой не стал делать, т.к. на ВМ ограничение по дисковой памяти)
+### запустим нагрузку sysbench-tpcc сначала с дефолтными настройками postgresql
 ```bash
 ./tpcc.lua --pgsql-user=postgres --pgsql-db=sbtest --time=120 --threads=2 --report-interval=1 --tables=10 --scale=1   --db-driver=pgsql prepare
 ./tpcc.lua  --pgsql-user=postgres --pgsql-db=sbtest --time=120 --threads=64 --report-interval=1 --tables=10 --scale=1 --db-driver=pgsql run
 ```
+#### на графике видно, что утилизация CPU почти 100%
 ![Иллюстрация к проекту](img/2025-01-05_16-45-23.png)
 ```bash
 SQL statistics:
