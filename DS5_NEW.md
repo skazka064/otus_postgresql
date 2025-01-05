@@ -571,6 +571,5 @@ Latency (ms):
 Threads fairness:
     events (avg/stddev):           655.6562/33.53
     execution time (avg/stddev):   120.0658/0.14
-
-
 ```
+#### 348 TPS
