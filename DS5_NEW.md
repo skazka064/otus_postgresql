@@ -576,3 +576,33 @@ Threads fairness:
     execution time (avg/stddev):   120.0658/0.14
 ```
 #### 348 TPS
+### теперь попробуем с нагрузкой WEB
+```bash
+SQL statistics:
+    queries performed:
+        read:                            646570
+        write:                           670865
+        other:                           100600
+        total:                           1418035
+    transactions:                        49551  (412.88 per sec.)
+    queries:                             1418035 (11815.62 per sec.)
+    ignored errors:                      980    (8.17 per sec.)
+    reconnects:                          0      (0.00 per sec.)
+
+General statistics:
+    total time:                          120.0120s
+    total number of events:              49551
+
+Latency (ms):
+         min:                                    0.29
+         avg:                                    4.84
+         max:                                   63.24
+         95th percentile:                       11.24
+         sum:                               239876.50
+
+Threads fairness:
+    events (avg/stddev):           24775.5000/39.50
+    execution time (avg/stddev):   119.9383/0.00
+
+
+```
