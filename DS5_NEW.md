@@ -543,3 +543,32 @@ root@Ubuntu:~/sysbench-tpcc#
 ./tpcc.lua  --pgsql-user=postgres --pgsql-db=sbtest --time=120 --threads=64 --report-interval=1 --tables=10 --scale=1 --db-driver=pgsql run
 ```
 ![Иллюстрация к проекту](img/2025-01-05_16-45-23.png)
+```bash
+SQL statistics:
+    queries performed:
+        read:                            629619
+        write:                           645305
+        other:                           134852
+        total:                           1409776
+    transactions:                        41962  (348.70 per sec.)
+    queries:                             1409776 (11715.20 per sec.)
+    ignored errors:                      25640  (213.07 per sec.)
+    reconnects:                          0      (0.00 per sec.)
+
+General statistics:
+    total time:                          120.3354s
+    total number of events:              41962
+
+Latency (ms):
+         min:                                    0.48
+         avg:                                  183.12
+         max:                                 2477.64
+         95th percentile:                      634.66
+         sum:                              7684214.20
+
+Threads fairness:
+    events (avg/stddev):           655.6562/33.53
+    execution time (avg/stddev):   120.0658/0.14
+
+
+```
