@@ -542,3 +542,4 @@ root@Ubuntu:~/sysbench-tpcc#
 ./tpcc.lua --pgsql-user=postgres --pgsql-db=sbtest --time=120 --threads=2 --report-interval=1 --tables=10 --scale=1   --db-driver=pgsql prepare
 ./tpcc.lua  --pgsql-user=postgres --pgsql-db=sbtest --time=120 --threads=64 --report-interval=1 --tables=10 --scale=1 --db-driver=pgsql run
 ```
+![Иллюстрация к проекту](img/2024-12-23_10-58-32.png)
