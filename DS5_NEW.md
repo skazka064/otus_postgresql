@@ -537,7 +537,7 @@ drwxr-xr-x 8 root root  4096 Jan  3 22:52 .git/
 -rw-r--r-- 1 root root  1369 Jan  3 22:52 tpcc-scm-1.rockspec
 root@Ubuntu:~/sysbench-tpcc#
 ```
-#### инициализировал данные и запусил тест
+#### инициализировал данные и запусил тест; работать будем под пользователем postgres, база данных sbtest- ее пришлось создать; разберемся с настройками время теста=120 секунд, потоки=2, каждую секунду фиксировать статистику работы, 10 таблиц, масштаб=1(большой не стал делать, т.к. на ВМ ограничение по дисковой памяти)
 ```bash
 ./tpcc.lua --pgsql-user=postgres --pgsql-db=sbtest --time=120 --threads=2 --report-interval=1 --tables=10 --scale=10 --use_fk=0  --trx_level=RC --db-driver=pgsql prepare
 ./tpcc.lua  --pgsql-user=postgres --pgsql-db=sbtest --time=300 --threads=64 --report-interval=1 --tables=10 --scale=100 --db-driver=pgsql run
