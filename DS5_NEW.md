@@ -541,7 +541,7 @@ root@Ubuntu:~/sysbench-tpcc#
 ## Запустим нагрузку sysbench-tpcc сначала с дефолтными настройками postgresql
 ```bash
 ./tpcc.lua --pgsql-user=postgres --pgsql-db=sbtest --time=120 --threads=2 --report-interval=1 --tables=10 --scale=1   --db-driver=pgsql prepare
-./tpcc.lua  --pgsql-user=postgres --pgsql-db=sbtest --time=120 --threads=64 --report-interval=1 --tables=10 --scale=1 --db-driver=pgsql run
+./tpcc.lua  --pgsql-user=postgres --pgsql-db=sbtest --time=120 --threads=90 --report-interval=1 --tables=10 --scale=1 --db-driver=pgsql run
 ```
 #### на графике видно, что утилизация CPU почти 100%
 ![Иллюстрация к проекту](img/2025-01-05_16-45-23.png)
