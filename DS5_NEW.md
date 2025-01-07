@@ -515,7 +515,7 @@ tps = 1049.931302 (excluding connections establishing)
 ```
 ## ВЫВОД
 ## т.к. нагрузка у нас ближе к web то соответственно ее параметры подошли больше всего
-1. work_mem
+* work_mem
 ## тестирование с помощью  sysbench-tpcc
 #### установил sysbench
 ```bash
