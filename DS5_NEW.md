@@ -516,6 +516,8 @@ tps = 1049.931302 (excluding connections establishing)
 ## ВЫВОД
 ## т.к. нагрузка у нас ближе к web то соответственно ее параметры подошли больше всего
 * work_mem
+  - Используется для сортировок, построения hash таблиц.
+* maintenance_work_mem
 ## тестирование с помощью  sysbench-tpcc
 #### установил sysbench
 ```bash
