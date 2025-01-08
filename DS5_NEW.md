@@ -558,6 +558,35 @@ root@Ubuntu:~/sysbench-tpcc#
 ```bash
 SQL statistics:
     queries performed:
+        read:                            545494
+        write:                           555836
+        other:                           126422
+        total:                           1227752
+    transactions:                        35215  (291.47 per sec.)
+    queries:                             1227752 (10162.07 per sec.)
+    ignored errors:                      28081  (232.43 per sec.)
+    reconnects:                          0      (0.00 per sec.)
+
+General statistics:
+    total time:                          120.8150s
+    total number of events:              35215
+
+Latency (ms):
+         min:                                    0.58
+         avg:                                  307.64
+         max:                                 3291.91
+         95th percentile:                      995.51
+         sum:                             10833545.77
+
+Threads fairness:
+    events (avg/stddev):           391.2778/23.63
+    execution time (avg/stddev):   120.3727/0.25
+```
+#### 
+### теперь попробуем с нагрузкой WEB
+```bash
+SQL statistics:
+    queries performed:
         read:                            601872
         write:                           613871
         other:                           137368
@@ -581,38 +610,6 @@ Latency (ms):
 Threads fairness:
     events (avg/stddev):           428.5667/21.73
     execution time (avg/stddev):   120.2204/0.16
-
 ```
-#### 348 TPS
-### теперь попробуем с нагрузкой WEB
-```bash
-SQL statistics:
-    queries performed:
-        read:                            646570
-        write:                           670865
-        other:                           100600
-        total:                           1418035
-    transactions:                        49551  (412.88 per sec.)
-    queries:                             1418035 (11815.62 per sec.)
-    ignored errors:                      980    (8.17 per sec.)
-    reconnects:                          0      (0.00 per sec.)
-
-General statistics:
-    total time:                          120.0120s
-    total number of events:              49551
-
-Latency (ms):
-         min:                                    0.29
-         avg:                                    4.84
-         max:                                   63.24
-         95th percentile:                       11.24
-         sum:                               239876.50
-
-Threads fairness:
-    events (avg/stddev):           24775.5000/39.50
-    execution time (avg/stddev):   119.9383/0.00
-
-
-```
-### TPS 412 
-### Результат увеличился от дефолтных настоек на 16%
+### 
+###
