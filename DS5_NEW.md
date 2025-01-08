@@ -613,6 +613,7 @@ Threads fairness:
     execution time (avg/stddev):   120.2204/0.16
 ```
 ### настройки WEB + 10GB work_mem
+```bash
 SQL statistics:
     queries performed:
         read:                            778806
@@ -638,5 +639,5 @@ Latency (ms):
 Threads fairness:
     events (avg/stddev):           558.6778/31.54
     execution time (avg/stddev):   120.2452/0.37
-
+```
 ###
