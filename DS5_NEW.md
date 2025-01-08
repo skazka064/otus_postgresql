@@ -554,33 +554,34 @@ root@Ubuntu:~/sysbench-tpcc#
 #### если с CPU и MEM более менее понятно, то SysLoad это метрика рассчитывается по формуле  scalar(node_load1)*100 / count(node_cpu_seconds_total(instanse=node,job=$job)) by (cpu) где - node_load1, node_load5 и node_load15 представляют средние значения нагрузки за 1, 5 и 15 минут. Эта метрика является измерительной и уже усреднена. Как автономная метрика она несколько бесполезна, если знать, сколько процессоров у вашего узла. Среднее значение нагрузки 10 — это хорошо или плохо? Это зависит от обстоятельств. Если мы разделим среднее значение нагрузки на количество процессоров в  кластере, то получим приблизительную оценку насыщенности процессоров нашей системы.
 
 
-#### статистика работы программы
+#### статистика работы программы с дефолтными настройками
 ```bash
 SQL statistics:
     queries performed:
-        read:                            545494
-        write:                           555836
-        other:                           126422
-        total:                           1227752
-    transactions:                        35215  (291.47 per sec.)
-    queries:                             1227752 (10162.07 per sec.)
-    ignored errors:                      28081  (232.43 per sec.)
+        read:                            601872
+        write:                           613871
+        other:                           137368
+        total:                           1353111
+    transactions:                        38571  (320.07 per sec.)
+    queries:                             1353111 (11228.52 per sec.)
+    ignored errors:                      30244  (250.97 per sec.)
     reconnects:                          0      (0.00 per sec.)
 
 General statistics:
-    total time:                          120.8150s
-    total number of events:              35215
+    total time:                          120.5038s
+    total number of events:              38571
 
 Latency (ms):
-         min:                                    0.58
-         avg:                                  307.64
-         max:                                 3291.91
-         95th percentile:                      995.51
-         sum:                             10833545.77
+         min:                                    0.70
+         avg:                                  280.52
+         max:                                 3301.37
+         95th percentile:                      909.80
+         sum:                             10819835.64
 
 Threads fairness:
-    events (avg/stddev):           391.2778/23.63
-    execution time (avg/stddev):   120.3727/0.25
+    events (avg/stddev):           428.5667/21.73
+    execution time (avg/stddev):   120.2204/0.16
+
 ```
 #### 348 TPS
 ### теперь попробуем с нагрузкой WEB
