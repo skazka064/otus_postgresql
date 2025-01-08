@@ -592,7 +592,7 @@ Threads fairness:
     execution time (avg/stddev):   120.3727/0.25
 ```
 #### 
-### теперь попробуем с нагрузкой WEB
+### статистика работы нагрузки с настройками WEB
 ```bash
 SQL statistics:
     queries performed:
@@ -620,7 +620,7 @@ Threads fairness:
     events (avg/stddev):           428.5667/21.73
     execution time (avg/stddev):   120.2204/0.16
 ```
-### настройки WEB + 10GB work_mem
+### статистика работы нагрузки с настройками WEB + 10GB work_mem
 ```bash
 SQL statistics:
     queries performed:
@@ -650,3 +650,32 @@ Threads fairness:
 ```
 #### с work_mem=10GB результат улучшился. однако следует заметить, что max_connections=100, а мы запускали тест с 90 пользователями, поэтому памяти хватило. 
 ### однако проверим гипотезу, и увеличим число max_conn до 1500 и соответственно  в настройках нагрузки 
+```bash
+SQL statistics:
+    queries performed:
+        read:                            589901
+        write:                           576330
+        other:                           208602
+        total:                           1374833
+    transactions:                        32519  (254.48 per sec.)
+    queries:                             1374833 (10759.00 per sec.)
+    ignored errors:                      70993  (555.57 per sec.)
+    reconnects:                          0      (0.00 per sec.)
+
+General statistics:
+    total time:                          127.7817s
+    total number of events:              32519
+
+Latency (ms):
+         min:                                    0.54
+         avg:                                 3790.74
+         max:                                49559.58
+         95th percentile:                    13308.98
+         sum:                            123270999.65
+
+Threads fairness:
+    events (avg/stddev):           32.5190/7.11
+    execution time (avg/stddev):   123.2710/2.18
+
+```
+#### Предположения оправдались. Как только мы запустили больше пользователей , сразу увеличилась задержка, уменьшились TPS. И на графике загрузки железа можно увидеть начало использование файла подкачки. Тест длился две минуты, но если увеличить время теста, то использование свопа тоже увеличится, и соответственно результаты работы БД ухудшатся. Вывод: перестало хватать памяти на всех пользователей, из-за слишком большого work_mem, не соответствующего аппаратной структуре железа. 
