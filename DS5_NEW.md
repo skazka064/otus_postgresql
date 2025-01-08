@@ -612,5 +612,31 @@ Threads fairness:
     events (avg/stddev):           428.5667/21.73
     execution time (avg/stddev):   120.2204/0.16
 ```
-### 
+### настройки WEB + 10GB work_mem
+SQL statistics:
+    queries performed:
+        read:                            778806
+        write:                           796075
+        other:                           174604
+        total:                           1749485
+    transactions:                        50281  (415.43 per sec.)
+    queries:                             1749485 (14454.59 per sec.)
+    ignored errors:                      37211  (307.44 per sec.)
+    reconnects:                          0      (0.00 per sec.)
+
+General statistics:
+    total time:                          121.0307s
+    total number of events:              50281
+
+Latency (ms):
+         min:                                    0.50
+         avg:                                  215.23
+         max:                                 3206.07
+         95th percentile:                      759.88
+         sum:                             10822068.68
+
+Threads fairness:
+    events (avg/stddev):           558.6778/31.54
+    execution time (avg/stddev):   120.2452/0.37
+
 ###
