@@ -584,7 +584,8 @@ root@Ubuntu:~/sysbench-tpcc#
 ./tpcc.lua --pgsql-user=postgres --pgsql-db=sbtest --time=120 --threads=2 --report-interval=1 --tables=10 --scale=1   --db-driver=pgsql prepare
 ./tpcc.lua  --pgsql-user=postgres --pgsql-db=sbtest --time=120 --threads=90 --report-interval=1 --tables=10 --scale=1 --db-driver=pgsql run
 ```
-#### посмотрим общую утилизацию до подачи нагрузки
+## УТИЛИЗАЦИЯ РЕСУРСОВ
+#### До подачи нагрузки
 ![Иллюстрация к проекту](img/2025-01-08_11-07-15.png)
 #### DEFAULT
 ![Иллюстрация к проекту](img/2025-01-08_11-22-39.png)
