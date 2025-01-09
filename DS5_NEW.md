@@ -754,3 +754,5 @@ Threads fairness:
     execution time (avg/stddev):   120.8870/0.53
 
 ```
+* Вывод_3
+  - TPS упал до уровня дефолтных настроек
