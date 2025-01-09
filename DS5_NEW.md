@@ -726,3 +726,32 @@ Threads fairness:
   -  Перестало хватать памяти на всех пользователей, из-за слишком большого work_mem, не соответствующего аппаратной структуре железа.
   -  Однако, стоит заметить, что при значительном увеличении work_mem, скорость работы уменьшилась незначительно.
   -  Проанализировав рабочую нагрузку, произведеную sysbench-tpcc, я с некоторым удивлением заметил, что work_mem здесь практически не играет никакой роли, учитывая выполненные запросы.
+### посмотрим статистику нагрузки с effective_io_concurrency =max
+```bash
+SQL statistics:
+    queries performed:
+        read:                            550315
+        write:                           560709
+        other:                           127694
+        total:                           1238718
+    transactions:                        35707  (293.30 per sec.)
+    queries:                             1238718 (10174.90 per sec.)
+    ignored errors:                      28244  (232.00 per sec.)
+    reconnects:                          0      (0.00 per sec.)
+
+General statistics:
+    total time:                          121.7400s
+    total number of events:              35707
+
+Latency (ms):
+         min:                                    0.60
+         avg:                                  304.70
+         max:                                 5527.45
+         95th percentile:                     1013.60
+         sum:                             10879829.17
+
+Threads fairness:
+    events (avg/stddev):           396.7444/20.12
+    execution time (avg/stddev):   120.8870/0.53
+
+```
