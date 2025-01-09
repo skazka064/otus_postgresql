@@ -179,7 +179,9 @@ tps = 937.678190 (excluding connections establishing)
    <td>maintenance_work_mem</td>
    <td>205МБ</td>
   <td>64МБ</td>
-    <td>9</td>
+  </tr>
+<tr>
+    <td>10</td>
    <td>random_page_cost</td>
    <td>4</td>
   <td>1.1</td>
