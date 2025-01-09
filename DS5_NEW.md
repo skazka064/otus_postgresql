@@ -280,6 +280,13 @@ tps = 1050.811858 (excluding connections establishing)
     <td>205МБ</td>
   <td>64МБ</td>
   </tr> 
+ <tr>
+    <td>10</td>
+   <td>random_page_cost</td>
+   <td>4</td>
+  <td>1.1</td>
+  <td>1.1</td>
+  </tr> 
 </table>
 
 ```sql
@@ -385,6 +392,14 @@ tps = 1037.126195 (excluding connections establishing)
     <td>205МБ</td>
    <td>205МБ</td>
   <td>64МБ</td>
+  </tr> 
+  <tr>
+    <td>10</td>
+   <td>random_page_cost</td>
+   <td>4</td>
+  <td>1.1</td>
+  <td>1.1</td>
+   <td>1.1</td>
   </tr> 
 </table>
 
@@ -499,6 +514,15 @@ tps = 1037.226824 (excluding connections establishing)
     <td>205МБ</td>
    <td>205МБ</td>
   <td>64МБ</td>
+  </tr> 
+  <tr>
+    <td>10</td>
+   <td>random_page_cost</td>
+   <td>4</td>
+  <td>1.1</td>
+  <td>1.1</td>
+   <td>1.1</td>
+    <td>1.1</td>
   </tr> 
 </table>
 
