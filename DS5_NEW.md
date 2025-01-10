@@ -729,30 +729,30 @@ Threads fairness:
 ```bash
 SQL statistics:
     queries performed:
-        read:                            550315
-        write:                           560709
-        other:                           127694
-        total:                           1238718
-    transactions:                        35707  (293.30 per sec.)
-    queries:                             1238718 (10174.90 per sec.)
-    ignored errors:                      28244  (232.00 per sec.)
+        read:                            601872
+        write:                           613871
+        other:                           137368
+        total:                           1353111
+    transactions:                        38971  (321.07 per sec.)
+    queries:                             1353111 (11228.52 per sec.)
+    ignored errors:                      30244  (250.97 per sec.)
     reconnects:                          0      (0.00 per sec.)
 
 General statistics:
-    total time:                          121.7400s
-    total number of events:              35707
+    total time:                          120.5038s
+    total number of events:              38571
 
 Latency (ms):
-         min:                                    0.60
-         avg:                                  304.70
-         max:                                 5527.45
-         95th percentile:                     1013.60
-         sum:                             10879829.17
+         min:                                    0.70
+         avg:                                  280.52
+         max:                                 3301.37
+         95th percentile:                      909.80
+         sum:                             10819835.64
 
 Threads fairness:
-    events (avg/stddev):           396.7444/20.12
-    execution time (avg/stddev):   120.8870/0.53
+    events (avg/stddev):           428.5667/21.73
+    execution time (avg/stddev):   120.2204/0.16
 
 ```
 * Вывод_3
-  - TPS упал до уровня дефолтных настроек
+  - увеличение effective_io_concurrency никак не повлияло на результаты теста. Этот параметр задаёт допустимое число параллельных операций ввода/вывода, которое говорит PostgreSQL о том, сколько операций ввода/вывода могут быть выполнены одновременно. Чем больше это число, тем больше операций ввода/вывода будет пытаться выполнить параллельно PostgreSQL в отдельном сеансе. Допустимые значения лежат в интервале от 1 до 1000, а нулевое значение отключает асинхронные запросы ввода/вывода. В настоящее время этот параметр влияет только на сканирование по битовой карте. Мы подтвердили эту гипотезу
