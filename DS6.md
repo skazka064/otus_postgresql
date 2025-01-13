@@ -10,7 +10,7 @@ postgres=# show log_lock_waits ;
 (1 row)
 
 ```
-#### Посмотрим как сейчас настроен сброс информации о блдкировках и видим, что 10 сек.
+#### Посмотрим как сейчас настроен сброс информации о блокировках и видим, что раз в 10 сек.
 ```sql
 postgres=# show log_min_duration_statement ;
  log_min_duration_statement
