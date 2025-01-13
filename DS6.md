@@ -18,3 +18,14 @@ postgres=# show log_min_duration_statement ;
  10s
 (1 row)
 ```
+
+#### Проверим, через какое время срабатывает освобождение от взаимоблокировок
+#### Через 1сек
+```sql
+locks=# show deadlock_timeout ;
+ deadlock_timeout
+------------------
+ 1s
+(1 row)
+
+```
