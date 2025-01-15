@@ -90,4 +90,4 @@ postgres@Ubuntu:~$ tail -n 7  /var/lib/postgresql/12/main/log/postgresql-2025-01
 2025-01-15 12:59:58.760 MSK,,,1305,,678776b3.519,4,,2025-01-15 11:49:55 MSK,,0,LOG,00000,"checkpoint complete: wrote 1 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.105 s, sync=0.004 s, total=0.129 s; sync files=1, longest=0.004 s, average=0.004 s; distance=1 kB, estimate=1 kB",,,,,,,,,""
 
 ```
-![Иллюстрация к проекту](img/2025-01-15_13-02-19.png)
+![Иллюстрация к проекту](img/2025-01-15_13-06-56.png)
