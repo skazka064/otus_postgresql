@@ -92,4 +92,122 @@ postgres@Ubuntu:~$ tail -n 7  /var/lib/postgresql/12/main/log/postgresql-2025-01
 ```
 ![Иллюстрация к проекту](img/2025-01-15_13-06-56.png)
 
-### Смоделируйте ситуацию обновления одной и той же строки тремя командами UPDATE в разных сеансах. Изучите возникшие блокировки в представлении pg_locks и убедитесь, что все они понятны. Пришлите список блокировок и объясните, что значит каждая.
+### Смоделируйте ситуацию обновления одной и той же строки тремя командами UPDATE в разных сеансах. 
+#### для этого создадим таблицу 
+#### заполним ее данными
+```sql
+locks=# create table test_no_pk(acc_no integer, amount numeric);
+CREATE TABLE
+locks=# INSERT INTO test_no_pk VALUES (1,1000.00),(2,2000.00),(3,3000.00);
+INSERT 0 3
+```
+#### для удобства создадим представление
+```sql
+locks=# CREATE VIEW locks AS
+locks-# SELECT pid,
+locks-#        locktype,
+locks-#        CASE locktype
+locks-#          WHEN 'relation' THEN relation::REGCLASS::text
+locks-#          WHEN 'virtualxid' THEN virtualxid::text
+locks-#          WHEN 'transactionid' THEN transactionid::text
+locks-#          WHEN 'tuple' THEN relation::REGCLASS::text||':'||tuple::text
+locks-#        END AS lockid,
+locks-#        mode,
+locks-#        granted
+locks-# FROM pg_locks;
+CREATE VIEW
+```
+#### итак, первая транзакция обновляет, и соответственно блокирует строку
+```sql
+locks=# begin;
+BEGIN
+locks=# select txid_current(), pg_backend_pid();
+ txid_current | pg_backend_pid
+--------------+----------------
+      6207436 |          18262
+(1 row)
+
+locks=# UPDATE test_no_pk SET amount = amount + 100.00 WHERE acc_no = 1;
+UPDATE 1
+
+```
+#### вторая транзакция делает то же самое
+```sql
+locks=# begin;
+BEGIN
+locks=# SELECT txid_current(), pg_backend_pid();
+ txid_current | pg_backend_pid
+--------------+----------------
+      6207437 |          18264
+(1 row)
+
+locks=#  UPDATE test_no_pk SET amount = amount + 100.00 WHERE acc_no = 1;
+```
+#### И третья
+```sql
+locks=# begin;
+BEGIN
+locks=# SELECT txid_current(), pg_backend_pid();
+ txid_current | pg_backend_pid
+--------------+----------------
+      6207438 |          19055
+(1 row)
+
+locks=# UPDATE test_no_pk SET amount = amount + 100.00 WHERE acc_no = 1;
+```
+#### Блокировки для первой транзакции:
+```sql
+locks=# select * from locks where pid=18262;
+  pid  |   locktype    |              lockid               |       mode       | granted
+-------+---------------+-----------------------------------+------------------+---------
+ 18262 | relation      | pg_locks                          | AccessShareLock  | t
+ 18262 | relation      | locks                             | AccessShareLock  | t
+ 18262 | relation      | test_no_pk                        | RowExclusiveLock | t
+ 18262 | relation      | pg_class_tblspc_relfilenode_index | AccessShareLock  | t
+ 18262 | relation      | pg_class_relname_nsp_index        | AccessShareLock  | t
+ 18262 | relation      | pg_class_oid_index                | AccessShareLock  | t
+ 18262 | relation      | pg_namespace_oid_index            | AccessShareLock  | t
+ 18262 | relation      | pg_namespace_nspname_index        | AccessShareLock  | t
+ 18262 | relation      | pg_namespace                      | AccessShareLock  | t
+ 18262 | relation      | pg_class                          | AccessShareLock  | t
+ 18262 | relation      | accounts_acc_no_idx1              | RowExclusiveLock | t
+ 18262 | relation      | accounts_acc_no_idx               | RowExclusiveLock | t
+ 18262 | relation      | accounts_pkey                     | RowExclusiveLock | t
+ 18262 | relation      | accounts                          | RowExclusiveLock | t
+ 18262 | virtualxid    | 7/22                              | ExclusiveLock    | t
+ 18262 | transactionid | 6207436                           | ExclusiveLock    | t
+(16 rows)
+```
+#### Блокировки для второй транзакции
+```sql
+locks=# select * from locks where pid=18264;
+  pid  |   locktype    |    lockid    |       mode       | granted
+-------+---------------+--------------+------------------+---------
+ 18264 | relation      | test_no_pk   | RowExclusiveLock | t
+ 18264 | virtualxid    | 5/216        | ExclusiveLock    | t
+ 18264 | tuple         | test_no_pk:1 | ExclusiveLock    | t
+ 18264 | transactionid | 6207437      | ExclusiveLock    | t
+ 18264 | transactionid | 6207436      | ShareLock        | f
+(5 rows)
+
+```
+
+#### Блокировки для третей транзакции
+```sql
+locks=# select * from locks where pid=19055;
+  pid  |   locktype    |              lockid               |       mode       | granted
+-------+---------------+-----------------------------------+------------------+---------
+ 19055 | relation      | test_no_pk                        | RowExclusiveLock | t
+ 19055 | relation      | pg_class_tblspc_relfilenode_index | AccessShareLock  | t
+ 19055 | relation      | pg_class_relname_nsp_index        | AccessShareLock  | t
+ 19055 | relation      | pg_class_oid_index                | AccessShareLock  | t
+ 19055 | relation      | pg_namespace_oid_index            | AccessShareLock  | t
+ 19055 | relation      | pg_namespace_nspname_index        | AccessShareLock  | t
+ 19055 | relation      | pg_namespace                      | AccessShareLock  | t
+ 19055 | relation      | pg_class                          | AccessShareLock  | t
+ 19055 | virtualxid    | 8/4                               | ExclusiveLock    | t
+ 19055 | tuple         | test_no_pk:1                      | ExclusiveLock    | f
+ 19055 | transactionid | 6207438                           | ExclusiveLock    | t
+(11 rows)
+
+```
