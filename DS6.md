@@ -194,7 +194,9 @@ locks=# select * from locks where pid=18264;
 (5 rows)
 
 ```
-
+* Блокировки AccessShareLock отсутствуют, т.к. мы не обращались запросами на чтение
+* Транзакция ожидает получене блокировки типа transactionid в режиме ShareLock(granted=f) txid первой транзакции=6207436 здесь видно, что вторая транзакция не получила блокировку номера первой транзакции, т.к. первая транзакция еще длится
+* Появилась блокировка типа tuple для обновляемой строки
 #### Блокировки для третей транзакции
 ```sql
 locks=# select * from locks where pid=19055;
@@ -214,6 +216,7 @@ locks=# select * from locks where pid=19055;
 (11 rows)
 
 ```
+* А вот третья транзакция уже увидела, что вторая транзакция попыталась получить блокировку номера первой транзакции, и у нее не получилось, а так же она видит что вторая транзакция получила блокировку типа tuple этой же строки, и поэтому она тоже берет блокировку типа tuple этой самой строки
 #### общая картина
 ```sql
 locks=# SELECT pid, wait_event_type, wait_event, pg_blocking_pids(pid)
@@ -228,6 +231,8 @@ locks-# WHERE backend_type = 'client backend';
  19055 | Lock            | tuple         | {18264}
 (5 rows)
 ```
+* Здесь видно, что транзакция с pid 18264 заблокирована транзакцией 18262 тип transactionid
+* А транзакция с pid 19055 заблокирована транзакцией с pid 18264 тип tuple
 ```bash
 postgres@Ubuntu:~$ tail -n 7  /var/lib/postgresql/12/main/log/postgresql-2025-01-15_114953.csv
 2025-01-15 13:37:23.551 MSK,"postgres","locks",19055,"[local]",67878fbb.4a6f,3,"UPDATE waiting",2025-01-15 13:36:43 MSK,8/4,6207438,LOG,00000,"process 19055 still waiting for ExclusiveLock on tuple (0,1) of relation 189621 of database 173237 after 200.835 ms","Process holding the lock: 18264. Wait queue: 19055.",,,,,"UPDATE test_no_pk SET amount = amount + 100.00 WHERE acc_no = 1;",,,"psql"
