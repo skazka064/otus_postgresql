@@ -225,3 +225,16 @@ locks-# WHERE backend_type = 'client backend';
  19055 | Lock            | tuple         | {18264}
 (5 rows)
 ```
+```bash
+postgres@Ubuntu:~$ tail -n 7  /var/lib/postgresql/12/main/log/postgresql-2025-01-15_114953.csv
+2025-01-15 13:37:23.551 MSK,"postgres","locks",19055,"[local]",67878fbb.4a6f,3,"UPDATE waiting",2025-01-15 13:36:43 MSK,8/4,6207438,LOG,00000,"process 19055 still waiting for ExclusiveLock on tuple (0,1) of relation 189621 of database 173237 after 200.835 ms","Process holding the lock: 18264. Wait queue: 19055.",,,,,"UPDATE test_no_pk SET amount = amount + 100.00 WHERE acc_no = 1;",,,"psql"
+2025-01-15 13:45:51.840 MSK,"postgres","locks",18264,"[local]",6787861e.4758,8,"UPDATE waiting",2025-01-15 12:55:42 MSK,5/216,6207437,LOG,00000,"process 18264 acquired ShareLock on transaction 6207436 after 1253993.651 ms",,,,,"while updating tuple (0,1) in relation ""test_no_pk""","UPDATE test_no_pk SET amount = amount + 100.00 WHERE acc_no = 1;",,,"psql"
+2025-01-15 13:45:51.840 MSK,"postgres","locks",19055,"[local]",67878fbb.4a6f,4,"UPDATE waiting",2025-01-15 13:36:43 MSK,8/4,6207438,LOG,00000,"process 19055 acquired ExclusiveLock on tuple (0,1) of relation 189621 of database 173237 after 508489.910 ms",,,,,,"UPDATE test_no_pk SET amount = amount + 100.00 WHERE acc_no = 1;",,,"psql"
+2025-01-15 13:45:51.840 MSK,"postgres","locks",18264,"[local]",6787861e.4758,9,"UPDATE",2025-01-15 12:55:42 MSK,5/216,6207437,LOG,00000,"duration: 1253994.120 ms  statement: UPDATE test_no_pk SET amount = amount + 100.00 WHERE acc_no = 1;",,,,,,,,,"psql"
+2025-01-15 13:45:52.041 MSK,"postgres","locks",19055,"[local]",67878fbb.4a6f,5,"UPDATE waiting",2025-01-15 13:36:43 MSK,8/4,6207438,LOG,00000,"process 19055 still waiting for ShareLock on transaction 6207437 after 201.164 ms","Process holding the lock: 18264. Wait queue: 19055.",,,,"while rechecking updated tuple (0,4) in relation ""test_no_pk""","UPDATE test_no_pk SET amount = amount + 100.00 WHERE acc_no = 1;",,,"psql"
+2025-01-15 13:45:57.978 MSK,"postgres","locks",19055,"[local]",67878fbb.4a6f,6,"UPDATE waiting",2025-01-15 13:36:43 MSK,8/4,6207438,LOG,00000,"process 19055 acquired ShareLock on transaction 6207437 after 6137.409 ms",,,,,"while rechecking updated tuple (0,4) in relation ""test_no_pk""","UPDATE test_no_pk SET amount = amount + 100.00 WHERE acc_no = 1;",,,"psql"
+2025-01-15 13:45:57.978 MSK,"postgres","locks",19055,"[local]",67878fbb.4a6f,7,"UPDATE",2025-01-15 13:36:43 MSK,8/4,6207438,LOG,00000,"duration: 514627.989 ms  statement: UPDATE test_no_pk SET amount = amount + 100.00 WHERE acc_no = 1;",,,,,,,,,"psql"
+
+```
+
+![Иллюстрация к проекту](img/2025-01-15_13-46-38.png)
