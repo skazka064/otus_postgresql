@@ -155,6 +155,7 @@ locks=# SELECT txid_current(), pg_backend_pid();
 
 locks=# UPDATE test_no_pk SET amount = amount + 100.00 WHERE acc_no = 1;
 ```
+####  Изучите возникшие блокировки в представлении pg_locks и убедитесь, что все они понятны. Пришлите список блокировок и объясните, что значит каждая.
 #### Блокировки для первой транзакции:
 ```sql
 locks=# select * from locks where pid=18262;
