@@ -211,3 +211,17 @@ locks=# select * from locks where pid=19055;
 (11 rows)
 
 ```
+#### общая картина
+```sql
+locks=# SELECT pid, wait_event_type, wait_event, pg_blocking_pids(pid)
+locks-# FROM pg_stat_activity
+locks-# WHERE backend_type = 'client backend';
+  pid  | wait_event_type |  wait_event   | pg_blocking_pids
+-------+-----------------+---------------+------------------
+  1568 | Client          | ClientRead    | {}
+  1569 | Client          | ClientRead    | {}
+ 18264 | Lock            | transactionid | {18262}
+ 18262 |                 |               | {}
+ 19055 | Lock            | tuple         | {18264}
+(5 rows)
+```
