@@ -178,6 +178,9 @@ locks=# select * from locks where pid=18262;
  18262 | transactionid | 6207436                           | ExclusiveLock    | t
 (16 rows)
 ```
+* Тип relation для pg_locks locks pg_class pg_namespace в режиме AccessShareLock - установились на читаемые отношения
+* Тип relation для test_no_pk в режиме RowExclusiveLock - установились на изменяемую таблицу
+* Типы virtualxid transactionid в режиме ExclusiveLock - удерживаются каждой транзакцией для самой себя
 #### Блокировки для второй транзакции
 ```sql
 locks=# select * from locks where pid=18264;
