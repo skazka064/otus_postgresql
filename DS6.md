@@ -27,5 +27,16 @@ locks=# show deadlock_timeout ;
 ------------------
  1s
 (1 row)
+```
+```sql
+postgres=# alter system set deadlock_timeout ='200ms';
+ALTER SYSTEM
+postgres=# select pg_reload_conf();
+ pg_reload_conf
+----------------
+ t
+(1 row)
+
+postgres=#
 
 ```
