@@ -245,5 +245,41 @@ postgres@Ubuntu:~$ tail -n 7  /var/lib/postgresql/12/main/log/postgresql-2025-01
 2025-01-15 13:45:57.978 MSK,"postgres","locks",19055,"[local]",67878fbb.4a6f,7,"UPDATE",2025-01-15 13:36:43 MSK,8/4,6207438,LOG,00000,"duration: 514627.989 ms  statement: UPDATE test_no_pk SET amount = amount + 100.00 WHERE acc_no = 1;",,,,,,,,,"psql"
 
 ```
-
 ![Иллюстрация к проекту](img/2025-01-15_13-46-38.png)
+
+#### Воспроизведите взаимоблокировку трех транзакций. 
+```sql
+Транзакция 1
+ begin;
+ update test_no_pk set amount =amount-100 where acc_no=1;
+Транзакция 2
+begin;
+ update test_no_pk set amount =amount-100 where acc_no=2;
+Транзакция 3
+begin;
+ update test_no_pk set amount =amount-100 where acc_no=3;
+
+Транзакция 1
+update test_no_pk set amount =amount+100 where acc_no=2;
+Транзакция 2
+update test_no_pk set amount =amount+100 where acc_no=3;
+Транзакция 3
+ UPDATE test_no_pk SET amount = amount + 100.00 WHERE acc_no = 1;
+ERROR:  deadlock detected
+DETAIL:  Process 4508 waits for ShareLock on transaction 6207443; blocked by process 4496.
+Process 4496 waits for ShareLock on transaction 6207444; blocked by process 4506.
+Process 4506 waits for ShareLock on transaction 6207445; blocked by process 4508.
+HINT:  See server log for query details.
+CONTEXT:  while updating tuple (0,7) in relation "test_no_pk"
+```
+####  Можно ли разобраться в ситуации постфактум, изучая журнал сообщений?
+
+
+
+
+
+
+
+
+
+
