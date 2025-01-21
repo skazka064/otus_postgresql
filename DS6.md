@@ -300,7 +300,11 @@ Process 4506: update test_no_pk set amount =amount+100 where acc_no=3;","See ser
 2025-01-20 12:23:34.521 MSK,,,1311,,678de9e5.51f,9,,2025-01-20 09:15:01 MSK,,0,LOG,00000,"checkpoint starting: time",,,,,,,,,""
 2025-01-20 12:23:34.559 MSK,,,1311,,678de9e5.51f,10,,2025-01-20 09:15:01 MSK,,0,LOG,00000,"checkpoint complete: wrote 0 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.011 s, sync=0.001 s, total=0.039 s; sync files=0, longest=0.000 s, average=0.000 s; distance=0 kB, estimate=1 kB",,,,,,,,,""
 ```
-
+#### да, можно. мы нашли в логах deadlock detected
+```bash
+postgres@Ubuntu:~$ grep 'deadlock detected'  /var/lib/postgresql/12/main/log/postgresql-2025-01-20_091459.csv
+2025-01-20 09:42:20.796 MSK,"postgres","locks",4508,"[local]",678dec5f.119c,5,"UPDATE",2025-01-20 09:25:35 MSK,5/28,6207445,ERROR,40P01,"deadlock detected","Process 4508 waits for ShareLock on transaction 6207443; blocked by process 4496.
+```
 
 
 
