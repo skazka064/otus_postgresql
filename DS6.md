@@ -356,8 +356,30 @@ locks=# fetch cur2;
 --------+---------
       2 | 1800.00
 (1 row)
+```
+![Иллюстрация к проекту](img/2025-01-21_12-52-23.png)
 
+```bash
+2025-01-21 12:43:37.481 MSK,"postgres","postgres",26898,"[local]",678f6c49.6912,2,"authentication",2025-01-21 12:43:37 MSK,6/1,0,LOG,00000,"connection authorized: user=postgres database=postgres application_name=psql",,,,,,,,,""
+2025-01-21 12:43:43.530 MSK,,,26900,"[local]",678f6c4f.6914,1,"",2025-01-21 12:43:43 MSK,,0,LOG,00000,"connection received: host=[local]",,,,,,,,,""
+2025-01-21 12:43:43.530 MSK,"postgres","locks",26900,"[local]",678f6c4f.6914,2,"authentication",2025-01-21 12:43:43 MSK,7/1,0,LOG,00000,"connection authorized: user=postgres database=locks application_name=psql",,,,,,,,,""
+2025-01-21 12:43:43.545 MSK,"postgres","postgres",26898,"[local]",678f6c49.6912,3,"idle",2025-01-21 12:43:37 MSK,,0,LOG,00000,"disconnection: session time: 0:00:06.065 user=postgres database=postgres host=[local]",,,,,,,,,"psql"
+2025-01-21 12:43:50.140 MSK,,,26901,"[local]",678f6c56.6915,1,"",2025-01-21 12:43:50 MSK,,0,LOG,00000,"connection received: host=[local]",,,,,,,,,""
+2025-01-21 12:43:50.140 MSK,"postgres","locks",26901,"[local]",678f6c56.6915,2,"authentication",2025-01-21 12:43:50 MSK,6/3,0,LOG,00000,"connection authorized: user=postgres database=locks application_name=psql",,,,,,,,,""
+2025-01-21 12:43:50.142 MSK,"postgres","postgres",26882,"[local]",678f6c41.6902,3,"idle",2025-01-21 12:43:29 MSK,,0,LOG,00000,"disconnection: session time: 0:00:20.471 user=postgres database=postgres host=[local]",,,,,,,,,"psql"
+2025-01-21 12:48:30.449 MSK,"postgres","locks",26901,"[local]",678f6c56.6915,3,"FETCH waiting",2025-01-21 12:43:50 MSK,6/4,6207447,LOG,00000,"process 26901 still waiting for ShareLock on transaction 6207446 after 200.939 ms","Process holding the lock: 26900. Wait queue: 26901.",,,,"while locking tuple (0,12) in relation ""test_no_pk""","fetch cur2;",,,"psql"
+```
+*** 2025-01-21 12:48:35.156 MSK,"postgres","locks",26900,"[local]",678f6c4f.6914,3,"FETCH waiting",2025-01-21 12:43:43 MSK,7/2,6207446,LOG,00000,"process 26900 detected deadlock while waiting for ShareLock on transaction 6207447 after 200.180 ms","Process holding the lock: 26901. Wait queue: .",,,,"while locking tuple (0,14) in relation ""test_no_pk""","fetch cur1;",,,"psql" ***
+```bash
+2025-01-21 12:48:35.156 MSK,"postgres","locks",26900,"[local]",678f6c4f.6914,4,"FETCH",2025-01-21 12:43:43 MSK,7/2,6207446,ERROR,40P01,"deadlock detected","Process 26900 waits for ShareLock on transaction 6207447; blocked by process 26901.
+Process 26901 waits for ShareLock on transaction 6207446; blocked by process 26900.
+Process 26900: fetch cur1;
+Process 26901: fetch cur2;","See server log for query details.",,,"while locking tuple (0,14) in relation ""test_no_pk""","fetch cur1;",,,"psql"
+2025-01-21 12:48:35.156 MSK,"postgres","locks",26901,"[local]",678f6c56.6915,4,"FETCH waiting",2025-01-21 12:43:50 MSK,6/4,6207447,LOG,00000,"process 26901 acquired ShareLock on transaction 6207446 after 4908.415 ms",,,,,"while locking tuple (0,12) in relation ""test_no_pk""","fetch cur2;",,,"psql"
+2025-01-21 12:51:55.702 MSK,,,1277,,678f5efe.4fd,1,,2025-01-21 11:46:54 MSK,,0,LOG,00000,"checkpoint starting: time",,,,,,,,,""
+2025-01-21 12:51:55.840 MSK,,,1277,,678f5efe.4fd,2,,2025-01-21 11:46:54 MSK,,0,LOG,00000,"checkpoint complete: wrote 1 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.108 s, sync=0.004 s, total=0.139 s; sync files=1, longest=0.004 s, average=0.004 s; distance=1 kB, estimate=1 kB",,,,,,,,,""
 
+'''
 
 
 
