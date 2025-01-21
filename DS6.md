@@ -369,7 +369,7 @@ locks=# fetch cur2;
 2025-01-21 12:43:50.142 MSK,"postgres","postgres",26882,"[local]",678f6c41.6902,3,"idle",2025-01-21 12:43:29 MSK,,0,LOG,00000,"disconnection: session time: 0:00:20.471 user=postgres database=postgres host=[local]",,,,,,,,,"psql"
 2025-01-21 12:48:30.449 MSK,"postgres","locks",26901,"[local]",678f6c56.6915,3,"FETCH waiting",2025-01-21 12:43:50 MSK,6/4,6207447,LOG,00000,"process 26901 still waiting for ShareLock on transaction 6207446 after 200.939 ms","Process holding the lock: 26900. Wait queue: 26901.",,,,"while locking tuple (0,12) in relation ""test_no_pk""","fetch cur2;",,,"psql"
 ```
-*** 2025-01-21 12:48:35.156 MSK,"postgres","locks",26900,"[local]",678f6c4f.6914,3,"FETCH waiting",2025-01-21 12:43:43 MSK,7/2,6207446,LOG,00000,"process 26900 detected deadlock while waiting for ShareLock on transaction 6207447 after 200.180 ms","Process holding the lock: 26901. Wait queue: .",,,,"while locking tuple (0,14) in relation ""test_no_pk""","fetch cur1;",,,"psql" ***
+***___2025-01-21 12:48:35.156 MSK,"postgres","locks",26900,"[local]",678f6c4f.6914,3,"FETCH waiting",2025-01-21 12:43:43 MSK,7/2,6207446,LOG,00000,"process 26900 detected deadlock while waiting for ShareLock on transaction 6207447 after 200.180 ms","Process holding the lock: 26901. Wait queue: .",,,,"while locking tuple (0,14) in relation ""test_no_pk""","fetch cur1;",,,"psql"___***
 ```bash
 2025-01-21 12:48:35.156 MSK,"postgres","locks",26900,"[local]",678f6c4f.6914,4,"FETCH",2025-01-21 12:43:43 MSK,7/2,6207446,ERROR,40P01,"deadlock detected","Process 26900 waits for ShareLock on transaction 6207447; blocked by process 26901.
 Process 26901 waits for ShareLock on transaction 6207446; blocked by process 26900.
