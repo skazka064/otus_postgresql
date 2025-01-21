@@ -273,6 +273,7 @@ HINT:  See server log for query details.
 CONTEXT:  while updating tuple (0,7) in relation "test_no_pk"
 ```
 ####  Можно ли разобраться в ситуации постфактум, изучая журнал сообщений?
+![Иллюстрация к проекту](img/2025-01-21_12-01-56.png)
 
 
 
