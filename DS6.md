@@ -273,9 +273,33 @@ HINT:  See server log for query details.
 CONTEXT:  while updating tuple (0,7) in relation "test_no_pk"
 ```
 ####  Можно ли разобраться в ситуации постфактум, изучая журнал сообщений?
-![Иллюстрация к проекту](img/2025-01-21_12-01-56.png)
-
-
+```bash
+2025-01-20 09:41:51.713 MSK,"postgres","locks",4496,"[local]",678dec59.1190,5,"UPDATE waiting",2025-01-20 09:25:29 MSK,9/10,6207443,LOG,00000,"process 4496 still waiting for ShareLock on transaction 6207444 after 223.755 ms","Process holding the lock: 4506. Wait queue: 4496.",,,,"while updating tuple (0,9) in relation ""test_no_pk""","update test_no_pk set amount =amount+100 where acc_no=2;",,,"psql"
+2025-01-20 09:42:10.737 MSK,"postgres","locks",4506,"[local]",678dec5e.119a,3,"UPDATE waiting",2025-01-20 09:25:34 MSK,6/18,6207444,LOG,00000,"process 4506 still waiting for ShareLock on transaction 6207445 after 207.368 ms","Process holding the lock: 4508. Wait queue: 4506.",,,,"while updating tuple (0,10) in relation ""test_no_pk""","update test_no_pk set amount =amount+100 where acc_no=3;",,,"psql"
+2025-01-20 09:42:20.796 MSK,"postgres","locks",4508,"[local]",678dec5f.119c,4,"UPDATE waiting",2025-01-20 09:25:35 MSK,5/28,6207445,LOG,00000,"process 4508 detected deadlock while waiting for ShareLock on transaction 6207443 after 205.386 ms","Process holding the lock: 4496. Wait queue: .",,,,"while updating tuple (0,7) in relation ""test_no_pk""","UPDATE test_no_pk SET amount = amount + 100.00 WHERE acc_no = 1;",,,"psql"
+2025-01-20 09:42:20.796 MSK,"postgres","locks",4508,"[local]",678dec5f.119c,5,"UPDATE",2025-01-20 09:25:35 MSK,5/28,6207445,ERROR,40P01,"deadlock detected","Process 4508 waits for ShareLock on transaction 6207443; blocked by process 4496.
+Process 4496 waits for ShareLock on transaction 6207444; blocked by process 4506.
+Process 4506 waits for ShareLock on transaction 6207445; blocked by process 4508.
+Process 4508: UPDATE test_no_pk SET amount = amount + 100.00 WHERE acc_no = 1;
+Process 4496: update test_no_pk set amount =amount+100 where acc_no=2;
+Process 4506: update test_no_pk set amount =amount+100 where acc_no=3;","See server log for query details.",,,"while updating tuple (0,7) in relation ""test_no_pk""","UPDATE test_no_pk SET amount = amount + 100.00 WHERE acc_no = 1;",,,"psql"
+2025-01-20 09:42:20.796 MSK,"postgres","locks",4506,"[local]",678dec5e.119a,4,"UPDATE waiting",2025-01-20 09:25:34 MSK,6/18,6207444,LOG,00000,"process 4506 acquired ShareLock on transaction 6207445 after 10266.330 ms",,,,,"while updating tuple (0,10) in relation ""test_no_pk""","update test_no_pk set amount =amount+100 where acc_no=3;",,,"psql"
+2025-01-20 09:42:20.796 MSK,"postgres","locks",4506,"[local]",678dec5e.119a,5,"UPDATE",2025-01-20 09:25:34 MSK,6/18,6207444,LOG,00000,"duration: 10266.896 ms  statement: update test_no_pk set amount =amount+100 where acc_no=3;",,,,,,,,,"psql"
+2025-01-20 09:45:03.919 MSK,,,1311,,678de9e5.51f,5,,2025-01-20 09:15:01 MSK,,0,LOG,00000,"checkpoint starting: time",,,,,,,,,""
+2025-01-20 09:45:04.058 MSK,,,1311,,678de9e5.51f,6,,2025-01-20 09:15:01 MSK,,0,LOG,00000,"checkpoint complete: wrote 1 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.109 s, sync=0.004 s, total=0.139 s; sync files=1, longest=0.004 s, average=0.004 s; distance=1 kB, estimate=1 kB",,,,,,,,,""
+2025-01-20 09:49:02.749 MSK,"postgres","locks",4496,"[local]",678dec59.1190,6,"UPDATE waiting",2025-01-20 09:25:29 MSK,9/10,6207443,LOG,00000,"process 4496 acquired ShareLock on transaction 6207444 after 431259.200 ms",,,,,"while updating tuple (0,9) in relation ""test_no_pk""","update test_no_pk set amount =amount+100 where acc_no=2;",,,"psql"
+2025-01-20 09:49:02.749 MSK,"postgres","locks",4496,"[local]",678dec59.1190,7,"UPDATE",2025-01-20 09:25:29 MSK,9/10,6207443,LOG,00000,"duration: 431259.656 ms  statement: update test_no_pk set amount =amount+100 where acc_no=2;",,,,,,,,,"psql"
+2025-01-20 09:49:10.177 MSK,"postgres","locks",4507,"[local]",678dec5f.119b,3,"COMMIT",2025-01-20 09:25:35 MSK,7/6,0,WARNING,25P01,"there is no transaction in progress",,,,,,,,,"psql"
+2025-01-20 09:50:03.119 MSK,,,1311,,678de9e5.51f,7,,2025-01-20 09:15:01 MSK,,0,LOG,00000,"checkpoint starting: time",,,,,,,,,""
+2025-01-20 09:50:03.268 MSK,,,1311,,678de9e5.51f,8,,2025-01-20 09:15:01 MSK,,0,LOG,00000,"checkpoint complete: wrote 1 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.113 s, sync=0.004 s, total=0.149 s; sync files=1, longest=0.004 s, average=0.004 s; distance=1 kB, estimate=1 kB",,,,,,,,,""
+2025-01-20 12:19:29.917 MSK,"postgres","locks",4496,"[local]",678dec59.1190,8,"idle in transaction",2025-01-20 09:25:29 MSK,9/10,6207443,LOG,08006,"unexpected EOF on client connection with an open transaction",,,,,,,,,"psql"
+2025-01-20 12:19:29.917 MSK,"postgres","locks",4496,"[local]",678dec59.1190,9,"idle in transaction",2025-01-20 09:25:29 MSK,,0,LOG,00000,"disconnection: session time: 2:54:00.381 user=postgres database=locks host=[local]",,,,,,,,,"psql"
+2025-01-20 12:19:29.918 MSK,"postgres","locks",4508,"[local]",678dec5f.119c,6,"idle",2025-01-20 09:25:35 MSK,,0,LOG,00000,"disconnection: session time: 2:53:54.148 user=postgres database=locks host=[local]",,,,,,,,,"psql"
+2025-01-20 12:19:29.930 MSK,"postgres","locks",4507,"[local]",678dec5f.119b,4,"idle",2025-01-20 09:25:35 MSK,,0,LOG,00000,"disconnection: session time: 2:53:54.713 user=postgres database=locks host=[local]",,,,,,,,,"psql"
+2025-01-20 12:19:29.931 MSK,"postgres","locks",4506,"[local]",678dec5e.119a,6,"idle",2025-01-20 09:25:34 MSK,,0,LOG,00000,"disconnection: session time: 2:53:55.671 user=postgres database=locks host=[local]",,,,,,,,,"psql"
+2025-01-20 12:23:34.521 MSK,,,1311,,678de9e5.51f,9,,2025-01-20 09:15:01 MSK,,0,LOG,00000,"checkpoint starting: time",,,,,,,,,""
+2025-01-20 12:23:34.559 MSK,,,1311,,678de9e5.51f,10,,2025-01-20 09:15:01 MSK,,0,LOG,00000,"checkpoint complete: wrote 0 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.011 s, sync=0.001 s, total=0.039 s; sync files=0, longest=0.000 s, average=0.000 s; distance=0 kB, estimate=1 kB",,,,,,,,,""
+```
 
 
 
