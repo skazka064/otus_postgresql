@@ -305,8 +305,57 @@ Process 4506: update test_no_pk set amount =amount+100 where acc_no=3;","See ser
 postgres@Ubuntu:~$ grep 'deadlock detected'  /var/lib/postgresql/12/main/log/postgresql-2025-01-20_091459.csv
 2025-01-20 09:42:20.796 MSK,"postgres","locks",4508,"[local]",678dec5f.119c,5,"UPDATE",2025-01-20 09:25:35 MSK,5/28,6207445,ERROR,40P01,"deadlock detected","Process 4508 waits for ShareLock on transaction 6207443; blocked by process 4496.
 ```
+#### Могут ли две транзакции, выполняющие единственную команду UPDATE одной и той же таблицы (без where), заблокировать друг друга?
+#### Команда UPDATE блокирует строки по мере их обновления. Это происходит не одномоментно. Поэтому если одна команда будет обновлять строки в одном порядке, а другая - в другом, они могут взаимозаблокироваться.Это может произойти, если для команд будут построены разные планы выполнения, например, одна будет читать таблицу последовательно, а другая - по индексу. Получить такую ситуацию непросто даже специально, в реальной работе она маловероятна. Проиллюстрировать ее проще всего с помощью курсоров, поскольку это дает возможность управлять порядком чтения.
+```sql
+Здесь работают сразу две транзакции.
+Это первая
+postgres=# \c locks 
+You are now connected to database "locks" as user "postgres".
+locks=# 
+locks=# begin;
+BEGIN
+locks=# declare cur1 cursor for select * from test_no_pk order by acc_no for update;
+DECLARE CURSOR
+locks=# fetch cur1;
+ acc_no | amount  
+--------+---------
+      1 | 1100.00
+(1 row)
 
+locks=# fetch cur1;
+ acc_no | amount  
+--------+---------
+      2 | 1800.00
+(1 row)
 
+locks=# fetch cur1;
+ERROR:  deadlock detected
+DETAIL:  Process 26900 waits for ShareLock on transaction 6207447; blocked by process 26901.
+Process 26901 waits for ShareLock on transaction 6207446; blocked by process 26900.
+HINT:  See server log for query details.
+CONTEXT:  while locking tuple (0,14) in relation "test_no_pk"
+locks=# 
+
+Это вторая
+postgres=# \c locks 
+You are now connected to database "locks" as user "postgres".
+locks=# 
+locks=# begin;
+BEGIN
+locks=# declare cur2 cursor for select * from test_no_pk order by acc_no DESC for update;
+DECLARE CURSOR
+locks=# fetch cur2;
+ acc_no | amount  
+--------+---------
+      3 | 3000.00
+(1 row)
+
+locks=# fetch cur2;
+ acc_no | amount  
+--------+---------
+      2 | 1800.00
+(1 row)
 
 
 
