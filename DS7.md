@@ -141,3 +141,36 @@ postgres@Ubuntu:~/12/main/base/13465$ du -h 222417
 340M	222417
 ```
 #### Отключить Автовакуум на конкретной таблице
+```sql
+postgres=# alter table test_vacuum set (autovacuum_enabled = off);
+ALTER TABLE
+```
+#### 10 раз обновить все строчки и добавить к каждой строчке любой символ
+```sql
+postgres=# update test_vacuum set t=t ||'!';
+UPDATE 1000001
+postgres=# update test_vacuum set t=t ||'!';
+UPDATE 1000001
+postgres=# update test_vacuum set t=t ||'!';
+UPDATE 1000001
+postgres=# update test_vacuum set t=t ||'!';
+UPDATE 1000001
+postgres=# update test_vacuum set t=t ||'!';
+UPDATE 1000001
+postgres=# update test_vacuum set t=t ||'!';
+UPDATE 1000001
+postgres=# update test_vacuum set t=t ||'!';
+UPDATE 1000001
+postgres=# update test_vacuum set t=t ||'!';
+UPDATE 1000001
+postgres=# update test_vacuum set t=t ||'!';
+UPDATE 1000001
+postgres=# update test_vacuum set t=t ||'!';
+UPDATE 1000001
+```
+
+#### Посмотреть размер файла с таблицей
+```sql
+postgres@Ubuntu:~/12/main/base/13465$ du -h 222417
+710M	222417
+```
