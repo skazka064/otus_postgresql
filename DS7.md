@@ -175,3 +175,18 @@ postgres@Ubuntu:~/12/main/base/13465$ du -h 222417
 710M	222417
 ```
 #### Объясните полученный результат
+
+#### Написать анонимную процедуру, в которой в цикле 10 раз обновятся все строчки в искомой таблице.
+#### Не забыть вывести номер шага цикла.
+```sql
+DO 
+$$DECLARE x numeric=1;
+BEGIN 
+    FOR i IN 1..10 LOOP
+            update test_vacuum set t=t ||'$';
+			x=x+1;
+			END LOOP;	
+	END;
+$$ LANGUAGE plpgsql;
+
+```
