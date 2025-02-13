@@ -126,6 +126,8 @@ postgres=# SELECT relname, n_live_tup, n_dead_tup, trunc(100*n_dead_tup/(n_live_
 (1 row)
 
 ```
+* Количество мертвых строк увеличилось в пять раз, потому что мы пять раз обновили всю таблицу
+* Соответственно количество мертвых строк увеличилось в два раза, т.к. мы один раз обновили каждую строку таблицы, и автовакуум не успел еще почистить таблицу
 #### Подождать некоторое время, проверяя, пришел ли автовакуум
 ```sql
 postgres=# SELECT relname, n_live_tup, n_dead_tup, trunc(100*n_dead_tup/(n_live_tup+1))::float "ratio%", last_autovacuum FROM pg_stat_user_tables WHERE relname = 'test_vacuum';
