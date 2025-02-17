@@ -124,3 +124,18 @@ stats_reset           | 2025-02-17 18:06:50.890768+03
 </table>
 
 ### Проверьте данные статистики: все ли контрольные точки выполнялись точно по расписанию. Почему так произошло?
+```bash
+2025-02-17 19:29:37.061 MSK [1254] LOG:  checkpoint starting: time
+2025-02-17 19:30:04.077 MSK [1254] LOG:  checkpoint complete: wrote 1943 buffers (1.5%); 0 WAL file(s) added, 0 removed, 2 recycled; write=26.970 s, sync=0.012 s, total=27.017 s; sync files=5, longest=0.004 s, average=0.003 s; distance=20209 kB, estimate=23808 kB
+2025-02-17 19:30:07.080 MSK [1254] LOG:  checkpoint starting: time
+2025-02-17 19:30:34.079 MSK [1254] LOG:  checkpoint complete: wrote 2016 buffers (1.5%); 0 WAL file(s) added, 0 removed, 1 recycled; write=26.949 s, sync=0.019 s, total=27.000 s; sync files=11, longest=0.007 s, average=0.002 s; distance=19715 kB, estimate=23399 kB
+2025-02-17 19:30:37.083 MSK [1254] LOG:  checkpoint starting: time
+2025-02-17 19:31:04.082 MSK [1254] LOG:  checkpoint complete: wrote 1913 buffers (1.5%); 0 WAL file(s) added, 0 removed, 1 recycled; write=26.955 s, sync=0.012 s, total=26.999 s; sync files=5, longest=0.007 s, average=0.003 s; distance=20401 kB, estimate=23099 kB
+2025-02-17 19:31:07.082 MSK [1254] LOG:  checkpoint starting: time
+2025-02-17 19:31:34.043 MSK [1254] LOG:  checkpoint complete: wrote 2035 buffers (1.6%); 0 WAL file(s) added, 0 removed, 1 recycled; write=26.933 s, sync=0.012 s, total=26.961 s; sync files=11, longest=0.006 s, average=0.002 s; distance=20117 kB, estimate=22801 kB
+2025-02-17 19:31:37.047 MSK [1254] LOG:  checkpoint starting: time
+2025-02-17 19:32:04.047 MSK [1254] LOG:  checkpoint complete: wrote 1911 buffers (1.5%); 0 WAL file(s) added, 0 removed, 2 recycled; write=26.943 s, sync=0.015 s, total=27.001 s; sync files=5, longest=0.008 s, average=0.003 s; distance=21011 kB, estimate=22622 kB
+2025-02-17 19:32:07.050 MSK [1254] LOG:  checkpoint starting: time
+2025-02-17 19:32:34.117 MSK [1254] LOG:  checkpoint complete: wrote 2053 buffers (1.6%); 0 WAL file(s) added, 0 removed, 1 recycled; write=27.017 s, sync=0.022 s, total=27.068 s; sync files=14, longest=0.008 s, average=0.002 s; distance=20456 kB, estimate=22405 kB
+```
+
