@@ -139,3 +139,35 @@ stats_reset           | 2025-02-17 18:06:50.890768+03
 2025-02-17 19:32:34.117 MSK [1254] LOG:  checkpoint complete: wrote 2053 buffers (1.6%); 0 WAL file(s) added, 0 removed, 1 recycled; write=27.017 s, sync=0.022 s, total=27.068 s; sync files=14, longest=0.008 s, average=0.002 s; distance=20456 kB, estimate=22405 kB
 ```
 ####  Контрольные точки выполнялись чаще, чем раз в 30 секунд. Потому что шла интенсивная работа с БД и журналы в 16MB заполнялись быстрее, и КТ происходили по мере заполнения журналов.  
+
+### Сравните tps в синхронном/асинхронном режиме утилитой pgbench. Объясните полученный результат.
+```sql
+postgres=# show synchronous_commit;      
+ synchronous_commit 
+--------------------
+ on
+(1 row)
+```
+#### Выключим synchronous_commit
+```sql
+postgres=# ALTER SYSTEM SET synchronous_commit = off;
+ALTER SYSTEM
+postgres=# SELECT pg_reload_conf();
+ pg_reload_conf 
+----------------
+ t
+(1 row)
+
+postgres@Ubuntu:~$ pgbench -U postgres -T 30 
+starting vacuum...end.
+transaction type: <builtin: TPC-B (sort of)>
+scaling factor: 1
+query mode: simple
+number of clients: 1
+number of threads: 1
+duration: 30 s
+number of transactions actually processed: 80232
+latency average = 0.374 ms
+tps = 2674.375552 (including connections establishing)
+tps = 2674.553018 (excluding connections establishing)
+```
