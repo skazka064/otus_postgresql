@@ -138,4 +138,4 @@ stats_reset           | 2025-02-17 18:06:50.890768+03
 2025-02-17 19:32:07.050 MSK [1254] LOG:  checkpoint starting: time
 2025-02-17 19:32:34.117 MSK [1254] LOG:  checkpoint complete: wrote 2053 buffers (1.6%); 0 WAL file(s) added, 0 removed, 1 recycled; write=27.017 s, sync=0.022 s, total=27.068 s; sync files=14, longest=0.008 s, average=0.002 s; distance=20456 kB, estimate=22405 kB
 ```
-
+####  Контрольные точки выполнялись чаще, чем раз в 30 секунд. Потому что шла интенсивная работа с БД и журналы в 16MB заполнялись быстрее, и КТ происходили по мере заполнения журналов.  
