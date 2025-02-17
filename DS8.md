@@ -22,7 +22,7 @@ vacuuming...
 creating primary keys...
 done.
 ```
-#### Сбросим статистику
+#### Сбросим статистику, и будем записывать информацию о контрольных точках в лог
 ```sql
 postgres=# select pg_stat_reset_shared('bgwriter');
  pg_stat_reset_shared 
@@ -42,6 +42,13 @@ buffers_backend       | 0
 buffers_backend_fsync | 0
 buffers_alloc         | 0
 stats_reset           | 2025-02-17 17:56:19.17317+03
+postgres=# alter system set log_checkpoints = on;
+ALTER SYSTEM
+postgres=# select pg_reload_conf();
+ pg_reload_conf 
+----------------
+ t
+(1 row)
 
 ```
 #### Узнаем предварительно позицию в журнале
