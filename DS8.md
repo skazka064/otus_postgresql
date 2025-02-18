@@ -213,3 +213,48 @@ INSERT 0 3
 root@Ubuntu:~# pg_ctlcluster 12 main stop
 ```
 ###  Измените пару байт в таблице
+#### Найдем файл, где лежит таблица
+```bash
+postgres=# select pg_relation_filepath('t');
+ pg_relation_filepath 
+----------------------
+ base/13465/238836
+(1 row)
+```
+#### Остановим кластер
+
+```bash
+root@Ubuntu:~# pg_ctlcluster 12 main stop
+```
+#### Поменяем несколько байт в странице(сотрем из заголовка LSN последней журнальной записи)
+```bash
+postgres@Ubuntu:~$ dd if=/dev/zero of=/var/lib/postgresql/12/main/base/13465/238836 oflag=dsync conv=notrunc bs=1 count=8
+8+0 records in
+8+0 records out
+8 bytes copied, 0,00757159 s, 1,1 kB/s
+
+```
+### Включите кластер и сделайте выборку из таблицы.
+```bash
+root@Ubuntu:~# pg_ctlcluster 12 main start
+postgres=# select * from t;
+WARNING:  page verification failed, calculated checksum 35578 but expected 11750
+ERROR:  invalid page in block 0 of relation base/13465/238836
+```
+### Что и почему произошло?
+#### Так как страница уже записалась на диск и была вытеснена из кэша произошло ее повреждение 
+### как проигнорировать ошибку и продолжить работу?
+#### Параметр ignore_checksum_falure позволяет попробовать прочитать таблицу с риском получить искаженные данные. Это можно сделать, если , например у нас нет резервной копии.
+```sql
+postgres=# set ignore_checksum_failure =on;
+SET
+postgres=# select * from t;
+WARNING:  page verification failed, calculated checksum 35578 but expected 11750
+ s  
+----
+ qw
+ er
+ ty
+(3 rows)
+
+```
