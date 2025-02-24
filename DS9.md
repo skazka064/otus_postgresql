@@ -16,6 +16,14 @@ postgres=# \d users_index
  registeredat | text |           |          | 
 Indexes:
     "idx_userid" btree (userid)
-
+```
+### Прислать текстом результат команды explain, в которой используется данный индекс
+```sql
+postgres=# explain select * from users_index where userid='75b4ba5f-f070-4404-b68a-8900cd222506';
+                                   QUERY PLAN                                   
+--------------------------------------------------------------------------------
+ Index Scan using idx_userid on users_index  (cost=0.28..8.29 rows=1 width=213)
+   Index Cond: (userid = '75b4ba5f-f070-4404-b68a-8900cd222506'::text)
+(2 rows)
 
 ```
