@@ -83,44 +83,75 @@ postgres-#     WHERE metadata @> '{"author": "John"}';
 ```
 #### Посмотрим поиск по условию с LIKE
 ```sql
-postgres=# EXPLAIN
-postgres-# SELECT * FROM documents
-postgres-#     WHERE contents like '%document%';
-                         QUERY PLAN                         
-------------------------------------------------------------
- Seq Scan on documents  (cost=0.00..14.25 rows=1 width=210)
+postgres=# EXPLAIN ANALYZE
+SELECT * FROM documents
+    WHERE contents like '%document%';
+                                             QUERY PLAN                                              
+-----------------------------------------------------------------------------------------------------
+ Seq Scan on documents  (cost=0.00..1.09 rows=1 width=116) (actual time=0.009..0.012 rows=2 loops=1)
    Filter: (contents ~~ '%document%'::text)
-(2 rows)
+   Rows Removed by Filter: 5
+ Planning Time: 0.111 ms
+ Execution Time: 0.027 ms
+(5 rows)
+
 ```
 #### Теперь добавим GIN индекс на текст документа
 ```sql
-postgres=# CREATE INDEX
-postgres-#     idx_documents_contents
-postgres-#     ON documents
-postgres-#     USING GIN(to_tsvector('english', contents));
+postgres=# CREATE INDEX ON documents USING GIN(to_tsvector('english', contents));
 CREATE INDEX
 
-```
-```sql
-postgres=# EXPLAIN SELECT * FROM documents
+postgres=# ANALYZE documents ;
+ANALYZE
+postgres=# EXPLAIN ANALYZE SELECT * FROM documents
     WHERE to_tsvector('english', contents) @@ 'document';
-                                     QUERY PLAN                                     
-------------------------------------------------------------------------------------
- Seq Scan on documents  (cost=0.00..2.84 rows=1 width=210)
+                                             QUERY PLAN                                              
+-----------------------------------------------------------------------------------------------------
+ Seq Scan on documents  (cost=0.00..2.84 rows=2 width=116) (actual time=0.050..0.141 rows=2 loops=1)
    Filter: (to_tsvector('english'::regconfig, contents) @@ '''document'''::tsquery)
-(2 rows)
+   Rows Removed by Filter: 5
+ Planning Time: 0.078 ms
+ Execution Time: 0.164 ms
+(5 rows)
+
 ```
-#### Стоимость запроса с индексом GIN уменьшилась в семь раз
-#### Проверяем результат (с отключенным последовательным сканированием):
+#### В обоих случаях использовался seqscan и с применением индекса время запроса увеличилось
+#### Проверяем то же самое с отключенным последовательным сканированием
 ```sql
 postgres=# SET enable_seqscan = OFF;
 SET
-postgres=# EXPLAIN
-postgres-# SELECT * FROM documents
-postgres-#     WHERE to_tsvector('english', contents) @@ 'document';
-                                          QUERY PLAN                                          
-----------------------------------------------------------------------------------------------
- Bitmap Heap Scan on documents  (cost=8.00..12.26 rows=1 width=210)
+postgres=# EXPLAIN ANALYZE
+SELECT * FROM documents
+    WHERE to_tsvector('english', contents) @@ 'document';
+                                                          QUERY PLAN                                                           
+-------------------------------------------------------------------------------------------------------------------------------
+ Bitmap Heap Scan on documents  (cost=8.00..12.26 rows=1 width=210) (actual time=0.041..0.043 rows=2 loops=1)
    Recheck Cond: (to_tsvector('english'::regconfig, contents) @@ '''document'''::tsquery)
-   ->  Bitmap Index Scan on idx_documents_contents  (cost=0.00..8.00 rows=1 width=0)
+   Heap Blocks: exact=1
+   ->  Bitmap Index Scan on idx_documents_contents  (cost=0.00..8.00 rows=1 width=0) (actual time=0.030..0.030 rows=2 loops=1)
          Index Cond: (to_tsvector('english'::regconfig, contents) @@ '''document'''::tsquery)
+ Planning Time: 0.089 ms
+ Execution Time: 0.139 ms
+(7 rows)
+
+```
+#### Мы здесь видим, что применился Bitmap Heap Scan
+#### и посмотрим select с LIKE с отключенным seqscan
+```sql
+postgres=# EXPLAIN ANALYZE
+SELECT * FROM documents
+    WHERE contents like '%document%';
+                                                         QUERY PLAN                                                          
+-----------------------------------------------------------------------------------------------------------------------------
+ Seq Scan on documents  (cost=10000000000.00..10000000001.09 rows=1 width=210) (actual time=177.770..177.776 rows=2 loops=1)
+   Filter: (contents ~~ '%document%'::text)
+   Rows Removed by Filter: 5
+ Planning Time: 0.079 ms
+ JIT:
+   Functions: 2
+   Options: Inlining true, Optimization true, Expressions true, Deforming true
+   Timing: Generation 0.714 ms, Inlining 82.014 ms, Optimization 42.091 ms, Emission 52.133 ms, Total 176.953 ms
+ Execution Time: 178.538 ms
+(9 rows)
+
+``
