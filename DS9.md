@@ -156,3 +156,67 @@ SELECT * FROM documents
 
 ```
 ### Реализовать индекс на часть таблицы или индекс на поле с функцией
+```sql
+postgres=# create table cities(
+postgres(# code CHAR(13) primary key,
+postgres(# name VARCHAR(255) not null
+postgres(# );
+CREATE TABLE
+postgres=# WITH random_data AS (
+postgres(#     SELECT
+postgres(#     num,
+postgres(#     random() AS rand1,
+postgres(#     random() AS rand2,
+postgres(#     random() AS rand3
+postgres(#     FROM generate_series(1, 100000) AS s(num)
+postgres(# )
+postgres-# INSERT INTO cities
+postgres-#     (code, name)
+postgres-# SELECT
+postgres-#     concat(
+postgres(#         (random_data.rand1 * 10)::integer % 10,
+postgres(#         (random_data.rand2 * 10)::integer % 10,
+postgres(#         lpad(random_data.num::text, 11, '0')
+postgres(#     ),
+postgres-#     chr((32 + random_data.rand3 * 94)::integer)
+postgres-#     FROM random_data
+postgres-#     ORDER BY random();
+INSERT 0 100000
+postgres=# SELECT * FROM cities;
+postgres=# EXPLAIN
+postgres-# SELECT * FROM cities
+postgres-#     WHERE SUBSTRING(code, 1, 2) = '50';
+                         QUERY PLAN                         
+------------------------------------------------------------
+ Seq Scan on cities  (cost=0.00..2291.00 rows=500 width=16)
+   Filter: ("substring"((code)::text, 1, 2) = '50'::text)
+(2 rows)
+
+postgres=# SELECT * FROM cities
+    WHERE SUBSTRING(code, 1, 2) = '50';
+postgres=# SELECT count(*) FROM cities
+    WHERE SUBSTRING(code, 1, 2) = '50';
+ count 
+-------
+  1022
+(1 row)
+
+postgres=# CREATE INDEX
+postgres-#     func_idx_cities_region
+postgres-#     ON cities ((SUBSTRING(code, 1, 2)));
+CREATE INDEX
+postgres=# ANALYZE cities;
+ANALYZE
+postgres=# EXPLAIN
+postgres-# SELECT * FROM cities
+postgres-#     WHERE SUBSTRING(code, 1, 2) = '50';
+                                       QUERY PLAN                                       
+----------------------------------------------------------------------------------------
+ Bitmap Heap Scan on cities  (cost=20.09..589.21 rows=990 width=16)
+   Recheck Cond: ("substring"((code)::text, 1, 2) = '50'::text)
+   ->  Bitmap Index Scan on func_idx_cities_region  (cost=0.00..19.84 rows=990 width=0)
+         Index Cond: ("substring"((code)::text, 1, 2) = '50'::text)
+(4 rows)
+
+```
+#### вывод: без индекса цена получилась cost=0.00..2291.00 ; а с индексом cost=20.09..589.21 : цена уменьшилась в четыре раза
