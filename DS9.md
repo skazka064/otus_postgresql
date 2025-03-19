@@ -192,8 +192,6 @@ postgres-#     WHERE SUBSTRING(code, 1, 2) = '50';
    Filter: ("substring"((code)::text, 1, 2) = '50'::text)
 (2 rows)
 
-postgres=# SELECT * FROM cities
-    WHERE SUBSTRING(code, 1, 2) = '50';
 postgres=# SELECT count(*) FROM cities
     WHERE SUBSTRING(code, 1, 2) = '50';
  count 
