@@ -28,7 +28,7 @@ postgres=# explain select * from users_index where userid='75b4ba5f-f070-4404-b6
 
 ```
 ### Реализовать индекс для полнотекстового поиска
-#### Для этого создаём и заполняем таблицу с документами. GIN индексы- это инвертированные индексы, т.е. мы берем текст и разбираем его на отдельные слова. Затем для каждого слова указываем в каком документе оно встречается. В обычном индексе, сначала идут документы, а потом слова, тов инвертированном наоборот. Сначала берем слова и по ним ищем документы. Столбец в таблице metadata имеет тип jsonb, т.к. он занимает меньше места, может быть проиндексирован, и обрабатывается быстрее потому что не требует повторного синтаксического анализа. Обычный json можно использовать, если не предполагается делать никаких операций с этим полем, или операций незначительное количество  
+#### Для этого создаём и заполняем таблицу с документами. GIN индексы- это инвертированные индексы, т.е. мы берем текст и разбираем его на отдельные слова. Затем для каждого слова указываем в каком документе оно встречается. В обычном индексе, сначала идут документы, а потом слова, тов инвертированном наоборот. Сначала берем слова и по ним ищем документы. Столбец в таблице metadata имеет тип jsonb, т.к. он занимает меньше места, может быть проиндексирован, и обрабатывается быстрее потому что не требует повторного синтаксического анализа. Обычный json можно использовать, если не предполагается делать никаких операций с этим полем, или операций незначительное количество. Но мы будем использовать индекс для поиска в обычном тексте, в колонке contents  
 
 ```sql
 postgres=# CREATE TABLE documents (
@@ -84,24 +84,49 @@ postgres-#     WHERE metadata @> '{"author": "John"}';
 ```
 #### Посмотрим поиск по условию с LIKE
 ```sql
+Сбросим статистику
+postgres=# ANALYZE documents
+postgres-# ;
+ANALYZE
+postgres=# EXPLAIN ANALYZE
+postgres-# SELECT * FROM documents
+postgres-#     WHERE contents like '%document%';
+                                                         QUERY PLAN                                                          
+-----------------------------------------------------------------------------------------------------------------------------
+ Seq Scan on documents  (cost=10000000000.00..10000000001.09 rows=1 width=116) (actual time=159.595..159.603 rows=2 loops=1)
+   Filter: (contents ~~ '%document%'::text)
+   Rows Removed by Filter: 5
+ Planning Time: 0.111 ms
+ JIT:
+   Functions: 2
+   Options: Inlining true, Optimization true, Expressions true, Deforming true
+   Timing: Generation 0.273 ms, Inlining 73.077 ms, Optimization 45.089 ms, Emission 40.604 ms, Total 159.044 ms
+ Execution Time: 288.976 ms
+(9 rows)
+
+postgres=# SET enable_seqscan = ON;
+SET
+postgres=# ANALYZE documents;
+ANALYZE
 postgres=# EXPLAIN ANALYZE
 SELECT * FROM documents
     WHERE contents like '%document%';
                                              QUERY PLAN                                              
 -----------------------------------------------------------------------------------------------------
- Seq Scan on documents  (cost=0.00..1.09 rows=1 width=116) (actual time=0.009..0.012 rows=2 loops=1)
+ Seq Scan on documents  (cost=0.00..1.09 rows=1 width=116) (actual time=0.014..0.018 rows=2 loops=1)
    Filter: (contents ~~ '%document%'::text)
    Rows Removed by Filter: 5
- Planning Time: 0.111 ms
- Execution Time: 0.027 ms
+ Planning Time: 0.144 ms
+ Execution Time: 0.037 ms
 (5 rows)
 
 ```
-#### Теперь добавим индекс для полнотекстового поиска на текст документа.
+#### LIKE удобная штука, но не всегда эффективная с точки зрения полнотекстового поиска
+#### Теперь добавим индекс для полнотекстового поиска на текст документа. Поле contents язык английский
 ```sql
 postgres=# CREATE INDEX ON documents USING GIN(to_tsvector('english', contents));
 CREATE INDEX
-
+Сбросим статистику
 postgres=# ANALYZE documents ;
 ANALYZE
 postgres=# EXPLAIN ANALYZE SELECT * FROM documents
@@ -134,9 +159,38 @@ SELECT * FROM documents
  Planning Time: 0.089 ms
  Execution Time: 0.139 ms
 (7 rows)
-
 ```
 #### Мы здесь видим, что применился индекс
+#### Другой пример
+```sql
+postgres=# SELECT * FROM documents
+    WHERE to_tsvector('english', contents) @@ 'real';
+   title    |                       metadata                       |                  contents                   
+------------+------------------------------------------------------+---------------------------------------------
+ Document 1 | {"tags": ["legal", "real estate"], "author": "John"} | This is a legal document about real estate.
+(1 row)
+
+postgres=# explain SELECT * FROM documents
+    WHERE to_tsvector('english', contents) @@ 'real';
+                                   QUERY PLAN                                   
+--------------------------------------------------------------------------------
+ Seq Scan on documents  (cost=0.00..2.84 rows=1 width=116)
+   Filter: (to_tsvector('english'::regconfig, contents) @@ '''real'''::tsquery)
+(2 rows)
+
+postgres=# SET enable_seqscan = OFF;
+SET
+postgres=# explain SELECT * FROM documents
+    WHERE to_tsvector('english', contents) @@ 'real';
+                                        QUERY PLAN                                        
+------------------------------------------------------------------------------------------
+ Bitmap Heap Scan on documents  (cost=8.01..12.27 rows=1 width=116)
+   Recheck Cond: (to_tsvector('english'::regconfig, contents) @@ '''real'''::tsquery)
+   ->  Bitmap Index Scan on documents_to_tsvector_idx  (cost=0.00..8.01 rows=1 width=0)
+         Index Cond: (to_tsvector('english'::regconfig, contents) @@ '''real'''::tsquery)
+(4 rows)
+
+```
 ### Реализовать индекс на часть таблицы или индекс на поле с функцией
 #### Реализуем индекс на поле с функцией. Они нужны, для того что бы искать по какой-то функции, примененной к запросу. Надо иметь ввиду, что один индекс равен одной функции на одно или несколько полей. Он срабатывает, если в запросе такая же функция, включая тип. Индекс заранее посчитает значение и положит его в индекс. Для этого создадим таблицу, иммитирующую КЛАДР, которые отображают значение названий населенных пунктов.  
 ```sql
