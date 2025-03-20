@@ -115,7 +115,7 @@ postgres=# EXPLAIN ANALYZE SELECT * FROM documents
 (5 rows)
 
 ```
-#### В обоих случаях использовался seqscan и с применением индекса время запроса увеличилось
+#### Мы не отключили seqscan, и планировщик использовал его, т.к. таблица маленькая и дешевле прочитать ее всю. 
 #### Проверяем то же самое с отключенным последовательным сканированием
 ```sql
 postgres=# SET enable_seqscan = OFF;
@@ -135,79 +135,33 @@ SELECT * FROM documents
 (7 rows)
 
 ```
-#### Мы здесь видим, что применился Bitmap Heap Scan
-#### и посмотрим select с LIKE с отключенным seqscan
-```sql
-postgres=# EXPLAIN ANALYZE
-SELECT * FROM documents
-    WHERE contents like '%document%';
-                                                         QUERY PLAN                                                          
------------------------------------------------------------------------------------------------------------------------------
- Seq Scan on documents  (cost=10000000000.00..10000000001.09 rows=1 width=210) (actual time=177.770..177.776 rows=2 loops=1)
-   Filter: (contents ~~ '%document%'::text)
-   Rows Removed by Filter: 5
- Planning Time: 0.079 ms
- JIT:
-   Functions: 2
-   Options: Inlining true, Optimization true, Expressions true, Deforming true
-   Timing: Generation 0.714 ms, Inlining 82.014 ms, Optimization 42.091 ms, Emission 52.133 ms, Total 176.953 ms
- Execution Time: 178.538 ms
-(9 rows)
-
-```
+#### Мы здесь видим, что применился индекс
 ### Реализовать индекс на часть таблицы или индекс на поле с функцией
 ```sql
-postgres=# create table cities(
-postgres(# code CHAR(13) primary key,
-postgres(# name VARCHAR(255) not null
-postgres(# );
+postgres=# create table cities(code CHAR(13) primary key,name VARCHAR(255) not null);
 CREATE TABLE
-postgres=# WITH random_data AS (
-postgres(#     SELECT
-postgres(#     num,
-postgres(#     random() AS rand1,
-postgres(#     random() AS rand2,
-postgres(#     random() AS rand3
-postgres(#     FROM generate_series(1, 100000) AS s(num)
-postgres(# )
-postgres-# INSERT INTO cities
-postgres-#     (code, name)
-postgres-# SELECT
-postgres-#     concat(
-postgres(#         (random_data.rand1 * 10)::integer % 10,
-postgres(#         (random_data.rand2 * 10)::integer % 10,
-postgres(#         lpad(random_data.num::text, 11, '0')
-postgres(#     ),
-postgres-#     chr((32 + random_data.rand3 * 94)::integer)
-postgres-#     FROM random_data
-postgres-#     ORDER BY random();
+postgres=# WITH random_data AS (SELECT  num,random() AS rand1, random() AS rand2,random() AS rand3 FROM generate_series(1, 100000) AS s(num) INSERT INTO cities(code, name) SELECT concat((random_data.rand1 * 10)::integer % 10,     (random_data.rand2 * 10)::integer % 10, lpad(random_data.num::text, 11, '0')),chr((32 + random_data.rand3 * 94)::integer)  FROM random_data ORDER BY random();
 INSERT 0 100000
 postgres=# SELECT * FROM cities;
 postgres=# EXPLAIN
-postgres-# SELECT * FROM cities
-postgres-#     WHERE SUBSTRING(code, 1, 2) = '50';
+postgres-# SELECT * FROM cities WHERE SUBSTRING(code, 1, 2) = '50';
                          QUERY PLAN                         
 ------------------------------------------------------------
  Seq Scan on cities  (cost=0.00..2291.00 rows=500 width=16)
    Filter: ("substring"((code)::text, 1, 2) = '50'::text)
 (2 rows)
 
-postgres=# SELECT count(*) FROM cities
-    WHERE SUBSTRING(code, 1, 2) = '50';
+postgres=# SELECT count(*) FROM cities WHERE SUBSTRING(code, 1, 2) = '50';
  count 
 -------
   1022
 (1 row)
 
-postgres=# CREATE INDEX
-postgres-#     func_idx_cities_region
-postgres-#     ON cities ((SUBSTRING(code, 1, 2)));
+postgres=# CREATE INDEX func_idx_cities_region ON cities ((SUBSTRING(code, 1, 2)));
 CREATE INDEX
 postgres=# ANALYZE cities;
 ANALYZE
-postgres=# EXPLAIN
-postgres-# SELECT * FROM cities
-postgres-#     WHERE SUBSTRING(code, 1, 2) = '50';
+postgres=# EXPLAIN SELECT * FROM cities WHERE SUBSTRING(code, 1, 2) = '50';
                                        QUERY PLAN                                       
 ----------------------------------------------------------------------------------------
  Bitmap Heap Scan on cities  (cost=20.09..589.21 rows=990 width=16)
