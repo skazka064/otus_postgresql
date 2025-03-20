@@ -37,31 +37,32 @@ postgres(#     metadata jsonb,
 postgres(#     contents text
 postgres(# );
 CREATE TABLE
-postgres=# INSERT INTO documents
-postgres-#     (title, metadata, contents)
-postgres-# VALUES
-postgres-#     ( 'Document 1',
-postgres(#       '{"author": "John",  "tags": ["legal", "real estate"]}',
-postgres(#       'This is a legal document about real estate.' ),
-postgres-#     ( 'Document 2',
-postgres(#       '{"author": "Jane",  "tags": ["finance", "legal"]}',
-postgres(#       'Financial statements should be verified.' ),
-postgres-#     ( 'Document 3',
-postgres(#       '{"author": "Paul",  "tags": ["health", "nutrition"]}',
-postgres(#       'Regular exercise promotes better health.' ),
-postgres-#     ( 'Document 4',
-postgres(#       '{"author": "Alice", "tags": ["travel", "adventure"]}',
-postgres(#       'Mountaineering requires careful preparation.' ),
-postgres-#     ( 'Document 5',
-postgres(#       '{"author": "Bob",   "tags": ["legal", "contracts"]}',
-postgres(#       'Contracts are binding legal documents.' ),
-postgres-#     ( 'Document 6',
-postgres(#        '{"author": "Eve",  "tags": ["legal", "family law"]}',
-postgres(#        'Family law addresses diverse issues.' ),
-postgres-#     ( 'Document 7',
-postgres(#       '{"author": "John",  "tags": ["technology", "innovation"]}',
-postgres(#       'Tech innovations are changing the world.' );
+INSERT INTO documents
+    (title, metadata, contents)
+VALUES
+    ( 'Document 1',
+      '{"author": "John",  "tags": ["legal", "real estate"]}',
+      'This is a legal document about real estate.' ),
+    ( 'Document 2',
+      '{"author": "Jane",  "tags": ["finance", "legal"]}',
+      'Financial statements should be verified.' ),
+    ( 'Document 3',
+      '{"author": "Paul",  "tags": ["health", "nutrition"]}',
+      'Regular exercise promotes better health.' ),
+    ( 'Document 4',
+      '{"author": "Alice", "tags": ["travel", "adventure"]}',
+      'Mountaineering requires careful preparation.' ),
+    ( 'Document 5',
+      '{"author": "Bob",   "tags": ["legal", "contracts"]}',
+      'Contracts are binding legal documents.' ),
+    ( 'Document 6',
+       '{"author": "Eve",  "tags": ["legal", "family law"]}',
+       'Family law addresses diverse issues.' ),
+    ( 'Document 7',
+      '{"author": "John",  "tags": ["technology", "innovation"]}',
+      'Tech innovations are changing the world.' );
 INSERT 0 7
+
 postgres=# SELECT * FROM documents;
    title    |                         metadata                         |                   contents                   
 ------------+----------------------------------------------------------+----------------------------------------------
@@ -80,7 +81,6 @@ postgres-#     WHERE metadata @> '{"author": "John"}';
  Document 1 | {"tags": ["legal", "real estate"], "author": "John"}     | This is a legal document about real estate.
  Document 7 | {"tags": ["technology", "innovation"], "author": "John"} | Tech innovations are changing the world.
 (2 rows)
-
 ```
 #### Посмотрим поиск по условию с LIKE
 ```sql
