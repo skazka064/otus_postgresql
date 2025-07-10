@@ -1,5 +1,5 @@
 # psql
-```postgres
+```bash
 psql -h server -d bd -p port -U user
 \conninfo
 ```
