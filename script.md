@@ -1,4 +1,4 @@
-# psql
+## psql
 ```sql
 psql -h server -d bd -p port -U user
 -w, --no-password
