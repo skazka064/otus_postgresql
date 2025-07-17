@@ -17,6 +17,9 @@ select * from pg_database;
 \l -список баз данных
 \set ECHO_HIDDEN on - расскажет каким запросом он получил вывод команды psql
 \x - переключаем режим вывода- столбцы транспонируем в строки
- 
+SHOW search_path;
+ SELECT current_shema();
+Схема
+pg_catalog; public
 ```
 
