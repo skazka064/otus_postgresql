@@ -28,4 +28,10 @@ pg_catalog; public
 - Уровень пользователя/роли (ALTER ROLE postgres SET work_mem TO '256MB')
 - Уровень Базы Данных (ALTER DATABASE postgres SET work_mem TO '128MB')
 - Уровень сеанса (set work_mem ='256MB')
-- Уровень процедуры/функции (CREATE FUNCTION .... SET configuration_parameter TO value) 
+- Уровень процедуры/функции (CREATE FUNCTION .... SET configuration_parameter TO value)
+### Посмотреть настройки сеанса
+- show all
+### Настройка производительности
+1. Настраиваем сервер сограсно типу нагрузки ( https://pgtune.leopard.in.ua/ )
+2. Создаем тестовую базу ( pgbench -i -s 10 ) 
+3. Сеть (tc -s -d qdisc ls dev enp0s3)
