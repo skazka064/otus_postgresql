@@ -22,4 +22,10 @@ SHOW search_path;
 Схема
 pg_catalog; public
 ```
-
+## Настройка Postgresql
+### Уровни настройки
+- Уровень сервера postgresql.conf postgresql.auto.conf
+- Уровень пользователя/роли
+- Уровень Базы Данных
+- Уровень сеанса
+- Уровень процедуры/функции 
