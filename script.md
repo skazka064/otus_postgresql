@@ -24,8 +24,8 @@ pg_catalog; public
 ```
 ## Настройка Postgresql
 ### Уровни настройки
-- Уровень сервера postgresql.conf postgresql.auto.conf
-- Уровень пользователя/роли
-- Уровень Базы Данных
-- Уровень сеанса
-- Уровень процедуры/функции 
+- Уровень сервера (postgresql.conf postgresql.auto.conf)
+- Уровень пользователя/роли (alter role postgres set work_mem to '256MB')
+- Уровень Базы Данных (ALTER DATABASE postgres SET work_mem TO '128MB')
+- Уровень сеанса (set work_mem ='256MB')
+- Уровень процедуры/функции (CREATE FUNCTION .... SET configuration_parameter TO value) 
