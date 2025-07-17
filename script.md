@@ -31,6 +31,7 @@ pg_catalog; public
 - Уровень процедуры/функции (CREATE FUNCTION .... SET configuration_parameter TO value)
 ### Посмотреть настройки сеанса
 - show all
+- explain (analyze, settings) select * from pgbench_accounts; ** Посмотреть, какие настройки скручены.**
 ### Настройка производительности
 1. Настраиваем сервер сограсно типу нагрузки ( https://pgtune.leopard.in.ua/ )
 2. Создаем тестовую базу ( pgbench -i -s 10 ) 
