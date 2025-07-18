@@ -34,5 +34,11 @@ pg_catalog; public
 - explain (analyze, settings) select * from pgbench_accounts; **Посмотреть, какие настройки скручены.**
 ### Настройка производительности
 1. Настраиваем сервер сограсно типу нагрузки ( https://pgtune.leopard.in.ua/ )
-2. Создаем тестовую базу ( pgbench -i -s 10 ) 
-3. Сеть (tc -s -d qdisc ls dev enp0s3)
+2. Создаем тестовую базу ( pgbench -i -s 10 ) (pgbench -c 10 -j 1 -t 5000)
+3. Центральный процессор
+   - max_worker_processes = 28
+   - max_parallel_workers_per_gather = 4
+   - max_parallel_workers = 28
+   - max_parallel_maintenance_workers = 4
+   - top (смотрим параметр ID - сколько процессорных ресурсов находятся в резерве, должно быть не менее 20%)
+5. Сеть (tc -s -d qdisc ls dev enp0s3)
