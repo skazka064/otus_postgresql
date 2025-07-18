@@ -43,7 +43,7 @@ pg_catalog; public
    - top (смотрим параметр ID - сколько процессорных ресурсов находятся в резерве, должно быть не менее 20%)
 4. Память
   ### ![Memory](/img/pg_memory.png)
- -  ps auxf | grep postgres; ps fp $(pgrep post)
+ -  ps auxf | grep postgres; ps fp $(pgrep post) - можно посмотреть количество подключений к базе
  -  top - смотрим MiB Mem free свободной памяти должно быть не менее 10 % от общего объема Swap- использоваться не должен 0.0 used
  -  
 6. Сеть (tc -s -d qdisc ls dev enp0s3)
