@@ -42,6 +42,6 @@ pg_catalog; public
    - max_parallel_maintenance_workers = 4
    - top (смотрим параметр ID - сколько процессорных ресурсов находятся в резерве, должно быть не менее 20%)
 4. Память
-   ![Memory]([https://github.com/skazka064/otus_postgresql/tree/main/img/pg_memory.png])
+   ![Memory](https://github.com/skazka064/otus_postgresql/tree/main/img/pg_memory.png)
         - ps auxf | grep postgres; ps fp $(pgrep post)
 6. Сеть (tc -s -d qdisc ls dev enp0s3)
