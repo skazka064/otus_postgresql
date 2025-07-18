@@ -41,4 +41,6 @@ pg_catalog; public
    - max_parallel_workers = 28
    - max_parallel_maintenance_workers = 4
    - top (смотрим параметр ID - сколько процессорных ресурсов находятся в резерве, должно быть не менее 20%)
-5. Сеть (tc -s -d qdisc ls dev enp0s3)
+4. Память
+        - ps auxf | grep postgres; ps fp $(pgrep post)
+6. Сеть (tc -s -d qdisc ls dev enp0s3)
