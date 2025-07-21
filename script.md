@@ -1,4 +1,4 @@
-## psql
+## psql https://www.interdb.jp/pg/
 ```sql
 psql -h server -d bd -p port -U user
 -w, --no-password
@@ -49,4 +49,6 @@ pg_catalog; public
         Если это значение меньше, то необходимо добавить shared_buffers
  - То же самое можно получить на уровне отдельной таблицы  SELECT * FROM pg_statio_user_tables (heap_blks_read heap_blks_hit)
  - EXPLAIN(ANALYSE, buffers) SELECT * FROM pgbench_accounts; (Buffers: shared hit=16643 read=79)
+ - shared_preload_libraries = 'pg_prewarm' ; pg_prewarm.autoprewarm = true ;
+
 6. Сеть (tc -s -d qdisc ls dev enp0s3)
