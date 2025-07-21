@@ -50,5 +50,12 @@ pg_catalog; public
  - То же самое можно получить на уровне отдельной таблицы  SELECT * FROM pg_statio_user_tables (heap_blks_read heap_blks_hit)
  - EXPLAIN(ANALYSE, buffers) SELECT * FROM pgbench_accounts; (Buffers: shared hit=16643 read=79)
  - shared_preload_libraries = 'pg_prewarm' ; pg_prewarm.autoprewarm = true ;
+ - EXPLAIN (ANALYSE) SELECT * FROM pgbench_accounts order by abalance;
+    --     Sort Method: external merge  Disk: 39944kB
+   --		  ->  Sort  (cost=86535.67..87578.21 rows=417016 width=97) (actual time=698.008..735.665 rows=333333 loops=3)
+   --      Execution Time: 1214.646 ms
+   SET work_mem='200MB'
+   --   Sort Method: quicksort  Memory: 165202kB
+   --  Sort  (cost=126477.78..128979.88 rows=1000838 width=97) (actual time=338.503..439.494 rows=1000000 loops=1)
 
 6. Сеть (tc -s -d qdisc ls dev enp0s3)
