@@ -45,5 +45,8 @@ pg_catalog; public
   ### ![Memory](/img/pg_memory.png)
  -  ps auxf | grep postgres; ps fp $(pgrep post) - можно посмотреть количество подключений к базе
  -  top - смотрим MiB Mem free свободной памяти должно быть не менее 10 % от общего объема Swap- использоваться не должен 0.0 used
- -  
+ -  SELECT * FROM pg_stat_database (Смотрим строки blks_read (сколько данных было взято напрямую с диска) blks_hit (сколько данных было взято  из кэша должнл бять не менне 90% от общего количества обращений) )
+        Если это значение меньше, то необходимо добавить shared_buffers
+ - То же самое можно получить на уровне отдельной таблицы  SELECT * FROM pg_statio_user_tables (heap_blks_read heap_blks_hit)
+ - EXPLAIN(ANALYSE, buffers) SELECT * FROM pgbench_accounts; (Buffers: shared hit=16643 read=79)
 6. Сеть (tc -s -d qdisc ls dev enp0s3)
