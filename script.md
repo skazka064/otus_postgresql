@@ -100,9 +100,9 @@ ALTER ROLE monitoring IN DATABASE postgres
 ALTER ROLE monitoring IN DATABASE postgres
     SET "auto_explain.log_timing" TO 'true';
 ```
-```
+
     
-3. pg_stat_statements
+### 3. pg_stat_statements
  Это расширение ставится на двух уровнях
 - на уравне сервера postgres -> файл postgresql.conf -> shared_preload_libraries
 - на уровне базы
