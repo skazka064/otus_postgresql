@@ -106,12 +106,17 @@ ALTER ROLE monitoring IN DATABASE postgres
  Это расширение ставится на двух уровнях
 - на уравне сервера postgres -> файл postgresql.conf -> shared_preload_libraries
 - на уровне базы
+- расширение заполняет эту таблицу до 5000 после этого сбрасывается, поэтому надо чтобы инфа с переодичностью закидывалась в другую таблицу
   
 ```sql
 SELECT * FROM pg_stat_statements ORDER BY total_exec_time DESC;
 calls -- сколько раз вызывался запрос
 total_exec_time -- сколько съел ресурсов
-
+SELECT pg_stat_statements_reset(); -- сброс
+```
+### 4. Для анализа логов 
+- pgbadger
+- pg_profile
 
 
 
