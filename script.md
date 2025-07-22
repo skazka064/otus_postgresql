@@ -85,7 +85,7 @@ ALTER ROLE monitoring IN DATABASE postgres SET log_statement TO 'all';
 cat /var/log/postgresql/postgresql-14-main.log
 ```
 2. Auto_explain
-   ```sql
+ ```sql
 ALTER ROLE monitoring IN DATABASE postgres
     SET "auto_explain.log_analyze" TO 'true';
 ALTER ROLE monitoring IN DATABASE postgres
