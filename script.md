@@ -64,3 +64,19 @@ pg_catalog; public
 
 6. Сеть (tc -s -d qdisc ls dev enp0s3)
    - смотрим параметр backlog 0b 0p - это сколько байт  и пакетов стоит на отправку
+ 
+ ### Настройка для работы с запросами 
+-- Role: monitoring
+-- DROP ROLE IF EXISTS monitoring;
+
+CREATE ROLE monitoring WITH
+  LOGIN
+  SUPERUSER
+  INHERIT
+  CREATEDB
+  CREATEROLE
+  NOREPLICATION
+  BYPASSRLS
+  ENCRYPTED PASSWORD 'SCRAM-SHA-256$4096:h0IQkNOaLdHBZxCQ+6+r5Q==$d7XJxILOgrS3nOGNGEIOJ8/id/44R8CcEiZRMUfWyiU=:In2wXNKLt2QqQ1XxJmLoykiPck0BA87Y321nh8NnL1A=';
+
+ALTER ROLE monitoring IN DATABASE postgres SET log_statement TO 'all';
