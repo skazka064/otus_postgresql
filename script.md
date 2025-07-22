@@ -34,16 +34,16 @@ pg_catalog; public
 ### Посмотреть настройки сеанса
 - show all
 - explain (analyze, settings) select * from pgbench_accounts; **Посмотреть, какие настройки скручены.**
-### Настройка производительности
-1. Настраиваем сервер сограсно типу нагрузки ( https://pgtune.leopard.in.ua/ )
-2. Создаем тестовую базу ( pgbench -i -s 10 ) (pgbench -c 10 -j 1 -t 5000)
-3. Центральный процессор
+## Настройка производительности
+### Настраиваем сервер сограсно типу нагрузки ( https://pgtune.leopard.in.ua/ )
+### Создаем тестовую базу ( pgbench -i -s 10 ) (pgbench -c 10 -j 1 -t 5000)
+### 1. Центральный процессор
    - max_worker_processes = 28
    - max_parallel_workers_per_gather = 4
    - max_parallel_workers = 28
    - max_parallel_maintenance_workers = 4
    - top (смотрим параметр ID - сколько процессорных ресурсов находятся в резерве, должно быть не менее 20%)
-4. Память
+### 2. Память
   ### ![Memory](/img/pg_memory.png)
  -  ps auxf | grep postgres; ps fp $(pgrep post) - можно посмотреть количество подключений к базе
  -  top - смотрим MiB Mem free свободной памяти должно быть не менее 10 % от общего объема Swap- использоваться не должен 0.0 used
@@ -59,15 +59,15 @@ pg_catalog; public
    SET work_mem='200MB'
    --   Sort Method: quicksort  Memory: 165202kB
    --  Sort  (cost=126477.78..128979.88 rows=1000838 width=97) (actual time=338.503..439.494 rows=1000000 loops=1)
-5. Диск (iostat -xmt параметр aqu-sz - это очередь к диску, десятки и сотни это уже много)
+### 3. Диск (iostat -xmt параметр aqu-sz - это очередь к диску, десятки и сотни это уже много)
    - effective_io_concurrency насколько можно распараллеливать обращение к диску
 
-6. Сеть (tc -s -d qdisc ls dev enp0s3)
+### 4. Сеть (tc -s -d qdisc ls dev enp0s3)
    - смотрим параметр backlog 0b 0p - это сколько байт  и пакетов стоит на отправку
  
- ### Настройка для работы с запросами 
-1. Log_statement
-2. 
+ ## Настройка для работы с запросами 
+### 1. Log_statement
+   
  ```sql
 -- Role: monitoring
 -- DROP ROLE IF EXISTS monitoring;
@@ -86,7 +86,7 @@ ALTER ROLE monitoring IN DATABASE postgres SET log_statement TO 'all';
 cat /var/log/postgresql/postgresql-14-main.log
 
 ```
-2. Auto_explain
+### 2. Auto_explain
    
  ```sql
 ALTER ROLE monitoring IN DATABASE postgres
