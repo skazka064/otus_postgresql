@@ -106,3 +106,12 @@ ALTER ROLE monitoring IN DATABASE postgres
  Это расширение ставится на двух уровнях
 - на уравне сервера postgres -> файл postgresql.conf -> shared_preload_libraries
 - на уровне базы
+  
+```sql
+SELECT * FROM pg_stat_statements ORDER BY total_exec_time DESC;
+calls -- сколько раз вызывался запрос
+total_exec_time -- сколько съел ресурсов
+
+
+
+
