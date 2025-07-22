@@ -98,7 +98,9 @@ ALTER ROLE monitoring IN DATABASE postgres
 ALTER ROLE monitoring IN DATABASE postgres
     SET "auto_explain.log_nested_statements" TO 'true';
 ALTER ROLE monitoring IN DATABASE postgres
-    SET "auto_explain.log_timing" TO 'true';```
+    SET "auto_explain.log_timing" TO 'true';
+```
+```
     
 3. pg_stat_statements
  Это расширение ставится на двух уровнях
