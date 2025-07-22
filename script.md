@@ -57,5 +57,8 @@ pg_catalog; public
    SET work_mem='200MB'
    --   Sort Method: quicksort  Memory: 165202kB
    --  Sort  (cost=126477.78..128979.88 rows=1000838 width=97) (actual time=338.503..439.494 rows=1000000 loops=1)
-
+5. Диск (iostat -xmt параметр aqu-sz - это очередь к диску, десятки и сотни это уже много)
+   - effective_io_concurrency насколько можно распараллеливать обращение к диску
+   - systemctl list-units --type=service - посмотреть какие сервисы загружены
+   - journalctl -xeu postgresql@14-main.service - лог конкретного сервиса 
 6. Сеть (tc -s -d qdisc ls dev enp0s3)
