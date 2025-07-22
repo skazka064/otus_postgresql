@@ -82,5 +82,19 @@ CREATE ROLE monitoring WITH
   ENCRYPTED PASSWORD 'SCRAM-SHA-256$4096:h0IQkNOaLdHBZxCQ+6+r5Q==$d7XJxILOgrS3nOGNGEIOJ8/id/44R8CcEiZRMUfWyiU=:In2wXNKLt2QqQ1XxJmLoykiPck0BA87Y321nh8NnL1A=';
 
 ALTER ROLE monitoring IN DATABASE postgres SET log_statement TO 'all';
+cat /var/log/postgresql/postgresql-14-main.log
 ```
 2. Auto_explain
+   ```sql
+ALTER ROLE monitoring IN DATABASE postgres
+    SET "auto_explain.log_analyze" TO 'true';
+ALTER ROLE monitoring IN DATABASE postgres
+    SET "auto_explain.log_buffers" TO 'true';
+ALTER ROLE monitoring IN DATABASE postgres
+    SET "auto_explain.log_min_duration" TO '0';
+ALTER ROLE monitoring IN DATABASE postgres
+    SET "auto_explain.log_nested_statements" TO 'true';
+ALTER ROLE monitoring IN DATABASE postgres
+    SET "auto_explain.log_timing" TO 'true';
+
+   ```
