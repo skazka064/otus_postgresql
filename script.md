@@ -96,5 +96,5 @@ ALTER ROLE monitoring IN DATABASE postgres
     SET "auto_explain.log_nested_statements" TO 'true';
 ALTER ROLE monitoring IN DATABASE postgres
     SET "auto_explain.log_timing" TO 'true';
+    ```
 
-   ```
