@@ -66,6 +66,7 @@ pg_catalog; public
    - смотрим параметр backlog 0b 0p - это сколько байт  и пакетов стоит на отправку
  
  ### Настройка для работы с запросами 
+1. Log_statement
  ```sql
 -- Role: monitoring
 -- DROP ROLE IF EXISTS monitoring;
@@ -82,3 +83,4 @@ CREATE ROLE monitoring WITH
 
 ALTER ROLE monitoring IN DATABASE postgres SET log_statement TO 'all';
 ```
+2. Auto_explain
