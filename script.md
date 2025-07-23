@@ -118,3 +118,15 @@ SELECT pg_stat_statements_reset(); -- сброс
 - pgbadger
 - pg_profile
 # Версионность
+
+```postgresql
+SELECT txid_current();
+
+```
+
+
+
+
+
+
+
