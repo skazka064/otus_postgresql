@@ -117,6 +117,3 @@ SELECT pg_stat_statements_reset(); -- сброс
 ### 4. Для анализа логов 
 - pgbadger
 - pg_profile
-
-
-
