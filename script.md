@@ -119,7 +119,7 @@ SELECT pg_stat_statements_reset(); -- сброс
 - pg_profile
 # Версионность
 
-```postgresql
+```sql
 SELECT txid_current();
 
 ```
