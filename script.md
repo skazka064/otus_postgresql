@@ -24,7 +24,7 @@ SHOW search_path;
 Схема
 pg_catalog; public
 ```
-## Настройка Postgresql
+# Настройка Postgresql
 ### Уровни настройки
 - Уровень сервера **(postgresql.conf postgresql.auto.conf)**
 - Уровень пользователя/роли **(ALTER ROLE postgres SET work_mem TO '256MB')**
@@ -117,3 +117,4 @@ SELECT pg_stat_statements_reset(); -- сброс
 ### 4. Для анализа логов 
 - pgbadger
 - pg_profile
+# Версионность
