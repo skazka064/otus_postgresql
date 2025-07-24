@@ -158,7 +158,7 @@ SELECT lp as tuple, t_xmin, t_xmax, t_field3, t_ctid FROM heap_page_items(get_ra
 <tr>
     <td>62</td>
    <td>570847</td>
-   <td>0</td>
+   <td>570849</td>
    <td>0</td>
    <td>(0,2)</td>
 </tr>
