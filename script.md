@@ -121,7 +121,7 @@ SELECT pg_stat_statements_reset(); -- сброс
 
 ```sql
 SELECT txid_current();
-
+SELECT xmin, xmax, cmin, cmax, ctid from pgbench_accounts;
 ```
 
 
