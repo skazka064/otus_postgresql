@@ -128,11 +128,32 @@ SELECT xmin, xmax, cmin, cmax, ctid from pgbench_accounts;
 ```sql
 CREATE EXTENSION pageinspect;
 SELECT lp as tuple, t_xmin, t_xmax, t_field3, t_ctid FROM heap_page_items(get_raw_page('pgbench_accounts',1));
-
-60	"570849"	"0"	0	"(0,60)"
-61	"570849"	"0"	0	"(0,61)"
-62	"570847"	"570849"	0	"(0,2)"
 ```
+
+<table>
+<tr>
+    <td>60</td>
+   <td>570849</td>
+   <td>0</td>
+   <td>0</td>
+   <td>(0,60)</td>
+</tr>
+   
+   <tr>
+    <td>61</td>
+   <td>570849</td>
+   <td>0</td>
+   <td>0</td>
+   <td>(0,61)</td>
+</tr>
+<tr>
+    <td>62</td>
+   <td>570847</td>
+   <td>0</td>
+   <td>0</td>
+   <td>(0,2)</td>
+</tr>
+</table>
 
 
 
