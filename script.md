@@ -24,7 +24,7 @@ SHOW search_path;
 Схема
 pg_catalog; public
 ```
-# Настройка Postgresql
+# Настройка производительности Postgresql
 ### Уровни настройки
 - Уровень сервера **(postgresql.conf postgresql.auto.conf)**
 - Уровень пользователя/роли **(ALTER ROLE postgres SET work_mem TO '256MB')**
@@ -34,7 +34,7 @@ pg_catalog; public
 ### Посмотреть настройки сеанса
 - show all
 - explain (analyze, settings) select * from pgbench_accounts; **Посмотреть, какие настройки скручены.**
-# Настройка производительности
+
 ### Настраиваем сервер сограсно типу нагрузки ( https://pgtune.leopard.in.ua/ )
 ### Создаем тестовую базу ( pgbench -i -s 10 ) (pgbench -c 10 -j 1 -t 5000)
 ### 1. Центральный процессор
