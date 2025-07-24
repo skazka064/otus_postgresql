@@ -123,6 +123,16 @@ SELECT pg_stat_statements_reset(); -- сброс
 SELECT txid_current();
 SELECT xmin, xmax, cmin, cmax, ctid from pgbench_accounts;
 ```
+### Чтобы посмотреть в страницу, необходимо поставить расширение pageinspect
+### Поставим его и заглянем в страницу
+```sql
+CREATE EXTENSION pageinspect;
+SELECT lp as tuple, t_xmin, t_xmax, t_field3, t_ctid FROM heap_page_items(get_raw_page('pgbench_accounts',1));
+
+60	"570849"	"0"	0	"(0,60)"
+61	"570849"	"0"	0	"(0,61)"
+62	"570847"	"570849"	0	"(0,2)"
+```
 
 
 
