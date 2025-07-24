@@ -131,6 +131,13 @@ SELECT lp as tuple, t_xmin, t_xmax, t_field3, t_ctid FROM heap_page_items(get_ra
 ```
 
 <table>
+   <th>
+     <td>tuple</td>
+   <td>t_xmin</td>
+   <td>t_xmax</td>
+   <td>t_field3</td>
+   <td>t_ctid</td> 
+   </th>
 <tr>
     <td>60</td>
    <td>570849</td>
