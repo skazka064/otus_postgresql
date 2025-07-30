@@ -196,10 +196,7 @@ SELECT lp as tuple, t_xmin, t_xmax, t_field3, t_ctid FROM heap_page_items(get_ra
 | 2022 |
 | 2024 |
 
----
 
-[View on DB Fiddle](https://www.db-fiddle.com/) * FROM years
-```
 
 
 
