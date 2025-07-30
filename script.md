@@ -186,15 +186,19 @@ SELECT lp as tuple, t_xmin, t_xmax, t_field3, t_ctid FROM heap_page_items(get_ra
     UNION
     SELECT 2024 AS year
     )
-    SELECT year FROM years
+    SELECT year FROM years ORDER BY year
 
 | year |
 | ---- |
-| 2021 |
 | 2020 |
-| 2023 |
+| 2021 |
 | 2022 |
+| 2023 |
 | 2024 |
+
+---
+
+[View on DB Fiddle](https://www.db-fiddle.com/)
 
 
 
