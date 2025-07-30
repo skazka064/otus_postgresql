@@ -164,7 +164,42 @@ SELECT lp as tuple, t_xmin, t_xmax, t_field3, t_ctid FROM heap_page_items(get_ra
 </tr>
 </table>
 
+# Запросы
+### CTE
 
+**Schema (PostgreSQL v10)**
+
+    
+
+---
+
+**Query #1**
+
+    WITH years AS(
+    SELECT 2020 AS year
+    UNION
+    SELECT 2021 AS year
+    UNION
+    SELECT 2022 AS year
+    UNION
+    SELECT 2023 AS year
+    UNION
+    SELECT 2024 AS year
+    )
+    SELECT year FROM years
+
+| year |
+| ---- |
+| 2021 |
+| 2020 |
+| 2023 |
+| 2022 |
+| 2024 |
+
+---
+
+[View on DB Fiddle](https://www.db-fiddle.com/) * FROM years
+```
 
 
 
