@@ -59,5 +59,25 @@ CREATE TRIGGER t_ins
 AFTER INSERT ON sales
 FOR EACH ROW EXECUTE FUNCTION t_insert();
 
+```
+# UPDATE
+```sql
+CREATE OR REPLACE FUNCTION t_update()
+RETURNS trigger
+AS
+$tr$
+BEGIN
+IF TG_OP = 'UPDATE' THEN
+UPDATE good_sum_mart SET sum_sale=NEW.sales_qty*(SELECT good_price FROM goods WHERE goods_id=NEW.good_id) WHERE (sum_sale=OLD.sales_qty*(SELECT good_price FROM goods WHERE goods_id=NEW.good_id)) AND (good_name=(SELECT good_name FROM goods WHERE goods_id=NEW.good_id));
+END IF;
+RAISE NOTICE 'NEW%, OLD%',NEW,OLD;
+RETURN NEW;
+END
+$tr$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER t_upd 
+AFTER UPDATE ON sales
+FOR EACH ROW EXECUTE FUNCTION t_update();
 
 ```
