@@ -34,3 +34,30 @@ CREATE TABLE good_sum_mart
 	sum_sale	numeric(16, 2)NOT NULL
 );
 ```
+# INSERT
+```sql
+CREATE OR REPLACE FUNCTION t_insert()
+RETURNS trigger 
+AS
+$tr$
+BEGIN
+	IF TG_OP = 'INSERT' THEN
+		IF (SELECT good_name FROM goods WHERE goods_id=NEW.good_id)=(SELECT good_name FROM good_sum_mart  WHERE good_name=(SELECT good_name FROM goods WHERE goods_id=NEW.good_id )) THEN
+		UPDATE good_sum_mart SET sum_sale=(SELECT sum_sale FROM good_sum_mart WHERE good_name=(SELECT good_name FROM goods WHERE goods_id=NEW.good_id))+(NEW.sales_qty*(SELECT good_price FROM goods WHERE goods_id=NEW.good_id)) WHERE good_name=(SELECT good_name FROM goods WHERE goods_id=NEW.good_id);
+	    ELSE
+		
+		INSERT INTO good_sum_mart VALUES ((SELECT good_name FROM goods WHERE goods_id=NEW.good_id),((SELECT good_price FROM goods WHERE goods_id=NEW.good_id)*NEW.sales_qty));
+		END IF;
+	END IF;
+	RAISE NOTICE 'NEW.good_id=% NEW.sales_qty=% ', NEW.good_id, NEW.sales_qty;
+	RETURN NEW;
+END
+$tr$
+LANGUAGE plpgsql
+
+CREATE TRIGGER t_ins
+AFTER INSERT ON sales
+FOR EACH ROW EXECUTE FUNCTION t_insert();
+
+
+```
