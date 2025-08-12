@@ -34,7 +34,7 @@ CREATE TABLE good_sum_mart
 	sum_sale	numeric(16, 2)NOT NULL
 );
 ```
-# INSERT
+### INSERT
 ```sql
 CREATE OR REPLACE FUNCTION t_insert()
 RETURNS trigger 
@@ -60,7 +60,7 @@ AFTER INSERT ON sales
 FOR EACH ROW EXECUTE FUNCTION t_insert();
 
 ```
-# UPDATE
+### UPDATE
 ```sql
 CREATE OR REPLACE FUNCTION t_update()
 RETURNS trigger
@@ -79,5 +79,26 @@ LANGUAGE plpgsql;
 CREATE TRIGGER t_upd 
 AFTER UPDATE ON sales
 FOR EACH ROW EXECUTE FUNCTION t_update();
+
+```
+### DELETE
+```sql
+CREATE OR REPLACE FUNCTION t_delete()
+RETURNS trigger
+AS 
+$tr$
+BEGIN
+IF TG_OP = 'DELETE' THEN
+UPDATE good_sum_mart  SET sum_sale=sum_sale-(SELECT good_price FROM goods WHERE goods_id=OLD.good_id) WHERE good_name=(SELECT good_name FROM goods WHERE goods_id=OLD.good_id)  ;
+END IF;
+RAISE NOTICE 'OLD=%,NEW=%', OLD, NEW;
+RETURN OLD;
+END
+$tr$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER t_del
+AFTER DELETE ON sales
+FOR EACH ROW EXECUTE FUNCTION t_delete();
 
 ```
