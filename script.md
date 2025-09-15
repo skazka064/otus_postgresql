@@ -285,7 +285,7 @@ AND clock_timestamp() - coalesce(xact_start, query_start) > '00:00:10'::interval
 AND state ~ 'idle in transaction';
 
 ----Висящие-----
-SELECT pid,
+SELECT pid,query,
 CASE WHEN wait_event_type = 'Lock' THEN 'waiting' ELSE state END AS state,
 (clock_timestamp() - xact_start) AS xact_age,
 (clock_timestamp() - query_start) AS query_age
