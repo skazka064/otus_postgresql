@@ -200,6 +200,124 @@ SELECT lp as tuple, t_xmin, t_xmax, t_field3, t_ctid FROM heap_page_items(get_ra
 
 [View on DB Fiddle](https://www.db-fiddle.com/)
 
+# Мониторинг
+
+```sql
+
+SELECT pg_stat_reset(); -- сброс статистики
+
+select * from pg_stat_statements limit 5;
+
+SELECT dealloc, now() - stats_reset AS age FROM pg_stat_statements_info;
+
+SELECT
+sum(shared_blk_read_time + shared_blk_write_time + temp_blk_read_time + temp_blk_write_time
+) / sum(total_exec_time) AS io_percent,
+sum(total_exec_time -
+(shared_blk_read_time + shared_blk_write_time + temp_blk_read_time + temp_blk_write_time)
+) / sum(total_exec_time) AS cpu_percent
+FROM pg_stat_statements;
+
+SELECT
+to_char(
+interval '1 millisecond' * sum(total_exec_time),
+'HH24:MI:SS'
+) AS exec_time,
+(100 * sum(
+shared_blk_read_time + shared_blk_write_time +
+temp_blk_read_time + temp_blk_write_time
+) / sum(total_exec_time))::numeric(5,2)::text || ' / ' ||
+(100 * sum(total_exec_time - (
+shared_blk_read_time + shared_blk_write_time +
+temp_blk_read_time + temp_blk_write_time)
+) / sum(total_exec_time))::numeric(5,2) AS "io / cpu, %",
+query
+FROM pg_stat_statements
+GROUP BY query ORDER BY sum(total_exec_time) DESC LIMIT 10
+
+SELECT datname, xact_commit + xact_rollback AS xacts
+FROM pg_stat_database
+ORDER BY xact_commit + xact_rollback DESC;
+
+SELECT client_addr, usename, datname, count(*)
+FROM pg_stat_activity
+WHERE backend_type = 'client backend'
+GROUP BY 1,2,3
+ORDER BY 4 DESC;
+
+
+--- Мониторинг_клиентских_сеансов_по_состояниям
+SELECT state, count(*)
+FROM pg_stat_activity WHERE backend_type = 'client backend'
+GROUP BY 1 ORDER BY 2 DESC;
+
+---Второй_способ
+SELECT
+CASE WHEN wait_event_type = 'Lock'
+THEN 'waiting' ELSE state
+END AS state,
+count(*)
+FROM pg_stat_activity WHERE backend_type = 'client backend'
+GROUP BY 1 ORDER BY 2 DESC;
+
+---Третий_способ
+SELECT
+CASE WHEN NOT l.granted
+THEN 'waiting' ELSE a.state
+END AS state,
+count(*)
+FROM pg_stat_activity a
+LEFT JOIN pg_locks l ON a.pid = l.pid AND NOT l.granted
+WHERE a.backend_type = 'client backend'
+GROUP BY 1 ORDER BY 2 DESC;
+
+---Мониторинг_по_типу_ожидания
+SELECT wait_event_type ||'.'|| wait_event AS waiting, count(*)
+FROM pg_stat_activity
+WHERE wait_event_type IS NOT NULL AND backend_type = 'client backend'
+GROUP BY 1 ORDER BY 2 DESC;
+
+---Автоматическое_завершение_транзакций
+SELECT pg_terminate_backend(pid)
+FROM pg_stat_activity
+WHERE usename = 'tx' AND application_name = 'tx'
+AND clock_timestamp() - coalesce(xact_start, query_start) > '00:00:10'::interval
+AND state ~ 'idle in transaction';
+
+----Висящие-----
+SELECT pid,
+CASE WHEN wait_event_type = 'Lock' THEN 'waiting' ELSE state END AS state,
+(clock_timestamp() - xact_start) AS xact_age,
+(clock_timestamp() - query_start) AS query_age
+FROM pg_stat_activity
+WHERE (clock_timestamp() - xact_start > '00:00:00'::interval)
+OR (clock_timestamp() - query_start > '00:00:00'::interval
+AND state = 'idle in transaction (aborted)')
+ORDER BY coalesce(xact_start, query_start);
+
+
+---Выданные_невыданные блокировки_в_моменте_в
+SELECT
+a.pid, a.state, l.granted,
+a.wait_event ||'.'|| a.wait_event_type AS wait,
+clock_timestamp() - l.waitstart AS wait_age
+FROM pg_stat_activity a, pg_locks l
+WHERE a.pid = l.pid
+AND NOT l.granted;
+
+
+WITH q AS (
+SELECT clock_timestamp() - l.waitstart AS wait_age
+FROM pg_stat_activity a, pg_locks l
+WHERE a.pid = l.pid AND NOT l.granted
+) SELECT count(*),
+coalesce(max(wait_age), '0'::interval) AS max,
+coalesce(sum(wait_age), '0'::interval) AS sum
+FROM q;
+```
+
+
+
 
 
 
