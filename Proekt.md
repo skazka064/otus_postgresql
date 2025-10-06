@@ -24,12 +24,14 @@ root@etcd1:/home/yc-user# etcdctl ls /service/patroni
 
 
 # bouncer
+```
 systemctl restart pgbouncer
 systemctl status pgbouncer.service
-
+```
 
 
 # patroni
+```
 patronictl -c /etc/patroni/patroni.yml list 
 patronictl -c /etc/patroni/patroni.yml edit-config
 
@@ -53,3 +55,4 @@ patronictl -c /etc/patroni/patroni.yml switchover patroni
 
 -- Реинициализации ноды:
 patronictl -c /etc/patroni/patroni.yml reinit patroni pgsql2
+```
