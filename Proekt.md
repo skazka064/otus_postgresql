@@ -27,6 +27,10 @@ root@etcd1:/home/yc-user# etcdctl ls /service/patroni
 ```
 systemctl restart pgbouncer
 systemctl status pgbouncer.service
+psql -p 6432 pgbouncer
+SHOW STATS;
+SHOW TOTALS;
+SHOW DATABASES;
 ```
 
 
