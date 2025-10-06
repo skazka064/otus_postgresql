@@ -1,0 +1,14 @@
+ETCD_NAME="etcd1.ru-central1.internal"
+
+ETCD_DATA_DIR="/var/lib/etcd"
+ETCD_LISTEN_CLIENT_URLS="http://0.0.0.0:2379"
+ETCD_ADVERTISE_CLIENT_URLS="http://etcd1.ru-central1.internal:2379"
+
+ETCD_LISTEN_PEER_URLS="http://0.0.0.0:2380"
+ETCD_INITIAL_ADVERTISE_PEER_URLS="http://etcd1.ru-central1.internal:2380"
+
+ETCD_INITIAL_CLUSTER_TOKEN="etcd_cluster"
+ETCD_INITIAL_CLUSTER="etcd1.ru-central1.internal=http://etcd1.ru-central1.internal:2380,etcd2.ru-central1.internal=http://etcd2.ru-central1.internal:2380,etcd3.ru-central1.internal=http://etcd3.ru-central1.internal:2380"
+
+ETCD_INITIAL_CLUSTER_STATE="new"
+ETCD_ENABLE_V2="true"
