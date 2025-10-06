@@ -2,10 +2,13 @@
 ---Тестирование
 
 # etcd
+```
 etcdctl member list
 etcdctl cluster-health
 etcdctl ls /service/patroni
 etcdctl get /service/patroni/members/pgsql2
+```
+
 ```bash
 root@etcd1:/home/yc-user# etcdctl ls /service/patroni
 /service/patroni/leader
