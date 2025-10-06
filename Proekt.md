@@ -1,7 +1,7 @@
 
----Тестирование
+# Тестирование
 
-# etcd
+### etcd
 ```
 etcdctl member list
 etcdctl cluster-health
@@ -23,7 +23,7 @@ root@etcd1:/home/yc-user# etcdctl ls /service/patroni
 
 
 
-# bouncer
+### bouncer
 ```
 systemctl restart pgbouncer
 systemctl status pgbouncer.service
@@ -34,7 +34,7 @@ SHOW DATABASES;
 ```
 
 
-# patroni
+### patroni
 ```
 patronictl -c /etc/patroni/patroni.yml list 
 patronictl -c /etc/patroni/patroni.yml edit-config
