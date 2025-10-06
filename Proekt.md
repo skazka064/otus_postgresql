@@ -1,7 +1,7 @@
 
-----Тестирование
+---Тестирование
 
-#etcd
+# etcd
 etcdctl member list
 etcdctl cluster-health
 etcdctl ls /service/patroni
@@ -22,13 +22,13 @@ etcdctl member add node3 --endpoints=https://10.20.30.101:2380,https://10.20.30.
 
 
 
-#bouncer
+# bouncer
 systemctl restart pgbouncer
 systemctl status pgbouncer.service
 
 
 
-#patroni
+# patroni
 patronictl -c /etc/patroni/patroni.yml list 
 patronictl -c /etc/patroni/patroni.yml edit-config
 
