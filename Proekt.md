@@ -16,9 +16,7 @@ root@etcd1:/home/yc-user# etcdctl ls /service/patroni
 /service/patroni/config
 ```
 
-etcdctl member remove d70c1c10cb4db26c
-rm -rf /etc/kubernetes/manifests/etcd.yaml /var/lib/etcd/
-etcdctl member add node3 --endpoints=https://10.20.30.101:2380,https://10.20.30.102:2379 --peer-urls=https://10.20.30.103:2380
+
 
 
 
