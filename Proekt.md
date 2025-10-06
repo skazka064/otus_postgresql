@@ -36,13 +36,13 @@ SHOW DATABASES;
 
 ### patroni
 ```
-patronictl -c /etc/patroni/patroni.yml list 
-patronictl -c /etc/patroni/patroni.yml edit-config
+patronictl -c /etc/patroni.yml list 
+patronictl -c /etc/patroni.yml edit-config
 
 -- Рестарт одной ноды:
-patronictl -c /etc/patroni/patroni.yml restart patroni pgsql2
+patronictl -c /etc/patroni.yml restart patroni pgsql2
 
-patronictl -c /etc/patroni/patroni.yml pause patroni
+patronictl -c /etc/patroni.yml pause patroni
 patronictl -c /etc/patroni.yml resume patroni
 
 -- Выключение одной ноды:
@@ -52,11 +52,11 @@ sudo systemctl stop patroni
 patronictl -c /etc/patroni.yml restart patroni
 
 -- Рестарт reload кластера:
-patronictl -c /etc/patroni/patroni.yml reload patroni
+patronictl -c /etc/patroni.yml reload patroni
 
 -- Плановое переключение:
-patronictl -c /etc/patroni/patroni.yml switchover patroni
+patronictl -c /etc/patroni.yml switchover patroni
 
 -- Реинициализации ноды:
-patronictl -c /etc/patroni/patroni.yml reinit patroni pgsql2
+patronictl -c /etc/patroni.yml reinit patroni pgsql2
 ```
