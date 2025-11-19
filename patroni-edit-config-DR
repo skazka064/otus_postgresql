@@ -1,0 +1,33 @@
+loop_wait: 10
+maximum_lag_on_failover: 1048576
+postgresql: null
+standby_cluster:
+  create_replica_methods:
+  - basebackup
+  host: 192.168.26.204
+  hot_standby: 'on'
+  log_checkpoints: 'on'
+  log_connections: 'off'
+  log_destination: stderr
+  log_directory: pg_log
+  log_disconnections: 'off'
+  log_filename: '%a.log'
+  log_rotation_age: 1d
+  log_rotation_size: 100MB
+  log_truncate_on_rotation: 'on'
+  logging_collector: 'on'
+  max_connections: 100
+  max_replication_slots: 5
+  max_wal_senders: 5
+  parameters: null
+  password_encryption: md5
+  port: 5432
+  primary_slot_name: cluster2_replication_slot
+  superuser_reserved_connections: 10
+  synchronous_commit: remote_write
+  synchronous_mode: 'on'
+  use_pg_rewind: true
+  wal_keep_segments: 256
+  wal_level: replica
+  wal_log_hints: 'on'
+ttl: 30
