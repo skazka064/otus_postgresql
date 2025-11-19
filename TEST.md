@@ -60,8 +60,9 @@ patronictl -c /etc/patroni.yml switchover patroni
 
 -- Реинициализации ноды:
 patronictl -c /etc/patroni.yml reinit patroni pgsql2
-
--- Проверки
+```
+### Проверки доступности мастера и реплики
+```
 curl -X OPTIONS -v http://192.168.26.204:8008/master
 curl -X OPTIONS -v http://192.168.26.204:8008/replica
 psql -h 192.168.26.200 -p 5000 -U postgres -d postgres
